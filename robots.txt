@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://floboldt007-cmyk.github.io/anfrage-system/sitemap.xml
