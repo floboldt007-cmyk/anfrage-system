@@ -10,6 +10,34 @@
   <meta property="og:description" content="Jede Anfrage wird sofort erfasst, dem Kunden bestätigt und beantwortet. Sie reagieren schneller als die Konkurrenz — ohne abends Mails zu tippen." />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="de_DE" />
+  <meta property="og:url" content="https://floboldt007-cmyk.github.io/anfrage-system/" />
+  <meta name="author" content="Florian Boldt" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0f1f3d" />
+  <link rel="canonical" href="https://floboldt007-cmyk.github.io/anfrage-system/" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "KI-Anfrage-System für Handwerksbetriebe",
+    "serviceType": "Automatisches Anfrage- und Terminsystem",
+    "description": "Automatisches System, das Kundenanfragen für Handwerksbetriebe sofort erfasst, dem Kunden bestätigt, sortiert und beantwortet — Terminvorschlag oder Absage gehen automatisch raus.",
+    "provider": {
+      "@type": "Person",
+      "name": "Florian Boldt",
+      "email": "florianboldt@yahoo.com",
+      "address": { "@type": "PostalAddress", "addressLocality": "Leverkusen", "postalCode": "51379", "addressCountry": "DE" }
+    },
+    "areaServed": { "@type": "Country", "name": "Deutschland" },
+    "audience": { "@type": "BusinessAudience", "name": "Handwerksbetriebe" },
+    "url": "https://floboldt007-cmyk.github.io/anfrage-system/",
+    "offers": [
+      { "@type": "Offer", "name": "Starter", "price": "39", "priceCurrency": "EUR", "description": "Solo bis 3 Mitarbeiter" },
+      { "@type": "Offer", "name": "Pro", "price": "99", "priceCurrency": "EUR", "description": "4 bis 10 Mitarbeiter" },
+      { "@type": "Offer", "name": "Premium", "price": "189", "priceCurrency": "EUR", "description": "10+ Mitarbeiter / mehrere Standorte" }
+    ]
+  }
+  </script>
   <style>
     :root {
       --blau: #1d4ed8;
@@ -32,6 +60,8 @@
     }
     .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
     a { color: inherit; }
+    .skip { position: absolute; left: 12px; top: -52px; background: var(--blau); color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 600; text-decoration: none; z-index: 100; transition: top 0.15s; }
+    .skip:focus { top: 12px; }
 
     /* Header + Navigation */
     header { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rand); }
@@ -232,6 +262,8 @@
 </head>
 <body>
 
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
   <header>
     <div class="container header-inner">
       <a class="logo" href="#top"><span class="logo-mark">FB</span>Florian Boldt</a>
@@ -276,7 +308,7 @@
   <span id="top"></span>
 
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" id="inhalt">
     <div class="container">
       <div class="hero-text">
         <span class="badge">Für Elektriker · SHK · Maler · Dachdecker · GaLaBau &amp; weitere Gewerke</span>
