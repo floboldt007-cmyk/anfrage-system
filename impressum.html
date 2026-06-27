@@ -13,20 +13,24 @@
     header .container { display: flex; justify-content: space-between; align-items: center; }
     header a { color: #b8c4d6; text-decoration: none; font-size: 0.95rem; }
     header a:hover { color: #fff; }
-    .logo { font-weight: 700; font-size: 1.1rem; color: #fff; }
+    .logo { font-weight: 700; font-size: 1.1rem; color: #fff; display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo .logo-mark { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, #1d4ed8, #0f1f3d); color: #fff; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
     main { padding: 56px 0 80px; }
     h1 { font-size: 1.9rem; margin-bottom: 28px; letter-spacing: -0.02em; }
     h2 { font-size: 1.15rem; margin: 30px 0 8px; color: #1e293b; }
     p { color: #334155; margin-bottom: 6px; }
     .hinweis { background: #eff4ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 16px 20px; color: #1e40af; font-size: 0.92rem; margin-bottom: 32px; }
     a.zurueck { color: #1d4ed8; text-decoration: none; font-weight: 600; }
-    footer { border-top: 1px solid #e2e8f0; padding: 24px 0; color: #64748b; font-size: 0.88rem; }
+    footer { border-top: 1px solid #e2e8f0; padding: 28px 0; color: #64748b; font-size: 0.88rem; }
+    .foot-nav { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
+    .foot-nav a { color: #1d4ed8; text-decoration: none; font-weight: 500; }
+    .foot-nav a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <span class="logo">Florian Boldt</span>
+      <a class="logo" href="index.html"><span class="logo-mark">FB</span>Florian Boldt</a>
       <a href="index.html">← Zurück zur Startseite</a>
     </div>
   </header>
@@ -67,7 +71,14 @@
   </main>
 
   <footer>
-    <div class="container">© 2026 Florian Boldt</div>
+    <div class="container">
+      <nav class="foot-nav">
+        <a href="index.html">Startseite</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="index.html#kontakt">Kontakt</a>
+      </nav>
+      <div>© 2026 Florian Boldt · KI-Anfrage-System für Handwerksbetriebe</div>
+    </div>
   </footer>
 </body>
 </html>
