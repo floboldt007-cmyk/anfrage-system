@@ -12,19 +12,20 @@
   <meta property="og:locale" content="de_DE" />
   <meta property="og:url" content="https://anfrageprofi.de/" />
   <meta property="og:site_name" content="anfrageprofi.de" />
-  <meta property="og:image" content="https://anfrageprofi.de/og-bild.png" />
-  <meta property="og:image:secure_url" content="https://anfrageprofi.de/og-bild.png" />
-  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image" content="https://anfrageprofi.de/og-bild.jpg" />
+  <meta property="og:image:secure_url" content="https://anfrageprofi.de/og-bild.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="anfrageprofi.de: Keine Kundenanfrage mehr verlieren. Automatisches Anfrage-System fuer Handwerksbetriebe." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Keine Kundenanfrage mehr verlieren: KI-Anfrage-System fuer Handwerksbetriebe" />
   <meta name="twitter:description" content="Jede Anfrage wird sofort erfasst, dem Kunden bestaetigt und beantwortet. Sie reagieren schneller als die Konkurrenz, ohne abends Mails zu tippen." />
-  <meta name="twitter:image" content="https://anfrageprofi.de/og-bild.png" />
+  <meta name="twitter:image" content="https://anfrageprofi.de/og-bild.jpg" />
   <meta name="author" content="Florian Boldt" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0f1f3d" />
+  <meta name="color-scheme" content="light" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
   <link rel="canonical" href="https://anfrageprofi.de/" />
@@ -1020,6 +1021,7 @@
     navToggle.addEventListener('click', () => {
       const offen = hauptnav.classList.toggle('offen');
       navToggle.setAttribute('aria-expanded', String(offen));
+      navToggle.setAttribute('aria-label', offen ? 'Menü schließen' : 'Menü öffnen');
     });
 
     // Dropdown: auf Touch/Klick umschalten (Hover bleibt am Desktop)
@@ -1041,6 +1043,7 @@
       a.addEventListener('click', () => {
         hauptnav.classList.remove('offen');
         navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.setAttribute('aria-label', 'Menü öffnen');
         document.querySelectorAll('.hat-dropdown.auf').forEach((li) => li.classList.remove('auf'));
       });
     });
@@ -1074,6 +1077,7 @@
       if (e.key !== 'Escape') return;
       hauptnav.classList.remove('offen');
       navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'Menü öffnen');
       document.querySelectorAll('.hat-dropdown.auf').forEach((li) => li.classList.remove('auf'));
     });
 
