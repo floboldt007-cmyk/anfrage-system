@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://floboldt007-cmyk.github.io/anfrage-system/sitemap.xml
+Sitemap: https://anfrageprofi.de/sitemap.xml
