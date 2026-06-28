@@ -233,6 +233,19 @@
     .cta-block p { color: #b8c4d6; font-size: 1.08rem; max-width: 560px; margin: 0 auto 32px; }
     .cta-block .mail { display: block; margin-top: 22px; color: #8295ad; font-size: 0.96rem; }
     .cta-block .mail a { color: #fff; }
+    .kontakt-form { max-width: 560px; margin: 0 auto 8px; background: #fff; border-radius: 14px; padding: 30px 30px 32px; text-align: left; box-shadow: 0 18px 50px rgba(0,0,0,0.28); }
+    .kontakt-form label { display: block; font-size: 0.9rem; font-weight: 600; color: #1e293b; margin-bottom: 14px; }
+    .kontakt-form .form-reihe { display: flex; gap: 14px; }
+    .kontakt-form .form-reihe label { flex: 1; }
+    .kontakt-form input[type=text], .kontakt-form input[type=email], .kontakt-form input[type=tel], .kontakt-form textarea { width: 100%; margin-top: 6px; padding: 11px 13px; border: 1px solid var(--rand); border-radius: 8px; font-size: 1rem; font-family: inherit; color: var(--text); background: #fff; }
+    .kontakt-form input:focus, .kontakt-form textarea:focus { outline: none; border-color: var(--blau); box-shadow: 0 0 0 3px rgba(29,78,216,0.15); }
+    .kontakt-form textarea { resize: vertical; }
+    .kontakt-form label.check { display: flex; align-items: flex-start; gap: 9px; font-weight: 400; font-size: 0.85rem; color: var(--grau); line-height: 1.5; margin-bottom: 18px; }
+    .kontakt-form label.check input { margin-top: 3px; flex-shrink: 0; }
+    .kontakt-form label.check a { color: var(--blau); }
+    .kontakt-form .btn-senden { width: 100%; padding: 14px; border: none; border-radius: 9px; background: var(--blau); color: #fff; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s; font-family: inherit; }
+    .kontakt-form .btn-senden:hover { background: var(--blau-dunkel); transform: translateY(-1px); }
+    @media (max-width: 560px) { .kontakt-form .form-reihe { flex-direction: column; gap: 0; } }
 
     /* Footer */
     footer { padding: 44px 0 30px; background: var(--navy); color: #8295ad; font-size: 0.88rem; }
@@ -917,9 +930,29 @@
   <section class="cta-block" id="kontakt">
     <div class="container">
       <h2>Testen Sie es unverbindlich</h2>
-      <p>Ich zeige Ihnen in einer kurzen Demo, wie das System mit Ihren eigenen Anfragen aussieht. Kostenlos und ohne Verpflichtung.</p>
-      <a class="btn btn-hell" href="mailto:kontakt@anfrageprofi.de?subject=Demo-Anfrage%20Anfrage-System&body=Hallo%20Herr%20Boldt%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System.%20Mein%20Betrieb%3A%20%0A%0A">Demo per E-Mail anfragen</a>
-      <span class="mail">oder direkt schreiben an <a href="mailto:kontakt@anfrageprofi.de">kontakt@anfrageprofi.de</a></span>
+      <p>Schreiben Sie mir kurz, worum es geht. Ich zeige Ihnen in einer kurzen Demo, wie das System mit Ihren eigenen Anfragen aussieht. Kostenlos und ohne Verpflichtung.</p>
+
+      <form action="https://formsubmit.co/kontakt@anfrageprofi.de" method="POST" class="kontakt-form">
+        <input type="hidden" name="_subject" value="Neue Anfrage ueber anfrageprofi.de" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" value="https://anfrageprofi.de/danke.html" />
+        <input type="hidden" name="_autoresponse" value="Vielen Dank fuer Ihre Nachricht! Ich habe Ihre Anfrage erhalten und melde mich innerhalb von 24 Stunden persoenlich bei Ihnen zurueck. Herzliche Gruesse, Florian Boldt - anfrageprofi.de" />
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+        <div class="form-reihe">
+          <label>Name*<input type="text" name="Name" required autocomplete="name" /></label>
+          <label>Betrieb<input type="text" name="Betrieb" autocomplete="organization" /></label>
+        </div>
+        <div class="form-reihe">
+          <label>E-Mail*<input type="email" name="E-Mail" required autocomplete="email" /></label>
+          <label>Telefon<input type="tel" name="Telefon" autocomplete="tel" /></label>
+        </div>
+        <label>Ihr Gewerk<input type="text" name="Gewerk" placeholder="z. B. Maler, Elektro, SHK, Dach ..." /></label>
+        <label>Nachricht<textarea name="Nachricht" rows="4" placeholder="Worum geht es? (optional)"></textarea></label>
+        <label class="check"><input type="checkbox" name="Einwilligung" required value="Ja" /> <span>Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden. Hinweise dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.*</span></label>
+        <button type="submit" class="btn-senden">Anfrage absenden</button>
+      </form>
+
+      <span class="mail">Lieber direkt schreiben? <a href="mailto:kontakt@anfrageprofi.de">kontakt@anfrageprofi.de</a></span>
       <p style="margin-top:16px; color:#8295ad; font-size:0.92rem;">Ich melde mich innerhalb von 24 Stunden bei Ihnen zurück, unverbindlich.</p>
     </div>
   </section>
