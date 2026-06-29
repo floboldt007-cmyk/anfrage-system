@@ -313,6 +313,25 @@
       .showcase { grid-template-columns: 1fr; gap: 32px; }
       .showcase + .showcase { margin-top: 56px; }
       .showcase.umgekehrt .text { order: 0; }
+      section.block { padding: 60px 0; }
+      .hero { padding: 56px 0 64px; }
+      .cta-block { padding: 60px 0; }
+    }
+
+    @media (max-width: 560px) {
+      .container { padding: 0 18px; }
+      section.block { padding: 46px 0; }
+      .hero { padding: 42px 0 50px; }
+      .cta-block { padding: 50px 0; }
+      .block > .container > p.lead { margin-bottom: 38px; }
+      h2 { font-size: 1.5rem; }
+      .hero .badge { font-size: 0.74rem; line-height: 1.45; }
+      .stat { padding: 20px 8px; }
+      .stat .zahl { font-size: 1.3rem; }
+      .stat .label { font-size: 0.82rem; }
+      .karte, .modul { padding: 22px 20px; }
+      .preis-karte { padding: 26px 22px; }
+      .kontakt-form { padding: 24px 20px; }
     }
   </style>
 </head>
@@ -459,12 +478,9 @@
         <div class="gewerk"><span class="punkt"></span><span>Sanitär · Heizung · Klima</span></div>
         <div class="gewerk"><span class="punkt"></span><span>Maler &amp; Lackierer</span></div>
         <div class="gewerk"><span class="punkt"></span><span>Dachdecker</span></div>
-        <div class="gewerk"><span class="punkt"></span><span>Zimmerei &amp; Holzbau</span></div>
         <div class="gewerk"><span class="punkt"></span><span>Fliesenleger</span></div>
         <div class="gewerk"><span class="punkt"></span><span>Tischler &amp; Schreiner</span></div>
-        <div class="gewerk"><span class="punkt"></span><span>Maurer &amp; Betonbau</span></div>
         <div class="gewerk"><span class="punkt"></span><span>Metallbau &amp; Schlosser</span></div>
-        <div class="gewerk"><span class="punkt"></span><span>Fenster- &amp; Türenbau</span></div>
         <div class="gewerk"><span class="punkt"></span><span>Garten- &amp; Landschaftsbau</span></div>
         <div class="gewerk weitere"><span>… und viele weitere</span></div>
       </div>
@@ -670,46 +686,8 @@
     </div>
   </section>
 
-  <!-- SHOWCASE: Handy-App -->
-  <section class="block tint">
-    <div class="container">
-      <div class="showcase">
-        <div class="text reveal">
-          <p class="eyebrow">Vom Handy aus</p>
-          <h3>Drei Knöpfe, der Rest passiert von selbst</h3>
-          <p>Sie sehen die Anfrage auf dem Smartphone und tippen einen Knopf. Die passende E-Mail, der Kalendereintrag und der Status erledigen sich automatisch.</p>
-          <ul>
-            <li>Termin senden, inkl. Wunschtermin &amp; Kalendereintrag</li>
-            <li>Absagen, freundliche Absage geht automatisch raus</li>
-            <li>Bewertung anfragen, mehr Google-Sterne wie von selbst</li>
-          </ul>
-        </div>
-        <div class="bild reveal" style="display:flex; justify-content:center;">
-          <svg viewBox="0 0 300 380" style="max-width:280px; border:none; box-shadow:none;" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Handy-App mit Aktions-Knöpfen">
-            <rect x="70" y="10" width="160" height="360" rx="26" fill="#0f1f3d"/>
-            <rect x="80" y="34" width="140" height="312" rx="6" fill="#f8fafc"/>
-            <rect x="125" y="20" width="50" height="7" rx="3.5" fill="#334155"/>
-            <rect x="90" y="46" width="120" height="86" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
-            <text x="100" y="68" font-family="Segoe UI, sans-serif" font-size="10" font-weight="700" fill="#0f172a">M. Schneider</text>
-            <text x="100" y="84" font-family="Segoe UI, sans-serif" font-size="8.5" fill="#64748b">Badsanierung, EFH</text>
-            <rect x="100" y="96" width="46" height="18" rx="9" fill="#fef3c7"/>
-            <text x="109" y="108" font-family="Segoe UI, sans-serif" font-size="8" font-weight="700" fill="#92400e">Neu</text>
-            <rect x="90" y="146" width="120" height="34" rx="9" fill="#1d4ed8"/>
-            <text x="150" y="167" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff">Termin senden</text>
-            <rect x="90" y="190" width="120" height="34" rx="9" fill="#16a34a"/>
-            <text x="150" y="211" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff">Termin bestätigt</text>
-            <rect x="90" y="234" width="120" height="34" rx="9" fill="#ffffff" stroke="#fecaca"/>
-            <text x="150" y="255" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="10.5" font-weight="600" fill="#b91c1c">Absagen</text>
-            <rect x="90" y="278" width="120" height="34" rx="9" fill="#ffffff" stroke="#e2e8f0"/>
-            <text x="150" y="299" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="10.5" font-weight="600" fill="#475569">Bewertung senden</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- NUTZEN -->
-  <section class="block" id="vorteile">
+  <section class="block tint" id="vorteile">
     <div class="container">
       <p class="eyebrow reveal">Ihr Vorteil</p>
       <h2 class="reveal">Mehr Aufträge, weniger Büro</h2>
@@ -753,7 +731,7 @@
   </section>
 
   <!-- LEISTUNGEN / MODULE -->
-  <section class="block tint" id="leistungen">
+  <section class="block" id="leistungen">
     <div class="container">
       <p class="eyebrow reveal">Alle Bausteine</p>
       <h2 class="reveal">Ein Baukasten, der mitwächst</h2>
@@ -805,7 +783,7 @@
   </section>
 
   <!-- PREISE -->
-  <section class="block" id="preise">
+  <section class="block tint" id="preise">
     <div class="container">
       <p class="eyebrow reveal">Preise</p>
       <h2 class="reveal">Das passende Paket für Ihren Betrieb</h2>
@@ -819,13 +797,13 @@
           <h3>Starter</h3>
           <p class="fuer">Solo bis 3 Mitarbeiter</p>
           <div class="preis">39 €<span> / Monat</span></div>
-          <p class="info">Keine Anfrage mehr verlieren, das Wesentliche, sofort einsatzbereit.</p>
+          <p class="info">Das Fundament: Jede Anfrage wird sofort erfasst, bestätigt und beantwortet, damit keine mehr verloren geht.</p>
           <ul>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Anfragen automatisch erfassen</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Sofort-Eingangsbestätigung an den Kunden</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Termin- &amp; Absage-Mails automatisch</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Übersichtliche Statusliste</li>
-            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>1 Nutzer · bis ~20 Anfragen / Monat</li>
+            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>1 Nutzer, bis zu 20 Anfragen im Monat</li>
           </ul>
           <a class="btn-preis sekundaer" href="#kontakt">Anfragen</a>
         </div>
@@ -834,14 +812,14 @@
           <h3>Pro</h3>
           <p class="fuer">4 bis 10 Mitarbeiter</p>
           <div class="preis">99 €<span> / Monat</span></div>
-          <p class="info">Nicht nur erfassen, aktiv mehr Aufträge gewinnen.</p>
+          <p class="info">Ein Schritt weiter: aus Anfragen aktiv mehr Aufträge machen, mit Auswertung und automatischem Nachfassen.</p>
           <ul>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alles aus Starter</li>
             <li class="stark"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live-Dashboard (Reaktionszeit &amp; Abschlussquote)</li>
-            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Angebotsnachfass &amp; Bewertungsautomatik</li>
+            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Automatischer Angebotsnachfass und Bewertungsautomatik</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Preisrechner &amp; Schnellangebot</li>
-            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>bis 3 Nutzer · bis ~60 Anfragen / Monat</li>
-            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Bevorzugter Support</li>
+            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>bis zu 3 Nutzer, bis zu 60 Anfragen im Monat</li>
+            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Bevorzugter Support, Antwort meist am selben Werktag</li>
           </ul>
           <a class="btn-preis primaer" href="#kontakt">Pro wählen</a>
         </div>
@@ -849,13 +827,13 @@
           <h3>Premium</h3>
           <p class="fuer">10+ Mitarbeiter / mehrere Standorte</p>
           <div class="preis">189 €<span> / Monat</span></div>
-          <p class="info">Maximale Reichweite und individuelle Anpassung.</p>
+          <p class="info">Für große oder wachsende Betriebe: volle Automatik, mehrere Standorte und Bausteine nach Maß.</p>
           <ul>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alles aus Pro</li>
             <li class="stark"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wartungsautopilot (wiederkehrender Umsatz)</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Mehrere Standorte &amp; Teams</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Individuelle Module &amp; Anpassungen</li>
-            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alle Nutzer · unbegrenzte Anfragen</li>
+            <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Unbegrenzte Nutzer und Anfragen</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Persönlicher Ansprechpartner</li>
           </ul>
           <a class="btn-preis sekundaer" href="#kontakt">Anfragen</a>
@@ -870,7 +848,7 @@
   </section>
 
   <!-- FAQ -->
-  <section class="block tint" id="faq">
+  <section class="block" id="faq">
     <div class="container">
       <p class="eyebrow reveal">Häufige Fragen</p>
       <h2 class="reveal">Was Betriebe oft fragen</h2>
@@ -921,7 +899,7 @@
   </section>
 
   <!-- WER DAHINTER STEHT -->
-  <section class="block" id="ueber">
+  <section class="block tint" id="ueber">
     <div class="container">
       <p class="eyebrow reveal">Wer dahinter steht</p>
       <h2 class="reveal">Ein fester Ansprechpartner, kein anonymes Softwarehaus</h2>
