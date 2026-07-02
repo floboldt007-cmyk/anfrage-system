@@ -263,6 +263,25 @@
     .kontakt-form .btn-senden:hover { background: var(--blau-dunkel); transform: translateY(-1px); }
     @media (max-width: 560px) { .kontakt-form .form-reihe { flex-direction: column; gap: 0; } }
 
+    /* Live-Demo */
+    .demo-block { background: linear-gradient(165deg, #0f1f3d 0%, #14305f 100%); color: #fff; padding: 84px 0; }
+    .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    .demo-block .eyebrow { text-align: left; color: #93c5fd; }
+    .demo-block h2 { text-align: left; color: #fff; }
+    .demo-text > p { color: #b8c4d6; font-size: 1.04rem; margin-bottom: 18px; }
+    .demo-schritte { list-style: none; counter-reset: ds; margin: 0 0 18px; }
+    .demo-schritte li { counter-increment: ds; position: relative; padding: 8px 0 8px 40px; color: #d7e0ec; }
+    .demo-schritte li::before { content: counter(ds); position: absolute; left: 0; top: 9px; width: 26px; height: 26px; border-radius: 7px; background: var(--blau); color: #fff; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
+    .demo-hinweis { font-size: 0.85rem; color: #8295ad; }
+    .demo-block .kontakt-form { margin: 0; }
+    .demo-erfolg { background: #fff; border-radius: 14px; padding: 38px 30px; text-align: center; box-shadow: 0 18px 50px rgba(0,0,0,0.28); color: var(--text); }
+    .demo-erfolg .haken { width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; }
+    .demo-erfolg .haken svg { width: 32px; height: 32px; stroke: var(--gruen); stroke-width: 2.6; fill: none; }
+    .demo-erfolg h3 { font-size: 1.25rem; margin-bottom: 10px; }
+    .demo-erfolg p { color: var(--grau); font-size: 0.98rem; margin-bottom: 8px; }
+    .demo-fehler { display: none; background: #fee2e2; color: #b91c1c; border-radius: 8px; padding: 10px 14px; font-size: 0.9rem; margin-bottom: 14px; }
+    @media (max-width: 820px) { .demo-grid { grid-template-columns: 1fr; gap: 36px; } .demo-block { padding: 60px 0; } }
+
     /* Footer */
     footer { padding: 44px 0 30px; background: var(--navy); color: #8295ad; font-size: 0.88rem; }
     .footer-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; margin-bottom: 26px; }
@@ -368,6 +387,7 @@
             </div>
           </li>
           <li><a class="nav-link" href="#ablauf">So funktioniert es</a></li>
+          <li><a class="nav-link" href="#demo">Live-Demo</a></li>
           <li><a class="nav-link" href="#vorteile">Vorteile</a></li>
           <li><a class="nav-link" href="#preise">Preise</a></li>
           <li><a class="nav-link" href="#faq">FAQ</a></li>
@@ -395,7 +415,7 @@
         </p>
         <div class="hero-cta">
           <a class="btn btn-hell" href="#kontakt">Kostenlose Demo anfragen</a>
-          <a class="btn btn-geist" href="#ablauf">So funktioniert es</a>
+          <a class="btn btn-geist" href="#demo">Selbst testen: Live-Demo</a>
         </div>
         <p class="hero-direkt">Lieber direkt? <a href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System.">WhatsApp schreiben</a> oder <a href="tel:+491629152715">anrufen: 0162 9152715</a></p>
         <p class="hinweis">In wenigen Tagen startklar · Nichts zu installieren · Monatlich kündbar</p>
@@ -686,6 +706,45 @@
     </div>
   </section>
 
+  <!-- LIVE-DEMO -->
+  <section class="demo-block" id="demo">
+    <div class="container demo-grid">
+      <div class="demo-text reveal">
+        <p class="eyebrow">Live-Demo · Probieren statt glauben</p>
+        <h2>Testen Sie es jetzt selbst, in 60 Sekunden</h2>
+        <p>Füllen Sie das Formular aus, als wären Sie Ihr eigener Kunde. Sie erleben sofort, was Ihre Kunden künftig erleben:</p>
+        <ol class="demo-schritte">
+          <li>Demo-Anfrage absenden, so wie Ihr Kunde es tun würde.</li>
+          <li>Postfach öffnen: Die automatische Eingangsbestätigung ist in Sekunden da.</li>
+          <li>Gleichzeitig liegt die Anfrage sortiert in der Anfragen-Übersicht, mit Status „Neu" und Zeitstempel.</li>
+        </ol>
+        <p class="demo-hinweis">Echte Demo, keine Anmeldung nötig. Ihre Demo-Daten werden nach 7 Tagen automatisch gelöscht, es folgt keine Werbung und kein Newsletter.</p>
+      </div>
+      <div class="demo-form-panel reveal">
+        <form class="kontakt-form" id="demo-form" novalidate>
+          <div class="demo-fehler" id="demo-fehler" role="alert"></div>
+          <input type="text" name="web" value="" style="display:none" tabindex="-1" autocomplete="off" />
+          <div class="form-reihe">
+            <label>Ihr Name*<input type="text" name="name" required minlength="2" autocomplete="name" /></label>
+            <label>Ihre E-Mail*<input type="email" name="email" required autocomplete="email" /></label>
+          </div>
+          <label>Gewerk<input type="text" name="gewerk" placeholder="z. B. SHK, Elektro, Maler (optional)" /></label>
+          <label>Ihr Test-Anliegen<textarea name="anliegen" rows="2" placeholder="z. B. Heizung tropft, bitte um Termin (optional)"></textarea></label>
+          <label class="check"><input type="checkbox" id="demo-einwilligung" required /> <span>Ich bin einverstanden, dass meine Angaben zur Durchführung der Live-Demo verarbeitet werden (Speicherung im Demo-System, automatische Bestätigungs-E-Mail an mich, Info an Florian Boldt; Löschung nach 7 Tagen). Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.*</span></label>
+          <button type="submit" class="btn-senden">Demo starten</button>
+          <p style="font-size:0.8rem; color:#94a3b8; margin-top:12px; margin-bottom:0; text-align:center;">* Pflichtfeld · Eine einzige E-Mail, kein Newsletter.</p>
+        </form>
+        <div class="demo-erfolg" id="demo-erfolg" hidden>
+          <div class="haken"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Ihre Demo-Anfrage ist im System.</h3>
+          <p><strong>Öffnen Sie jetzt Ihr E-Mail-Postfach</strong> (ggf. auch den Spam-Ordner): Die automatische Eingangsbestätigung ist bereits unterwegs.</p>
+          <p>Genau so schnell bekommen künftig Ihre Kunden eine Antwort, rund um die Uhr.</p>
+          <p style="margin-top:16px;"><a class="btn btn-primaer" href="#kontakt" style="padding:12px 22px;">Gefällt mir, Demo-Gespräch anfragen</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- NUTZEN -->
   <section class="block tint" id="vorteile">
     <div class="container">
@@ -969,6 +1028,7 @@
         <nav aria-label="Footer-Navigation">
           <a href="#leistungen">Leistungen</a>
           <a href="#ablauf">So funktioniert es</a>
+          <a href="#demo">Live-Demo</a>
           <a href="#vorteile">Vorteile</a>
           <a href="#preise">Preise</a>
           <a href="#faq">FAQ</a>
@@ -1042,7 +1102,7 @@
         if (link) link.classList.add('aktiv');
       });
     }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-    ['leistungen', 'ablauf', 'vorteile', 'preise', 'faq'].forEach((id) => {
+    ['leistungen', 'ablauf', 'demo', 'vorteile', 'preise', 'faq'].forEach((id) => {
       const el = document.getElementById(id); if (el) spy.observe(el);
     });
 
@@ -1054,6 +1114,56 @@
       navToggle.setAttribute('aria-label', 'Menü öffnen');
       document.querySelectorAll('.hat-dropdown.auf').forEach((li) => li.classList.remove('auf'));
     });
+
+    // Live-Demo-Formular: sendet an das Demo-Backend (Google Apps Script)
+    const demoForm = document.getElementById('demo-form');
+    if (demoForm) {
+      const DEMO_URL = 'https://script.google.com/macros/s/AKfycbycqIIedfCLw_N_7hE4Sht-G4tJ8brY9qO22wAY-5V4GADhrfiA4pQ1xQRSnHudbjN0/exec';
+      const fehlerBox = document.getElementById('demo-fehler');
+      const meldungen = {
+        schon_getestet: 'Diese E-Mail-Adresse hat die Demo gerade schon getestet. Schauen Sie in Ihr Postfach, die Bestätigung liegt dort schon.',
+        limit: 'Die Demo macht gerade eine kurze Pause (heute waren schon viele Tester unterwegs). Versuchen Sie es später erneut oder schreiben Sie an kontakt@anfrageprofi.de.',
+        email: 'Bitte prüfen Sie Ihre E-Mail-Adresse.',
+        name: 'Bitte geben Sie Ihren Namen an.',
+        einwilligung: 'Bitte bestätigen Sie die Einwilligung.',
+        standard: 'Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie an kontakt@anfrageprofi.de.'
+      };
+      demoForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        fehlerBox.style.display = 'none';
+        if (!demoForm.reportValidity()) return;
+        const f = demoForm.elements;
+        const daten = {
+          name: f['name'].value, email: f['email'].value,
+          gewerk: f['gewerk'].value, anliegen: f['anliegen'].value,
+          einwilligung: document.getElementById('demo-einwilligung').checked ? 'ja' : '',
+          web: f['web'].value
+        };
+        const knopf = demoForm.querySelector('.btn-senden');
+        knopf.disabled = true; knopf.textContent = 'Wird gesendet …';
+        let ergebnis;
+        try {
+          const antwort = await fetch(DEMO_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(daten)
+          });
+          ergebnis = await antwort.json();
+        } catch (fehler) {
+          // Fallback: klassisch per GET an die Web-App, dort erscheint eine Dankeseite
+          window.location.href = DEMO_URL + '?' + new URLSearchParams(daten).toString();
+          return;
+        }
+        knopf.disabled = false; knopf.textContent = 'Demo starten';
+        if (ergebnis && ergebnis.ok) {
+          demoForm.hidden = true;
+          document.getElementById('demo-erfolg').hidden = false;
+        } else {
+          fehlerBox.textContent = meldungen[(ergebnis && ergebnis.fehler) || 'standard'] || meldungen.standard;
+          fehlerBox.style.display = 'block';
+        }
+      });
+    }
 
     // Zurück-nach-oben einblenden
     const topBtn = document.querySelector('.top-btn');
