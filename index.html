@@ -46,11 +46,15 @@
     "areaServed": { "@type": "Country", "name": "Deutschland" },
     "audience": { "@type": "BusinessAudience", "name": "Handwerksbetriebe" },
     "url": "https://anfrageprofi.de/",
-    "offers": [
-      { "@type": "Offer", "name": "Starter", "price": "39", "priceCurrency": "EUR", "description": "Solo bis 3 Mitarbeiter" },
-      { "@type": "Offer", "name": "Pro", "price": "99", "priceCurrency": "EUR", "description": "4 bis 10 Mitarbeiter" },
-      { "@type": "Offer", "name": "Premium", "price": "189", "priceCurrency": "EUR", "description": "10+ Mitarbeiter / mehrere Standorte" }
-    ]
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Ausbaustufen",
+      "itemListElement": [
+        { "@type": "Offer", "name": "Starter", "description": "Solo bis 3 Mitarbeiter: Anfragen erfassen, bestaetigen und beantworten" },
+        { "@type": "Offer", "name": "Pro", "description": "4 bis 10 Mitarbeiter: zusaetzlich Live-Dashboard, automatisches Nachfassen und Schnellangebot" },
+        { "@type": "Offer", "name": "Premium", "description": "10+ Mitarbeiter oder mehrere Standorte: volle Automatik, Wartungsautopilot, individuelle Module" }
+      ]
+    }
   }
   </script>
   <script type="application/ld+json">
@@ -66,7 +70,8 @@
       { "@type": "Question", "name": "Was passiert mit meinen Daten, wenn ich kündige?", "acceptedAnswer": { "@type": "Answer", "text": "Ihre Daten gehören Ihnen. Bei einer Kündigung erhalten Sie alle Anfragen und Kontakte als Export (z. B. als Excel- oder CSV-Datei) und können nahtlos weiterarbeiten. So bleiben Sie jederzeit unabhängig und sind nicht an mich gebunden." } },
       { "@type": "Question", "name": "Wie schnell bin ich startklar?", "acceptedAnswer": { "@type": "Answer", "text": "In der Regel innerhalb von wenigen Tagen (meist 3 bis 5 Werktage). Sie geben mir die wichtigsten Infos zu Ihrem Betrieb, um den Rest kümmere ich mich." } },
       { "@type": "Question", "name": "Kann ich später weitere Bausteine dazunehmen?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Das System ist ein Baukasten. Sie starten mit dem Wesentlichen und schalten weitere Module, etwa Live-Dashboard, Preisrechner oder den Wartungsautopilot, dann frei, wenn Ihr Betrieb sie braucht." } },
-      { "@type": "Question", "name": "Gibt es versteckte Kosten?", "acceptedAnswer": { "@type": "Answer", "text": "Nein. Einmalige Einrichtung plus fester Monatspreis je nach Paket, keine versteckten Gebühren." } },
+      { "@type": "Question", "name": "Warum stehen hier keine Preise?", "acceptedAnswer": { "@type": "Answer", "text": "Weil jeder Betrieb anders arbeitet. Wie viele Anfragen reinkommen, ueber welche Wege sie kommen und was automatisch passieren soll, macht einen echten Unterschied im Aufwand. Sie beantworten drei kurze Fragen, dann bekommen Sie ein schriftliches Angebot mit einem festen Monatsbetrag. Kostenlos und unverbindlich." } },
+      { "@type": "Question", "name": "Gibt es versteckte Kosten?", "acceptedAnswer": { "@type": "Answer", "text": "Nein. Sie bekommen vorab ein schriftliches Angebot mit einem festen Monatsbetrag und der einmaligen Einrichtung. Was dort steht, gilt. Es gibt keine Zusatzgebuehren, die spaeter auftauchen." } },
       { "@type": "Question", "name": "Lohnt sich das schon bei wenigen Anfragen im Monat?", "acceptedAnswer": { "@type": "Answer", "text": "Gerade dann. Wenn Sie nur wenige Anfragen bekommen, ist jede einzelne besonders wertvoll, eine verlorene tut richtig weh. Schon eine gerettete Anfrage (oft 800 bis 3.000 € Auftragswert) bezahlt das System für viele Monate." } }
     ]
   }
@@ -188,6 +193,32 @@
     .karte h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: 8px; }
     .karte p { color: var(--grau); font-size: 0.98rem; }
 
+    /* Verlust-Rechner */
+    .rechner { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 34px; max-width: 940px; margin: 0 auto; }
+    .rechner-regler { background: var(--tint); border: 1px solid var(--rand); border-radius: 12px; padding: 28px 30px; }
+    .regler { margin-bottom: 26px; }
+    .regler:last-child { margin-bottom: 0; }
+    .regler-kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+    .regler-kopf label { font-weight: 600; font-size: 0.98rem; }
+    .regler-wert { font-weight: 700; color: var(--blau); font-size: 1.05rem; white-space: nowrap; }
+    .regler input[type="range"] { width: 100%; height: 6px; border-radius: 4px; background: #e2e8f0; appearance: none; -webkit-appearance: none; outline-offset: 5px; }
+    .regler input[type="range"]::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--blau); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(15,31,61,0.28); cursor: pointer; }
+    .regler input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border: 3px solid #fff; border-radius: 50%; background: var(--blau); box-shadow: 0 2px 6px rgba(15,31,61,0.28); cursor: pointer; }
+    .regler-hinweis { color: var(--grau-hell); font-size: 0.85rem; margin-top: 8px; }
+    .rechner-ergebnis { background: var(--navy); color: #fff; border-radius: 12px; padding: 32px 30px; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+    .r-label { color: #a9c1e8; font-size: 0.84rem; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600; }
+    .r-zahl { font-size: 2.9rem; font-weight: 800; line-height: 1.15; margin: 10px 0 4px; letter-spacing: -1px; }
+    .r-monat { color: #c8dcf7; font-size: 0.98rem; }
+    .r-auftraege { font-size: 0.98rem; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.16); color: #e8f1fd; }
+    .r-auftraege strong { color: #ffd166; }
+    .rechner-ergebnis .btn { margin-top: 22px; align-self: center; }
+    .rechner-formel { max-width: 720px; margin: 24px auto 0; text-align: center; color: var(--grau-hell); font-size: 0.86rem; line-height: 1.65; }
+    @media (max-width: 820px) {
+      .rechner { grid-template-columns: 1fr; gap: 22px; }
+      .r-zahl { font-size: 2.4rem; }
+      .rechner-regler { padding: 24px 22px; }
+    }
+
     /* Ablauf */
     .schritte { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; counter-reset: schritt; }
     .schritt { text-align: center; padding: 0 8px; }
@@ -242,6 +273,31 @@
     .btn-preis.sekundaer:hover { border-color: var(--blau); }
     .preis-fuss { text-align: center; color: var(--grau); font-size: 0.96rem; max-width: 680px; margin: 40px auto 0; }
     .preis-fuss + .preis-fuss { margin-top: 10px; }
+
+    /* Angebots-Konfigurator */
+    .konfig { max-width: 820px; margin: 0 auto 46px; background: #fff; border: 1px solid var(--rand); border-radius: 14px; padding: 30px 32px; }
+    .konfig-frage { margin-bottom: 24px; }
+    .konfig-frage > p { font-weight: 600; margin-bottom: 12px; font-size: 1rem; display: flex; align-items: center; }
+    .konfig-frage .nr { display: inline-flex; flex: 0 0 24px; width: 24px; height: 24px; border-radius: 50%; background: #eff4ff; color: var(--blau); font-size: 0.8rem; font-weight: 700; align-items: center; justify-content: center; margin-right: 10px; }
+    .wahl { display: flex; flex-wrap: wrap; gap: 10px; }
+    .wahl button { font: inherit; font-size: 0.94rem; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--rand); background: #fff; color: var(--grau); cursor: pointer; transition: background 0.15s, border-color 0.15s, color 0.15s; }
+    .wahl button:hover { border-color: var(--blau); color: var(--blau); }
+    .wahl button[aria-pressed="true"] { background: var(--blau); border-color: var(--blau); color: #fff; font-weight: 600; }
+    .konfig-leer { color: var(--grau-hell); font-size: 0.94rem; text-align: center; padding-top: 22px; border-top: 1px solid var(--rand); margin: 0; }
+    .konfig-ergebnis { border-top: 1px solid var(--rand); padding-top: 24px; }
+    .konfig-treffer { background: #eff4ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 20px 24px; margin-bottom: 18px; }
+    .konfig-treffer .stufe-name { font-size: 1.2rem; font-weight: 700; color: var(--blau-dunkel); margin-bottom: 8px; }
+    .konfig-treffer .angaben { color: var(--grau-hell); font-size: 0.88rem; margin: 0 0 10px; }
+    .konfig-treffer p.warum { color: var(--grau); font-size: 0.96rem; margin: 0; }
+    .konfig-aktion { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .konfig-aktion .hinweis { color: var(--grau-hell); font-size: 0.88rem; margin: 0; flex: 1 1 220px; }
+    .preis-karte .stufe { display: inline-block; align-self: flex-start; background: #f1f5f9; color: var(--grau); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; margin-bottom: 14px; }
+    .preis-karte.empfohlen { border: 1.5px solid var(--gruen); box-shadow: 0 10px 30px rgba(22,163,74,0.13); }
+    .preis-karte.empfohlen .stufe { background: #dcfce7; color: #15803d; }
+    .versprechen { max-width: 820px; margin: 0 auto 40px; background: #0f1f3d; color: #fff; border-radius: 14px; padding: 26px 32px; text-align: center; }
+    .versprechen p.gross { font-size: 1.18rem; font-weight: 700; line-height: 1.45; margin: 0 0 10px; color: #fff; }
+    .versprechen p.klein { font-size: 1.02rem; line-height: 1.6; margin: 0; color: #e2e8f0; }
+    @media (max-width: 560px) { .konfig { padding: 24px 20px; } .wahl button { width: 100%; text-align: left; } }
 
     /* CTA */
     .cta-block { background: linear-gradient(165deg, #0f1f3d 0%, #14305f 100%); color: #fff; text-align: center; padding: 84px 0; }
@@ -405,7 +461,7 @@
           <li><a class="nav-link" href="#ablauf">So funktioniert es</a></li>
           <li><a class="nav-link" href="#demo">Live-Demo</a></li>
           <li><a class="nav-link" href="#vorteile">Vorteile</a></li>
-          <li><a class="nav-link" href="#preise">Preise</a></li>
+          <li><a class="nav-link" href="#preise">Ihr Angebot</a></li>
           <li><a class="nav-link" href="#faq">FAQ</a></li>
         </ul>
         <a class="nav-cta" href="#kontakt">Kostenlose Demo</a>
@@ -547,6 +603,60 @@
           <p>Welche Anfrage ist noch offen? Wo fehlt eine Antwort? Im Mail-Postfach geht das schnell unter.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- VERLUST-RECHNER: eigener Einstiegspunkt, direkt teilbar als anfrageprofi.de/#rechner -->
+  <section class="block" id="rechner">
+    <div class="container">
+      <p class="eyebrow reveal">Rechnen Sie selbst nach</p>
+      <h2 class="reveal">Was kosten Sie verpasste Anfragen im Jahr?</h2>
+      <p class="lead reveal">Drei Regler, Ihre eigenen Zahlen. Kein Formular, keine E-Mail, nichts abzuschicken.</p>
+
+      <div class="rechner reveal">
+        <div class="rechner-regler">
+          <div class="regler">
+            <div class="regler-kopf">
+              <label for="r-anfragen">Anfragen pro Woche</label>
+              <span class="regler-wert" id="r-anfragen-wert">8</span>
+            </div>
+            <input type="range" id="r-anfragen" min="1" max="40" step="1" value="8" />
+            <p class="regler-hinweis">Alles zusammen: Telefon, E-Mail, Formular, WhatsApp.</p>
+          </div>
+
+          <div class="regler">
+            <div class="regler-kopf">
+              <label for="r-quote">Davon bleiben liegen oder werden zu spät beantwortet</label>
+              <span class="regler-wert" id="r-quote-wert">15 %</span>
+            </div>
+            <input type="range" id="r-quote" min="0" max="50" step="1" value="15" />
+            <p class="regler-hinweis">Ehrlich schätzen: Wie viele rutschen in einer vollen Woche durch?</p>
+          </div>
+
+          <div class="regler">
+            <div class="regler-kopf">
+              <label for="r-wert">Durchschnittlicher Auftragswert</label>
+              <span class="regler-wert" id="r-wert-wert">900 €</span>
+            </div>
+            <input type="range" id="r-wert" min="200" max="8000" step="100" value="900" />
+            <p class="regler-hinweis">Ihr typischer Auftrag, nicht der größte des Jahres.</p>
+          </div>
+        </div>
+
+        <div class="rechner-ergebnis">
+          <p class="r-label">Geschätzter Verlust pro Jahr</p>
+          <p class="r-zahl" id="r-summe">16.848 €</p>
+          <p class="r-monat" id="r-monat">das sind rund 1.404 € im Monat</p>
+          <p class="r-auftraege" id="r-auftraege">Entspricht etwa <strong>19 Aufträgen</strong> im Jahr, die bei einem anderen Betrieb landen.</p>
+          <a class="btn btn-hell" href="#demo">System 60 Sekunden testen</a>
+        </div>
+      </div>
+
+      <p class="rechner-formel">
+        So wird gerechnet: Anfragen pro Woche × 52 Wochen × Anteil, der liegen bleibt × 30 % Abschlussquote × Auftragswert.
+        Die 30 % sind bewusst vorsichtig angesetzt: So viele dieser Anfragen wären bei einer schnellen Antwort
+        realistisch zu einem Auftrag geworden. Das Ergebnis ist eine grobe Schätzung mit Ihren eigenen Zahlen, keine Garantie.
+      </p>
     </div>
   </section>
 
@@ -866,18 +976,65 @@
   <!-- PREISE -->
   <section class="block tint" id="preise">
     <div class="container">
-      <p class="eyebrow reveal">Preise</p>
-      <h2 class="reveal">Das passende Paket für Ihren Betrieb</h2>
-      <p class="lead reveal">Vom Ein-Mann-Betrieb bis zum großen Team. Fester Monatspreis, keine versteckten Kosten.</p>
-      <div style="max-width:820px; margin:0 auto 44px; background:#0f1f3d; color:#fff; border-radius:14px; padding:26px 32px; text-align:center;" class="reveal">
-        <p style="font-size:1.22rem; font-weight:700; line-height:1.4; margin:0 0 12px; color:#fff;">Der Betrieb, der zuerst antwortet, bekommt meist den Auftrag.</p>
-        <p style="font-size:1.08rem; line-height:1.6; margin:0; color:#e2e8f0;">Rechnen Sie kurz nach: <strong style="color:#fff;">Ein einziger verlorener Auftrag</strong> bedeutet schnell 800 bis 3.000 € entgangenen Umsatz. Das System kostet ab <strong style="color:#fff;">39 € im Monat</strong>. Es muss also nur <strong style="color:#fff;">eine einzige</strong> sonst verlorene Anfrage retten, um sich zu bezahlen.</p>
+      <p class="eyebrow reveal">Ihr Angebot</p>
+      <h2 class="reveal">Was kostet das für Ihren Betrieb?</h2>
+      <p class="lead reveal">Ein Ein-Mann-Betrieb braucht etwas anderes als ein Team mit zwölf Leuten. Deshalb gibt es hier keine Preisliste von der Stange, sondern eine Zahl, die auf Ihren Betrieb gerechnet ist.</p>
+
+      <div class="versprechen reveal">
+        <p class="gross">Sie bekommen eine feste Zahl, keine Verhandlung.</p>
+        <p class="klein">Beantworten Sie unten drei Fragen. Ich schaue mir Ihren Betrieb an und schicke Ihnen ein schriftliches Angebot mit einem festen Monatsbetrag. Kein Verkaufsgespräch, kein Anruf, wenn Sie keinen möchten, und keine Kosten, bevor Sie zusagen.</p>
+      </div>
+
+      <div class="konfig reveal">
+        <div class="konfig-frage">
+          <p><span class="nr" aria-hidden="true">1</span>Wie groß ist Ihr Betrieb?</p>
+          <div class="wahl" id="k-groesse" role="group" aria-label="Betriebsgröße">
+            <button type="button" data-stufe="1" data-text="Ich allein">Ich allein</button>
+            <button type="button" data-stufe="1" data-text="2 bis 3 Mitarbeiter">2 bis 3 Mitarbeiter</button>
+            <button type="button" data-stufe="2" data-text="4 bis 10 Mitarbeiter">4 bis 10 Mitarbeiter</button>
+            <button type="button" data-stufe="3" data-text="Mehr als 10 Mitarbeiter">Mehr als 10</button>
+          </div>
+        </div>
+
+        <div class="konfig-frage">
+          <p><span class="nr" aria-hidden="true">2</span>Wie viele Anfragen kommen im Monat rein?</p>
+          <div class="wahl" id="k-menge" role="group" aria-label="Anfragen pro Monat">
+            <button type="button" data-stufe="1" data-text="bis 20 Anfragen im Monat">Bis 20</button>
+            <button type="button" data-stufe="2" data-text="20 bis 60 Anfragen im Monat">20 bis 60</button>
+            <button type="button" data-stufe="3" data-text="mehr als 60 Anfragen im Monat">Mehr als 60</button>
+            <button type="button" data-stufe="0" data-text="Anzahl unbekannt">Weiß ich nicht genau</button>
+          </div>
+        </div>
+
+        <div class="konfig-frage">
+          <p><span class="nr" aria-hidden="true">3</span>Was nervt Sie im Alltag am meisten?</p>
+          <div class="wahl" id="k-schmerz" role="group" aria-label="Größtes Problem">
+            <button type="button" data-stufe="1" data-text="Anfragen gehen unter">Anfragen gehen unter</button>
+            <button type="button" data-stufe="1" data-text="Abends noch Büroarbeit">Abends noch Büro</button>
+            <button type="button" data-stufe="2" data-text="Keine Übersicht, was offen ist">Keine Übersicht</button>
+            <button type="button" data-stufe="2" data-text="Kunden springen ab, bevor ich antworte">Kunden springen ab</button>
+          </div>
+        </div>
+
+        <p class="konfig-leer" id="konfig-leer">Beantworten Sie die drei Fragen, dann sehen Sie sofort, welche Ausbaustufe zu Ihnen passt.</p>
+
+        <div class="konfig-ergebnis" id="konfig-ergebnis" hidden>
+          <div class="konfig-treffer">
+            <div class="stufe-name" id="k-name">Passend für Sie</div>
+            <p class="angaben" id="k-angaben"></p>
+            <p class="warum" id="k-warum"></p>
+          </div>
+          <div class="konfig-aktion">
+            <button type="button" class="btn btn-primaer" id="k-anfordern">Mein Angebot anfordern</button>
+            <p class="hinweis">Ihre drei Antworten werden ins Formular übernommen, Sie ergänzen nur noch Name und E-Mail.</p>
+          </div>
+        </div>
       </div>
       <div class="preis-grid">
-        <div class="preis-karte reveal">
+        <div class="preis-karte reveal" id="karte-1">
+          <span class="stufe">Ausbaustufe 1</span>
           <h3>Starter</h3>
           <p class="fuer">Solo bis 3 Mitarbeiter</p>
-          <div class="preis">39 €<span> / Monat</span></div>
           <p class="info">Das Fundament: Jede Anfrage wird sofort erfasst, bestätigt und beantwortet, damit keine mehr verloren geht.</p>
           <ul>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Anfragen automatisch erfassen</li>
@@ -886,13 +1043,12 @@
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Übersichtliche Statusliste</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>1 Nutzer, bis zu 20 Anfragen im Monat</li>
           </ul>
-          <a class="btn-preis sekundaer" href="#kontakt">Anfragen</a>
+          <a class="btn-preis sekundaer" href="#kontakt">Angebot anfordern</a>
         </div>
-        <div class="preis-karte hervor reveal">
-          <div class="preis-badge">Beliebteste Wahl</div>
+        <div class="preis-karte reveal" id="karte-2">
+          <span class="stufe">Ausbaustufe 2</span>
           <h3>Pro</h3>
           <p class="fuer">4 bis 10 Mitarbeiter</p>
-          <div class="preis">99 €<span> / Monat</span></div>
           <p class="info">Ein Schritt weiter: aus Anfragen aktiv mehr Aufträge machen, mit Auswertung und automatischem Nachfassen.</p>
           <ul>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alles aus Starter</li>
@@ -902,12 +1058,12 @@
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>bis zu 3 Nutzer, bis zu 60 Anfragen im Monat</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Bevorzugter Support, Antwort meist am selben Werktag</li>
           </ul>
-          <a class="btn-preis primaer" href="#kontakt">Pro wählen</a>
+          <a class="btn-preis sekundaer" href="#kontakt">Angebot anfordern</a>
         </div>
-        <div class="preis-karte reveal">
+        <div class="preis-karte reveal" id="karte-3">
+          <span class="stufe">Ausbaustufe 3</span>
           <h3>Premium</h3>
           <p class="fuer">10+ Mitarbeiter / mehrere Standorte</p>
-          <div class="preis">189 €<span> / Monat</span></div>
           <p class="info">Für große oder wachsende Betriebe: volle Automatik, mehrere Standorte und Bausteine nach Maß.</p>
           <ul>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alles aus Pro</li>
@@ -917,11 +1073,11 @@
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Unbegrenzte Nutzer und Anfragen</li>
             <li><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Persönlicher Ansprechpartner</li>
           </ul>
-          <a class="btn-preis sekundaer" href="#kontakt">Anfragen</a>
+          <a class="btn-preis sekundaer" href="#kontakt">Angebot anfordern</a>
         </div>
       </div>
-      <p class="preis-fuss reveal"><strong>Einmalige Einrichtung:</strong> 449 € (Starter &amp; Pro), Premium ab 749 €: System aufsetzen, an Ihren Betrieb anpassen und gemeinsam testen.</p>
-      <p class="preis-fuss reveal"><strong>Keine lange Bindung:</strong> monatlich kündbar. Sie bleiben, weil das System sich rechnet, nicht wegen eines Vertrags.</p>
+      <p class="preis-fuss reveal"><strong>Warum kein Preisschild?</strong> Weil ich Ihnen sonst eine Zahl nennen müsste, die für Ihren Betrieb entweder zu hoch oder zu knapp ist. Der Aufwand hängt davon ab, wie viele Anfragen reinkommen, über welche Wege sie kommen und was automatisch passieren soll. Sie bekommen eine feste Zahl, sobald ich das weiß.</p>
+      <p class="preis-fuss reveal"><strong>Ihr Risiko:</strong> monatlich kündbar, keine Mindestlaufzeit, Ihre Daten jederzeit als Export. Sie bleiben, weil sich das System rechnet, nicht wegen eines Vertrags.</p>
       <p class="preis-fuss reveal" style="background:#eff4ff; border:1px solid #bfdbfe; border-radius:10px; padding:16px 22px; color:#1e40af; margin-top:22px;">
         <strong>Jetzt: 1 bis 2 kostenlose Pilotplätze.</strong> Für die ersten Betriebe übernehme ich die Einrichtung kostenlos, im Tausch gegen eine ehrliche Bewertung und die Erlaubnis, Sie als Referenz zu nennen.
       </p>
@@ -968,8 +1124,12 @@
           <p>Ja. Das System ist ein Baukasten. Sie starten mit dem Wesentlichen und schalten weitere Module, etwa Live-Dashboard, Preisrechner oder den Wartungsautopilot, dann frei, wenn Ihr Betrieb sie braucht.</p>
         </details>
         <details>
+          <summary>Warum stehen hier keine Preise?</summary>
+          <p>Weil jeder Betrieb anders arbeitet. Wie viele Anfragen reinkommen, über welche Wege sie kommen und was automatisch passieren soll, macht einen echten Unterschied im Aufwand. Ein Preisschild wäre für den einen zu hoch und für den anderen zu knapp. Sie beantworten drei kurze Fragen, ich schaue mir Ihren Betrieb an und schicke Ihnen dann ein schriftliches Angebot mit einem festen Monatsbetrag. Kostenlos und unverbindlich.</p>
+        </details>
+        <details>
           <summary>Gibt es versteckte Kosten?</summary>
-          <p>Nein. Einmalige Einrichtung plus fester Monatspreis je nach Paket, keine versteckten Gebühren.</p>
+          <p>Nein. Sie bekommen vorab ein schriftliches Angebot mit einem festen Monatsbetrag und der einmaligen Einrichtung. Was dort steht, gilt. Es gibt keine Zusatzgebühren, die später auftauchen, und nichts wird ohne Ihre Zustimmung erweitert.</p>
         </details>
         <details>
           <summary>Lohnt sich das schon bei wenigen Anfragen im Monat?</summary>
@@ -1062,7 +1222,7 @@
           <a href="#ablauf">So funktioniert es</a>
           <a href="#demo">Live-Demo</a>
           <a href="#vorteile">Vorteile</a>
-          <a href="#preise">Preise</a>
+          <a href="#preise">Ihr Angebot</a>
           <a href="#faq">FAQ</a>
           <a href="#kontakt">Kontakt</a>
         </nav>
@@ -1195,6 +1355,90 @@
           fehlerBox.style.display = 'block';
         }
       });
+    }
+
+    // Angebots-Konfigurator: empfiehlt eine Ausbaustufe und übergibt die Antworten ans Kontaktformular
+    const kGruppen = { groesse: document.getElementById('k-groesse'), menge: document.getElementById('k-menge'), schmerz: document.getElementById('k-schmerz') };
+    if (kGruppen.groesse && kGruppen.menge && kGruppen.schmerz) {
+      const auswahl = { groesse: null, menge: null, schmerz: null };
+      const STUFEN = {
+        1: { name: 'Starter', warum: 'Bei Ihrer Größe geht es vor allem darum, dass überhaupt nichts mehr untergeht. Das Fundament reicht: Jede Anfrage wird sofort erfasst, der Kunde bekommt automatisch eine Bestätigung, und Sie sehen alles sortiert an einer Stelle.' },
+        2: { name: 'Pro', warum: 'Bei Ihrem Volumen reicht Erfassen allein nicht mehr. Sinnvoll ist die Stufe mit Auswertung und automatischem Nachfassen, damit Sie sehen, wo Aufträge hängen bleiben, und liegengebliebene Angebote sich von selbst in Erinnerung bringen.' },
+        3: { name: 'Premium', warum: 'In Ihrer Größenordnung lohnt sich die volle Automatik: mehrere Nutzer und Standorte, wiederkehrende Wartungstermine automatisch nachhalten und Bausteine, die auf Ihre Abläufe zugeschnitten sind.' }
+      };
+
+      const zeigeErgebnis = () => {
+        if (!auswahl.groesse || !auswahl.menge || !auswahl.schmerz) return;
+        const stufe = Math.max(auswahl.groesse.stufe, auswahl.menge.stufe, auswahl.schmerz.stufe) || 1;
+        const daten = STUFEN[stufe];
+        document.getElementById('k-name').textContent = 'Empfehlung: Ausbaustufe ' + stufe + ' (' + daten.name + ')';
+        document.getElementById('k-angaben').textContent = 'Ihre Angaben: ' + auswahl.groesse.text + ' · ' + auswahl.menge.text + ' · ' + auswahl.schmerz.text;
+        document.getElementById('k-warum').textContent = daten.warum;
+        document.getElementById('konfig-leer').hidden = true;
+        document.getElementById('konfig-ergebnis').hidden = false;
+        [1, 2, 3].forEach((n) => {
+          const karte = document.getElementById('karte-' + n);
+          if (karte) karte.classList.toggle('empfohlen', n === stufe);
+        });
+      };
+
+      Object.keys(kGruppen).forEach((schluessel) => {
+        kGruppen[schluessel].querySelectorAll('button').forEach((knopf) => {
+          knopf.setAttribute('aria-pressed', 'false');
+          knopf.addEventListener('click', () => {
+            kGruppen[schluessel].querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+            knopf.setAttribute('aria-pressed', 'true');
+            auswahl[schluessel] = { stufe: Number(knopf.dataset.stufe), text: knopf.dataset.text };
+            zeigeErgebnis();
+          });
+        });
+      });
+
+      // Antworten ins Kontaktformular übernehmen, damit Flo eine vorqualifizierte Anfrage bekommt
+      document.getElementById('k-anfordern').addEventListener('click', () => {
+        const stufe = Math.max(auswahl.groesse.stufe, auswahl.menge.stufe, auswahl.schmerz.stufe) || 1;
+        const feld = document.querySelector('#kontakt textarea[name="Nachricht"]');
+        if (feld) {
+          feld.value =
+            'Angebots-Anfrage über den Konfigurator:\n' +
+            '- Betriebsgröße: ' + auswahl.groesse.text + '\n' +
+            '- Anfragen: ' + auswahl.menge.text + '\n' +
+            '- Größtes Problem: ' + auswahl.schmerz.text + '\n' +
+            '- Vorgeschlagene Ausbaustufe: ' + stufe + ' (' + STUFEN[stufe].name + ')\n\n' +
+            'Bitte schicken Sie mir dazu ein Angebot mit festem Monatsbetrag.';
+        }
+        document.getElementById('kontakt').scrollIntoView({ behavior: 'smooth' });
+        const nameFeld = document.querySelector('#kontakt input[name="Name"]');
+        if (nameFeld) window.setTimeout(() => nameFeld.focus({ preventScroll: true }), 600);
+      });
+    }
+
+    // Verlust-Rechner: rechnet rein im Browser, es wird nichts gesendet oder gespeichert
+    const rAnfragen = document.getElementById('r-anfragen');
+    if (rAnfragen) {
+      const rQuote = document.getElementById('r-quote');
+      const rWert = document.getElementById('r-wert');
+      const ABSCHLUSSQUOTE = 0.3;
+      const euro = (n) => Math.round(n).toLocaleString('de-DE') + ' €';
+      const rechne = () => {
+        const anfragen = Number(rAnfragen.value);
+        const quote = Number(rQuote.value) / 100;
+        const wert = Number(rWert.value);
+        const verpasst = anfragen * 52 * quote;
+        const auftraege = verpasst * ABSCHLUSSQUOTE;
+        const jahr = auftraege * wert;
+        document.getElementById('r-anfragen-wert').textContent = anfragen;
+        document.getElementById('r-quote-wert').textContent = rQuote.value + ' %';
+        document.getElementById('r-wert-wert').textContent = euro(wert);
+        document.getElementById('r-summe').textContent = euro(jahr);
+        document.getElementById('r-monat').textContent = 'das sind rund ' + euro(jahr / 12) + ' im Monat';
+        const anzahl = Math.round(auftraege);
+        document.getElementById('r-auftraege').innerHTML = anzahl === 0
+          ? 'Kein rechnerischer Verlust. Dann ist Ihr Büro besser organisiert als bei den meisten Betrieben.'
+          : 'Entspricht etwa <strong>' + anzahl + (anzahl === 1 ? ' Auftrag' : ' Aufträgen') + '</strong> im Jahr, die bei einem anderen Betrieb landen.';
+      };
+      [rAnfragen, rQuote, rWert].forEach((el) => el.addEventListener('input', rechne));
+      rechne();
     }
 
     // Zurück-nach-oben einblenden
