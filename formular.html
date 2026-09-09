@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anfrageformular</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="color-scheme" content="light" />
+<!--
+  ============================================================
+  EINBETTBARES ANFRAGEFORMULAR (anfrageprofi.de)
+  ============================================================
+  Diese Datei ist das Stueck, das beim Kunden auf der Website landet.
+  Sie ist absichtlich eigenstaendig: kein fremdes CSS, keine Bibliothek,
+  nichts, was die Seite des Betriebs stoeren koennte.
+
+  EINBAU beim Kunden, eine Zeile:
+
+    <iframe src="https://anfrageprofi.de/formular.html?betrieb=Mustermann%20Haustechnik"
+            style="width:100%;border:0;" height="980" title="Anfrageformular"></iframe>
+
+  Die Hoehe stellt sich selbst ein, sobald der Kunde zusaetzlich das
+  Mitwachs-Schnipsel einbaut (steht auf musterbetrieb.html ganz unten).
+  Ohne das Schnipsel bleibt die feste Hoehe stehen, das Formular
+  funktioniert trotzdem vollstaendig.
+
+  ANPASSEN ueber die Adresse, ohne diese Datei zu aendern:
+    ?betrieb=Name%20des%20Betriebs   Name in Text und Bestaetigung
+    ?farbe=%23c2410c                 Akzentfarbe (# als %23 schreiben)
+    ?ziel=https://script.google...   eigene Backend-Adresse je Kunde
+
+  DATENFELDER: exakt die Spalten, die das echte System in
+  "Datenbank Roh" erwartet (siehe Formular_Eingang_V2.gs). Wer hier ein
+  Feld umbenennt, muss es dort in formBaueZeile_ ebenfalls kennen.
+  ============================================================
+-->
+<style>
+  :root {
+    --akzent: #c2410c;
+    --akzent-dunkel: #9a3412;
+    --text: #0f172a;
+    --grau: #475569;
+    --grau-hell: #64748b;
+    --rand: #e2e8f0;
+    --weiss: #ffffff;
+    --gruen: #16a34a;
+    --rot: #b91c1c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text); line-height: 1.6; background: transparent;
+    -webkit-font-smoothing: antialiased; padding: 4px;
+  }
+  .karte {
+    background: var(--weiss); border: 1px solid var(--rand); border-radius: 14px;
+    padding: 26px 24px; max-width: 640px; margin: 0 auto;
+  }
+  .kopf { margin-bottom: 20px; }
+  .kopf h2 { font-size: 1.28rem; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .kopf p { color: var(--grau); font-size: 0.93rem; }
+  form { display: grid; gap: 14px; }
+  .reihe { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  label { display: block; font-size: 0.86rem; font-weight: 600; color: var(--text); }
+  input[type=text], input[type=tel], input[type=email], select, textarea {
+    width: 100%; margin-top: 6px; padding: 11px 13px; font: inherit; font-weight: 400;
+    color: var(--text); background: var(--weiss);
+    border: 1px solid #cbd5e1; border-radius: 9px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--akzent); box-shadow: 0 0 0 3px rgba(194,65,12,0.13);
+  }
+  textarea { resize: vertical; min-height: 84px; }
+  select { appearance: none; padding-right: 36px; }
+  .wahl { position: relative; }
+  .wahl::after {
+    content: ""; position: absolute; right: 13px; top: 38px; width: 11px; height: 7px;
+    background: var(--grau); pointer-events: none;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  fieldset { border: 0; }
+  legend { font-size: 0.86rem; font-weight: 600; margin-bottom: 7px; }
+  .funk { display: flex; gap: 10px; flex-wrap: wrap; }
+  .funk label {
+    font-weight: 500; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid #cbd5e1; border-radius: 9px; padding: 9px 15px; cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .funk label:hover { border-color: var(--akzent); }
+  .funk input { accent-color: var(--akzent); margin: 0; }
+  .check {
+    display: flex; gap: 10px; align-items: flex-start; font-weight: 400;
+    font-size: 0.83rem; color: var(--grau); line-height: 1.5;
+  }
+  .check input { margin-top: 3px; accent-color: var(--akzent); flex-shrink: 0; }
+  .check a { color: var(--akzent-dunkel); }
+  button {
+    font: inherit; font-weight: 650; font-size: 1rem; color: #fff; background: var(--akzent);
+    border: 0; border-radius: 10px; padding: 14px 22px; cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  button:hover:not(:disabled) { background: var(--akzent-dunkel); transform: translateY(-1px); }
+  button:disabled { opacity: 0.62; cursor: default; transform: none; }
+  .fuss { font-size: 0.78rem; color: var(--grau-hell); text-align: center; }
+  .fehler {
+    display: none; background: #fef2f2; border: 1px solid #fecaca; color: var(--rot);
+    border-radius: 9px; padding: 11px 14px; font-size: 0.88rem;
+  }
+  .erfolg { text-align: center; padding: 12px 4px; }
+  .haken {
+    width: 58px; height: 58px; border-radius: 50%; background: #dcfce7;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  }
+  .haken svg { width: 30px; height: 30px; stroke: var(--gruen); fill: none; stroke-width: 2.6; }
+  .erfolg h3 { font-size: 1.2rem; margin-bottom: 10px; }
+  .erfolg p { color: var(--grau); font-size: 0.94rem; margin-bottom: 9px; }
+  .erfolg .stark { color: var(--text); font-weight: 600; }
+  .hinweis-vorschau {
+    background: #fffbeb; border: 1px solid #fde68a; color: #92400e; text-align: left;
+    border-radius: 9px; padding: 11px 14px; font-size: 0.82rem; margin-top: 16px;
+  }
+  @media (max-width: 560px) {
+    .reihe { grid-template-columns: 1fr; }
+    .karte { padding: 20px 17px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="karte">
+  <div class="kopf">
+    <h2 id="kopf-titel">Anfrage stellen</h2>
+    <p>Beschreiben Sie kurz Ihr Anliegen. Sie erhalten sofort eine Bestätigung per E-Mail, wir melden uns anschließend mit einem Terminvorschlag.</p>
+  </div>
+
+  <form id="anfrage" novalidate>
+    <div class="fehler" id="fehler" role="alert"></div>
+
+    <!-- Honigtopf gegen Spam-Bots: fuer Menschen unsichtbar, Bots fuellen es aus. -->
+    <input type="text" name="web" value="" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+    <div class="reihe">
+      <label>Ihr Name*
+        <input type="text" name="name" required minlength="2" autocomplete="name" placeholder="Vor- und Nachname" />
+      </label>
+      <label>Telefon*
+        <input type="tel" name="telefon" required autocomplete="tel" placeholder="Für Rückfragen" />
+      </label>
+    </div>
+
+    <div class="reihe">
+      <label>E-Mail*
+        <input type="email" name="email" required autocomplete="email" placeholder="Für die Bestätigung" />
+      </label>
+      <label>Adresse des Objekts
+        <input type="text" name="adresse" autocomplete="street-address" placeholder="Straße, PLZ, Ort" />
+      </label>
+    </div>
+
+    <div class="reihe">
+      <label class="wahl">Worum geht es?*
+        <select name="leistung" required>
+          <option value="">Bitte wählen</option>
+          <option>Heizung: Störung oder Ausfall</option>
+          <option>Heizung: Wartung</option>
+          <option>Sanitär: Reparatur</option>
+          <option>Bad: Umbau oder Sanierung</option>
+          <option>Neubau oder Installation</option>
+          <option>Etwas anderes</option>
+        </select>
+      </label>
+      <label class="wahl">Wie dringend ist es?*
+        <select name="dringlichkeit" required>
+          <option value="">Bitte wählen</option>
+          <option>Notfall, heute noch</option>
+          <option>Diese Woche</option>
+          <option>In den nächsten Wochen</option>
+          <option>Kein Zeitdruck</option>
+        </select>
+      </label>
+    </div>
+
+    <label>Beschreibung
+      <textarea name="beschreibung" rows="3" placeholder="z. B. Heizung wird nicht mehr warm, Baujahr ca. 2009, Wohnung im 2. OG"></textarea>
+    </label>
+
+    <fieldset>
+      <legend>Wie sollen wir Sie erreichen?</legend>
+      <div class="funk">
+        <label><input type="radio" name="kontaktart" value="Telefon" checked /><span>Anruf</span></label>
+        <label><input type="radio" name="kontaktart" value="E-Mail" /><span>E-Mail</span></label>
+        <label><input type="radio" name="kontaktart" value="WhatsApp" /><span>WhatsApp</span></label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" name="einwilligung" required />
+      <span id="einwilligung-text">Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage gespeichert und verarbeitet werden.*</span>
+    </label>
+
+    <button type="submit" id="senden">Anfrage absenden</button>
+    <p class="fuss">* Pflichtfeld. Ihre Daten werden ausschließlich zur Bearbeitung dieser Anfrage genutzt.</p>
+  </form>
+
+  <div class="erfolg" id="erfolg" hidden>
+    <div class="haken"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3>Ihre Anfrage ist eingegangen.</h3>
+    <p><span class="stark">Schauen Sie jetzt in Ihr E-Mail-Postfach</span>, gegebenenfalls auch im Spam-Ordner. Die Eingangsbestätigung ist bereits unterwegs.</p>
+    <p id="erfolg-betrieb">Wir melden uns zeitnah mit einem Terminvorschlag bei Ihnen.</p>
+    <div class="hinweis-vorschau" id="vorschau-hinweis" hidden>
+      <strong>Vorschau-Modus.</strong> Für dieses Formular ist noch keine Backend-Adresse hinterlegt.
+      Ihre Eingaben wurden deshalb <strong>nicht</strong> gespeichert und es wurde <strong>keine</strong> E-Mail verschickt.
+      Sobald die Adresse eingetragen ist, läuft der Ablauf vollständig.
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- Backend-Adresse -------------------------------------------------
+  // Solange hier der Platzhalter steht, laeuft das Formular im Vorschau-
+  // Modus: es prueft und zeigt alles, speichert aber nichts und verschickt
+  // keine Mail. Absicht: Die Seite soll nie so tun, als waere etwas
+  // passiert, was nicht passiert ist.
+  // Backend des Musterbetriebs (Apps-Script-Projekt "Anfrageprofi
+  // Musterbetrieb", bereitgestellt am 07.09.2026 als Web-App).
+  // Diese Adresse MUSS oeffentlich sein: Der Browser des Besuchers ruft
+  // sie auf, sie steht damit zwangslaeufig im Quelltext der Seite. Der
+  // Schutz liegt nicht in der Geheimhaltung, sondern im Backend selbst
+  // (Honigtopf, Pflichtfelder, 1 Anfrage je Adresse in 10 Minuten,
+  // 15 pro Stunde, 40 pro Tag). Genauso laeuft die Live-Demo schon.
+  // NICHT zu verwechseln mit der /exec-Adresse des Telefon-Assistenten,
+  // die tatsaechlich geheim bleiben muss, weil dort niemand mitliest.
+  var PLATZHALTER = 'HIER_EXEC_ADRESSE_EINTRAGEN';
+  var ZIEL = 'https://script.google.com/macros/s/AKfycbzLWFS2qFeR6nzqmwV3G7UFAtSGu2QB8JgyQN5akhjuKZ4eoEqzLBOVUVp-MjxY4z7yKg/exec';
+
+  // Lokaler Testbetrieb: Laeuft die Seite ueber den PowerShell-Server
+  // (serve.ps1 mit -Datenbank), nimmt der die Anfrage selbst entgegen
+  // und schreibt sie in die CSV. So laesst sich die ganze Kette auf dem
+  // eigenen Rechner vorfuehren, ohne dass etwas online sein muss.
+  // Live auf anfrageprofi.de greift dieser Zweig nie.
+  var lokal = (location.hostname === 'localhost' || location.hostname === '127.0.0.1');
+  if (lokal) { ZIEL = '/anfrage'; }
+
+  var p = new URLSearchParams(location.search);
+  // Nur Google-Apps-Script-Adressen zulassen. Sonst koennte jemand per
+  // praepariertem Link die Anfragen auf einen fremden Server umleiten.
+  if (p.get('ziel') && /^https:\/\/script\.google\.com\//.test(p.get('ziel'))) {
+    ZIEL = p.get('ziel');
+  }
+
+  var betrieb = (p.get('betrieb') || '').slice(0, 60).replace(/[<>&"]/g, '');
+  var farbe = p.get('farbe') || '';
+  if (/^#[0-9a-fA-F]{6}$/.test(farbe)) {
+    document.documentElement.style.setProperty('--akzent', farbe);
+    document.documentElement.style.setProperty('--akzent-dunkel', farbe);
+  }
+  // Steckt das Formular in einem Fenster, das schon eine Ueberschrift
+  // traegt, wuerde sie hier ein zweites Mal stehen. ?kopf=aus blendet
+  // nur die Ueberschrift aus, der erklaerende Satz bleibt.
+  if (p.get('kopf') === 'aus') {
+    document.getElementById('kopf-titel').hidden = true;
+  }
+
+  if (betrieb) {
+    document.getElementById('kopf-titel').textContent = 'Anfrage an ' + betrieb;
+    document.getElementById('erfolg-betrieb').textContent =
+      betrieb + ' meldet sich zeitnah mit einem Terminvorschlag bei Ihnen.';
+    document.getElementById('einwilligung-text').textContent =
+      'Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage an '
+      + betrieb + ' übermittelt, gespeichert und verarbeitet werden.*';
+  }
+
+  var form = document.getElementById('anfrage');
+  var fehlerBox = document.getElementById('fehler');
+  var knopf = document.getElementById('senden');
+
+  var meldungen = {
+    pflicht: 'Bitte füllen Sie die mit * markierten Felder aus.',
+    email: 'Diese E-Mail-Adresse sieht nicht gültig aus. Bitte prüfen Sie die Schreibweise.',
+    einwilligung: 'Bitte bestätigen Sie die Einwilligung, damit wir Ihre Anfrage bearbeiten dürfen.',
+    schon_gesendet: 'Diese Anfrage haben wir bereits erhalten. Wir melden uns in Kürze.',
+    limit: 'Aktuell gehen sehr viele Anfragen ein. Bitte versuchen Sie es in ein paar Minuten erneut.',
+    standard: 'Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder rufen Sie uns an.'
+  };
+
+  function zeigeFehler(schluessel) {
+    fehlerBox.textContent = meldungen[schluessel] || meldungen.standard;
+    fehlerBox.style.display = 'block';
+    knopf.disabled = false;
+    knopf.textContent = 'Anfrage absenden';
+    meldeHoehe();
+  }
+
+  form.addEventListener('submit', function (ereignis) {
+    ereignis.preventDefault();
+    fehlerBox.style.display = 'none';
+
+    var f = form.elements;
+    var gewaehlt = form.querySelector('input[name=kontaktart]:checked');
+    var daten = {
+      name: f['name'].value.trim(),
+      telefon: f['telefon'].value.trim(),
+      email: f['email'].value.trim(),
+      adresse: f['adresse'].value.trim(),
+      leistung: f['leistung'].value,
+      anliegen: f['leistung'].value,
+      dringlichkeit: f['dringlichkeit'].value,
+      beschreibung: f['beschreibung'].value.trim(),
+      kontaktart: gewaehlt ? gewaehlt.value : 'Telefon',
+      einwilligung: f['einwilligung'].checked ? 'ja' : '',
+      betrieb: betrieb,
+      web: f['web'].value
+    };
+
+    if (!daten.name || daten.name.length < 2 || !daten.telefon || !daten.email
+        || !daten.leistung || !daten.dringlichkeit) { return zeigeFehler('pflicht'); }
+    if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(daten.email)) { return zeigeFehler('email'); }
+    if (!daten.einwilligung) { return zeigeFehler('einwilligung'); }
+
+    knopf.disabled = true;
+    knopf.textContent = 'Wird gesendet …';
+
+    // Vorschau-Modus: nichts senden, aber ehrlich sagen, dass nichts geschah.
+    if (ZIEL === PLATZHALTER) {
+      setTimeout(function () {
+        document.getElementById('vorschau-hinweis').hidden = false;
+        fertig();
+      }, 550);
+      return;
+    }
+
+    // text/plain ist Absicht: damit schickt der Browser keinen CORS-
+    // Vorabflug los, den Apps Script nicht beantworten kann.
+    fetch(ZIEL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(daten)
+    })
+    .then(function (antwort) { return antwort.json(); })
+    .then(function (ergebnis) {
+      if (ergebnis && ergebnis.ok) { fertig(); }
+      else { zeigeFehler((ergebnis && ergebnis.fehler) || 'standard'); }
+    })
+    .catch(function () {
+      // Notweg, falls fetch scheitert: klassisch per GET. Das Backend
+      // zeigt dann eine einfache Dankeseite an.
+      location.href = ZIEL + '?' + new URLSearchParams(daten).toString();
+    });
+  });
+
+  function fertig() {
+    form.hidden = true;
+    document.getElementById('erfolg').hidden = false;
+    meldeHoehe();
+    try { parent.postMessage({ anfrageprofi: 'erfolg' }, '*'); } catch (e) {}
+  }
+
+  // ---- Hoehe an die Elternseite melden ---------------------------------
+  // Damit der iframe beim Kunden mitwachsen kann, statt innen zu scrollen.
+  function meldeHoehe() {
+    try {
+      var h = Math.ceil(document.body.getBoundingClientRect().height) + 8;
+      parent.postMessage({ anfrageprofi: 'hoehe', hoehe: h }, '*');
+    } catch (e) {}
+  }
+  window.addEventListener('load', meldeHoehe);
+  window.addEventListener('resize', meldeHoehe);
+  if (window.ResizeObserver) { new ResizeObserver(meldeHoehe).observe(document.body); }
+  meldeHoehe();
+})();
+</script>
+
+</body>
+</html>

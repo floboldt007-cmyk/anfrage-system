@@ -329,6 +329,9 @@
     .demo-schritte li { counter-increment: ds; position: relative; padding: 8px 0 8px 40px; color: #d7e0ec; }
     .demo-schritte li::before { content: counter(ds); position: absolute; left: 0; top: 9px; width: 26px; height: 26px; border-radius: 7px; background: var(--blau); color: #fff; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
     .demo-hinweis { font-size: 0.85rem; color: #8295ad; }
+    .demo-text > p.demo-musterseite { font-size: 0.9rem; color: #cbd5e1; margin-top: 18px; margin-bottom: 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.14); }
+    .demo-musterseite strong { color: #fff; }
+    .demo-musterseite a { color: #93c5fd; font-weight: 600; text-underline-offset: 3px; }
     .demo-block .kontakt-form { margin: 0; }
     .demo-erfolg { background: #fff; border-radius: 14px; padding: 38px 30px; text-align: center; box-shadow: 0 18px 50px rgba(0,0,0,0.28); color: var(--text); }
     .demo-erfolg .haken { width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; }
@@ -861,6 +864,11 @@
           <li>Gleichzeitig liegt die Anfrage sortiert in der Anfragen-Übersicht, mit Status „Neu" und Zeitstempel.</li>
         </ol>
         <p class="demo-hinweis">Echte Demo, keine Anmeldung nötig. Ihre Demo-Daten werden nach 7 Tagen automatisch gelöscht, es folgt keine Werbung und kein Newsletter.</p>
+        <p class="demo-musterseite">
+          <strong>Lieber erst zuschauen?</strong> Auf der
+          <a href="musterbetrieb.html">Musterseite eines Handwerksbetriebs</a>
+          sehen Sie das Formular genau so, wie es auf Ihrer eigenen Website aussehen würde.
+        </p>
       </div>
       <div class="demo-form-panel reveal">
         <form class="kontakt-form" id="demo-form" novalidate>
@@ -1221,6 +1229,7 @@
           <a href="#leistungen">Leistungen</a>
           <a href="#ablauf">So funktioniert es</a>
           <a href="#demo">Live-Demo</a>
+          <a href="musterbetrieb.html">Musterseite</a>
           <a href="#vorteile">Vorteile</a>
           <a href="#preise">Ihr Angebot</a>
           <a href="#faq">FAQ</a>

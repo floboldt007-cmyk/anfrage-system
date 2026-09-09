@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mustermann Haustechnik | Musterseite von anfrageprofi.de</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="description" content="Musterseite: So sieht das Anfrage-System eingebaut auf der Website eines Handwerksbetriebs aus. Mustermann Haustechnik ist ein frei erfundener Betrieb." />
+<meta name="color-scheme" content="light" />
+<meta name="theme-color" content="#1f2937" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23c2410c'/><text x='50' y='70' font-size='52' font-family='Arial,sans-serif' font-weight='bold' fill='%23ffffff' text-anchor='middle'>MH</text></svg>" />
+<!--
+  ============================================================
+  MUSTERSEITE: "Mustermann Haustechnik"
+  ============================================================
+  Zweck: Ein Interessent soll das Anfrage-System EINMAL als Kunde
+  erleben, statt es erklaert zu bekommen. Deshalb sieht diese Seite
+  aus wie die Website eines Handwerksbetriebs und nicht wie eine
+  Verkaufsseite.
+
+  Der Betrieb ist FREI ERFUNDEN. Kein echtes Unternehmen, keine
+  echten Kontaktdaten, keine echte Adresse. Der Hinweis steht oben
+  im Band und unten im Fuss, damit das niemand verwechselt.
+  Die Seite ist zusaetzlich auf noindex gesetzt.
+
+  Wichtig: Das Formular unten ist NICHT abgetippt, sondern per
+  iframe die echte Datei formular.html. Diese Seite fuehrt also
+  genau den Einbauweg vor, den sie weiter unten beschreibt. Wenn
+  formular.html sich aendert, aendert sich diese Seite mit.
+  ============================================================
+-->
+<style>
+  :root {
+    --orange: #c2410c;
+    --orange-dunkel: #9a3412;
+    --anthrazit: #1f2937;
+    --anthrazit-hell: #374151;
+    --text: #111827;
+    --grau: #4b5563;
+    --grau-hell: #6b7280;
+    --rand: #e5e7eb;
+    --tint: #f9fafb;
+    --weiss: #ffffff;
+    --blau: #1d4ed8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 116px; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text); line-height: 1.65; background: var(--weiss);
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+  a { color: inherit; }
+  h1, h2, h3 { line-height: 1.22; letter-spacing: -0.02em; }
+
+  /* ---------- Hinweisband: das hier ist eine Demo ---------- */
+  .demoband {
+    background: var(--blau); color: #fff; font-size: 0.88rem;
+    padding: 9px 0; position: sticky; top: 0; z-index: 60;
+  }
+  .demoband .container { display: flex; gap: 14px; align-items: center; justify-content: center; flex-wrap: wrap; text-align: center; }
+  .demoband strong { font-weight: 700; }
+  .demoband a { color: #fff; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; white-space: nowrap; }
+
+  /* ---------- Kopf des Musterbetriebs ---------- */
+  header {
+    position: sticky; top: 39px; z-index: 50; background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--rand);
+  }
+  .kopf { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 76px; }
+  .marke { display: flex; align-items: center; gap: 11px; text-decoration: none; font-weight: 700; font-size: 1.06rem; }
+  .marke .zeichen {
+    width: 40px; height: 40px; border-radius: 10px; color: #fff; font-size: 0.92rem;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dunkel));
+    display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0;
+  }
+  .marke span.zusatz { display: block; font-size: 0.72rem; font-weight: 500; color: var(--grau-hell); letter-spacing: 0.02em; }
+  nav.haupt ul { display: flex; gap: 5px; list-style: none; align-items: center; }
+  nav.haupt a {
+    text-decoration: none; font-size: 0.94rem; font-weight: 500; color: var(--grau);
+    padding: 8px 13px; border-radius: 8px; transition: background 0.15s, color 0.15s;
+  }
+  nav.haupt a:hover { color: var(--text); background: var(--tint); }
+  .kopf-tel { font-weight: 700; font-size: 0.97rem; text-decoration: none; white-space: nowrap; }
+  .kopf-tel span { display: block; font-size: 0.72rem; font-weight: 500; color: var(--grau-hell); }
+  .knopf {
+    display: inline-block; text-decoration: none; font-weight: 650; border-radius: 9px;
+    padding: 12px 22px; transition: background 0.15s, transform 0.1s; white-space: nowrap;
+  }
+  .knopf-orange { background: var(--orange); color: #fff; }
+  .knopf-orange:hover { background: var(--orange-dunkel); transform: translateY(-1px); }
+  .knopf-weiss { background: #fff; color: var(--anthrazit); }
+  .knopf-weiss:hover { transform: translateY(-1px); }
+  .knopf-rand { border: 1.5px solid rgba(255,255,255,0.45); color: #fff; }
+  .knopf-rand:hover { background: rgba(255,255,255,0.12); }
+  @media (max-width: 900px) { nav.haupt, .kopf-tel { display: none; } }
+
+  /* ---------- Buehne ---------- */
+  .buehne {
+    background: linear-gradient(160deg, var(--anthrazit) 0%, #111827 100%);
+    color: #fff; padding: 84px 0 92px; position: relative; overflow: hidden;
+  }
+  .buehne::after {
+    content: ""; position: absolute; right: -140px; top: -90px; width: 460px; height: 460px;
+    background: radial-gradient(circle, rgba(194,65,12,0.32), transparent 68%); pointer-events: none;
+  }
+  .buehne .container { position: relative; z-index: 1; max-width: 800px; }
+  .kelle {
+    display: inline-block; font-size: 0.79rem; font-weight: 650; letter-spacing: 0.07em;
+    text-transform: uppercase; color: #fdba74; margin-bottom: 18px;
+  }
+  .buehne h1 { font-size: clamp(2rem, 4.6vw, 3.05rem); margin-bottom: 20px; }
+  .buehne p.lead { font-size: 1.13rem; color: #d1d5db; max-width: 620px; margin-bottom: 30px; }
+  .knopfreihe { display: flex; gap: 13px; flex-wrap: wrap; }
+  .marker { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 42px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.14); }
+  .marker div strong { display: block; font-size: 1.5rem; font-weight: 700; }
+  .marker div span { font-size: 0.86rem; color: #9ca3af; }
+
+  /* ---------- Bloecke ---------- */
+  .block { padding: 78px 0; }
+  .block.tint { background: var(--tint); border-top: 1px solid var(--rand); border-bottom: 1px solid var(--rand); }
+  .augenbraue { font-size: 0.79rem; font-weight: 650; letter-spacing: 0.07em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+  .block h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-bottom: 14px; }
+  .block p.lead { font-size: 1.06rem; color: var(--grau); max-width: 640px; margin-bottom: 40px; }
+
+  .karten { display: grid; grid-template-columns: repeat(auto-fit, minmax(248px, 1fr)); gap: 20px; }
+  .karte {
+    background: var(--weiss); border: 1px solid var(--rand); border-radius: 13px; padding: 26px 24px;
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  }
+  .karte:hover { border-color: #d1d5db; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(17,24,39,0.06); }
+  .karte .icon {
+    width: 44px; height: 44px; border-radius: 11px; background: #fff7ed;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+  }
+  .karte .icon svg { width: 22px; height: 22px; stroke: var(--orange); fill: none; stroke-width: 1.9; }
+  .karte h3 { font-size: 1.06rem; margin-bottom: 8px; }
+  .karte p { font-size: 0.93rem; color: var(--grau); }
+
+  /* ---------- Notdienst ---------- */
+  .notdienst { background: var(--orange); color: #fff; padding: 34px 0; }
+  .notdienst .container { display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap; }
+  .notdienst h3 { font-size: 1.3rem; margin-bottom: 4px; }
+  .notdienst p { color: #fed7aa; font-size: 0.95rem; }
+
+  /* ---------- Anfrage-Bereich mit dem eingebetteten Formular ---------- */
+  .anfrage-raster { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 46px; align-items: start; }
+  @media (max-width: 900px) { .anfrage-raster { grid-template-columns: 1fr; gap: 32px; } }
+  .schritte { list-style: none; counter-reset: s; margin-top: 22px; }
+  .schritte li { counter-increment: s; position: relative; padding-left: 44px; margin-bottom: 18px; color: var(--grau); font-size: 0.95rem; }
+  .schritte li::before {
+    content: counter(s); position: absolute; left: 0; top: -1px; width: 29px; height: 29px;
+    border-radius: 50%; background: var(--orange); color: #fff; font-size: 0.85rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .schritte li strong { color: var(--text); display: block; font-weight: 650; }
+  .formular-rahmen { border: 0; width: 100%; display: block; }
+
+  /* ---------- Erklaerkasten fuer Betriebe (anfrageprofi-Sprache) ---------- */
+  .einbau { background: var(--anthrazit); color: #e5e7eb; padding: 72px 0; }
+  .einbau .augenbraue { color: #93c5fd; }
+  .einbau h2 { color: #fff; }
+  .einbau p.lead { color: #9ca3af; }
+  .einbau-raster { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-bottom: 34px; }
+  .weg {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px; padding: 22px 21px;
+  }
+  .weg .nr { font-size: 0.76rem; font-weight: 700; color: #93c5fd; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 9px; }
+  .weg h3 { font-size: 1rem; color: #fff; margin-bottom: 7px; }
+  .weg p { font-size: 0.89rem; color: #9ca3af; }
+  .weg .dauer { display: inline-block; margin-top: 12px; font-size: 0.79rem; font-weight: 600; color: #fdba74; }
+  .code {
+    background: #0b1220; border: 1px solid rgba(255,255,255,0.12); border-radius: 11px;
+    padding: 18px 20px; overflow-x: auto; margin-bottom: 12px;
+  }
+  .code pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.83rem; line-height: 1.75; color: #e5e7eb; }
+  .code .tag { color: #7dd3fc; }
+  .code .attr { color: #fdba74; }
+  .code .wert { color: #86efac; }
+  .code-hinweis { font-size: 0.86rem; color: #9ca3af; }
+
+  /* ---------- Formular-Fenster (Popup) ---------- */
+  /* Bewusst ein eigenes Overlay statt <dialog>: Das laeuft auch auf
+     aelteren Geraeten, und Handwerkskunden haben oft aeltere Geraete. */
+  .vorhang {
+    position: fixed; inset: 0; z-index: 200; display: none;
+    background: rgba(15,23,42,0.62); backdrop-filter: blur(3px);
+    padding: 24px; overflow-y: auto;
+  }
+  .vorhang.offen { display: block; animation: einblenden 0.18s ease-out; }
+  @keyframes einblenden { from { opacity: 0; } to { opacity: 1; } }
+  .fenster {
+    background: var(--weiss); border-radius: 16px; max-width: 680px; margin: 0 auto;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35); overflow: hidden;
+    animation: hochfahren 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes hochfahren { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .fenster-kopf {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 17px 22px; background: var(--anthrazit); color: #fff;
+  }
+  .fenster-kopf strong { font-size: 1.02rem; }
+  .fenster-kopf span { display: block; font-size: 0.78rem; color: #9ca3af; font-weight: 400; }
+  .zu {
+    background: rgba(255,255,255,0.12); border: 0; color: #fff; cursor: pointer;
+    width: 34px; height: 34px; border-radius: 9px; font-size: 1.35rem; line-height: 1;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .zu:hover { background: rgba(255,255,255,0.24); }
+  .fenster-inhalt { padding: 6px; }
+  .fenster iframe { width: 100%; border: 0; display: block; }
+  @media (max-width: 560px) { .vorhang { padding: 10px; } .fenster { border-radius: 12px; } }
+
+  /* ---------- Fuss ---------- */
+  footer { background: #0b1220; color: #9ca3af; padding: 46px 0 34px; font-size: 0.9rem; }
+  footer .oben { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 26px; }
+  footer strong { color: #e5e7eb; }
+  .erfunden {
+    background: rgba(29,78,216,0.15); border: 1px solid rgba(96,165,250,0.32); color: #bfdbfe;
+    border-radius: 10px; padding: 15px 18px; font-size: 0.87rem; line-height: 1.6;
+  }
+  .erfunden a { color: #fff; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- Hinweisband: sofort klar, dass das eine Vorfuehrung ist -->
+<div class="demoband">
+  <div class="container">
+    <span><strong>Musterseite.</strong> So sieht das Anfrage-System eingebaut auf der Website eines Handwerksbetriebs aus. Der Betrieb ist erfunden, das Formular ist echt.</span>
+    <a href="index.html">Zurück zu anfrageprofi.de</a>
+    <!-- Nur bei der lokalen Vorfuehrung sichtbar, live bleibt der Link aus. -->
+    <a href="/anfragen" id="db-link" target="_blank" rel="noopener" hidden>Datenbank ansehen</a>
+  </div>
+</div>
+
+<header>
+  <div class="container kopf">
+    <a class="marke" href="#top">
+      <span class="zeichen">MH</span>
+      <span>Mustermann Haustechnik<span class="zusatz">Heizung · Sanitär · Bad</span></span>
+    </a>
+    <nav class="haupt" aria-label="Hauptnavigation">
+      <ul>
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#betrieb">Der Betrieb</a></li>
+        <li><a href="#notdienst">Notdienst</a></li>
+      </ul>
+    </nav>
+    <a class="kopf-tel" href="#anfrage">0000 / 000 00 00<span>Mo bis Fr, 7 bis 17 Uhr</span></a>
+    <a class="knopf knopf-orange oeffnet" href="#anfrage">Anfrage stellen</a>
+  </div>
+</header>
+
+<section class="buehne" id="top">
+  <div class="container">
+    <span class="kelle">Meisterbetrieb seit 1994</span>
+    <h1>Wenn die Heizung ausfällt, zählt jede Stunde.</h1>
+    <p class="lead">Heizung, Sanitär und Bad aus einer Hand. Wir melden uns bei jeder Anfrage innerhalb weniger Minuten, auch wenn wir gerade auf der Baustelle stehen.</p>
+    <div class="knopfreihe">
+      <a class="knopf knopf-weiss oeffnet" href="#anfrage">Anfrage stellen</a>
+      <a class="knopf knopf-rand" href="#leistungen">Unsere Leistungen</a>
+    </div>
+    <div class="marker">
+      <div><strong>30 Jahre</strong><span>Erfahrung im Gebiet</span></div>
+      <div><strong>12</strong><span>Mitarbeiter im Team</span></div>
+      <div><strong>4,8 / 5</strong><span>aus Kundenbewertungen</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="leistungen">
+  <div class="container">
+    <p class="augenbraue">Unsere Leistungen</p>
+    <h2>Alles rund um Wärme und Wasser</h2>
+    <p class="lead">Von der tropfenden Leitung bis zur kompletten Badsanierung. Ein Ansprechpartner, ein Termin, ein Angebot.</p>
+    <div class="karten">
+      <div class="karte">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2s5 5.5 5 9a5 5 0 01-10 0c0-3.5 5-9 5-9z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Heizung</h3>
+        <p>Wartung, Reparatur und Austausch. Wir arbeiten mit allen gängigen Fabrikaten, auch bei älteren Anlagen.</p>
+      </div>
+      <div class="karte">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h7v5H4z" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 6.5h5a3 3 0 013 3V20" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Sanitär</h3>
+        <p>Undichte Leitungen, verstopfte Abflüsse, defekte Armaturen. Im Notfall sind wir am selben Tag da.</p>
+      </div>
+      <div class="karte">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 12h16v4a4 4 0 01-4 4H8a4 4 0 01-4-4z" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 12V6a2 2 0 012-2h1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Bad und Sanierung</h3>
+        <p>Vom ersten Entwurf bis zur letzten Fuge. Wir übernehmen die Planung und die Abstimmung mit den anderen Gewerken.</p>
+      </div>
+      <div class="karte">
+        <div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Wartungsverträge</h3>
+        <p>Wir erinnern Sie automatisch an den nächsten Termin, damit die jährliche Wartung nicht untergeht.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="notdienst" id="notdienst">
+  <div class="container">
+    <div>
+      <h3>Notdienst rund um die Uhr</h3>
+      <p>Wasserrohrbruch oder Heizungsausfall? Schreiben Sie uns, wir melden uns sofort zurück.</p>
+    </div>
+    <a class="knopf knopf-weiss oeffnet" href="#anfrage">Jetzt Anfrage stellen</a>
+  </div>
+</section>
+
+<section class="block tint" id="anfrage">
+  <div class="container">
+    <div class="anfrage-raster">
+      <div>
+        <p class="augenbraue">Anfrage stellen</p>
+        <h2>Schreiben Sie uns, wir melden uns.</h2>
+        <p class="lead" style="margin-bottom:0;">Sie müssen nicht warten, bis jemand ans Telefon geht. Füllen Sie das Formular aus, den Rest übernehmen wir.</p>
+        <ol class="schritte">
+          <li><strong>Sie schicken das Formular ab.</strong> Dauert etwa eine Minute.</li>
+          <li><strong>Sie bekommen sofort eine Bestätigung per E-Mail.</strong> Damit wissen Sie, dass Ihre Anfrage angekommen ist.</li>
+          <li><strong>Wir melden uns mit einem Terminvorschlag.</strong> Bei Notfällen noch am selben Tag.</li>
+        </ol>
+      </div>
+      <div>
+        <!--
+          Hier steckt der eigentliche Beweis: kein abgetipptes Formular,
+          sondern per iframe die echte Datei formular.html. Genau der
+          Einbauweg, der weiter unten beschrieben wird.
+        -->
+        <iframe
+          id="anfrage-formular"
+          class="formular-rahmen"
+          src="formular.html?betrieb=Mustermann%20Haustechnik&farbe=%23c2410c"
+          height="1020"
+          title="Anfrageformular von Mustermann Haustechnik"
+          loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="betrieb">
+  <div class="container" style="max-width:760px;">
+    <p class="augenbraue">Der Betrieb</p>
+    <h2>Ein Team, das seit 30 Jahren im Ort arbeitet</h2>
+    <p class="lead">1994 als Zwei-Mann-Betrieb gegründet, heute zwölf Mitarbeiter und drei Auszubildende. Was gleich geblieben ist: Wer bei uns anruft, spricht mit jemandem, der die Anlage später auch selbst sieht.</p>
+    <p style="color:var(--grau);">Wir arbeiten überwiegend für Privatkunden und Hausverwaltungen im Umkreis von etwa 30 Kilometern. Größere Sanierungen begleiten wir von der Planung bis zur Abnahme, kleinere Reparaturen erledigen wir meist innerhalb weniger Tage.</p>
+  </div>
+</section>
+
+<!-- ================= Ab hier spricht wieder anfrageprofi.de ================= -->
+<section class="einbau">
+  <div class="container">
+    <p class="augenbraue">Für Betriebe: So kam das Formular auf diese Seite</p>
+    <h2>Eine Zeile. Mehr war es nicht.</h2>
+    <p class="lead">Sie brauchen keine neue Website und keinen Programmierer. Es gibt drei Wege, und für jeden Betrieb passt einer davon.</p>
+
+    <div class="einbau-raster">
+      <div class="weg">
+        <div class="nr">Weg 1</div>
+        <h3>Nur ein Knopf</h3>
+        <p>Auf Ihrer Seite steht ein Knopf „Anfrage stellen“, der auf Ihr Formular führt. Funktioniert auch, wenn Sie an Ihre Website nicht mehr herankommen.</p>
+        <span class="dauer">Einrichtung: 5 Minuten</span>
+      </div>
+      <div class="weg">
+        <div class="nr">Weg 2 · empfohlen</div>
+        <h3>Direkt eingebaut</h3>
+        <p>Das Formular sitzt mitten auf Ihrer Seite, so wie hier oben. Eine Zeile in Ihren Baukasten einfügen, fertig. Klappt bei WordPress, Jimdo, Wix, IONOS und Strato.</p>
+        <span class="dauer">Einrichtung: 30 Minuten</span>
+      </div>
+      <div class="weg">
+        <div class="nr">Weg 3</div>
+        <h3>Neue Website</h3>
+        <p>Sie haben noch keine Website oder die alte ist in die Jahre gekommen? Dann bauen wir sie neu, mit dem Formular von Anfang an drin.</p>
+        <span class="dauer">Nach Absprache</span>
+      </div>
+    </div>
+
+    <div class="code">
+<pre><span class="tag">&lt;iframe</span> <span class="attr">src</span>=<span class="wert">"https://anfrageprofi.de/formular.html?betrieb=Mustermann%20Haustechnik"</span>
+        <span class="attr">style</span>=<span class="wert">"width:100%;border:0;"</span> <span class="attr">height</span>=<span class="wert">"1020"</span>
+        <span class="attr">title</span>=<span class="wert">"Anfrageformular"</span><span class="tag">&gt;&lt;/iframe&gt;</span></pre>
+    </div>
+    <p class="code-hinweis">Genau diese Zeile steht auch auf dieser Seite. Name und Farbe werden angepasst, die Anfragen landen anschließend in Ihrer eigenen Übersicht.</p>
+
+    <div style="margin-top:38px; display:flex; gap:13px; flex-wrap:wrap;">
+      <a class="knopf knopf-orange" href="index.html#kontakt">Für meinen Betrieb einrichten lassen</a>
+      <a class="knopf knopf-rand" href="index.html">Zurück zu anfrageprofi.de</a>
+    </div>
+  </div>
+</section>
+
+<!-- Formular-Fenster. Der iframe bekommt seine Adresse erst beim ersten
+     Oeffnen (data-quelle statt src), damit die Seite schnell laedt und
+     das Formular bei jedem Oeffnen frisch ist. -->
+<div class="vorhang" id="vorhang" role="dialog" aria-modal="true" aria-labelledby="fenster-titel">
+  <div class="fenster" id="fenster">
+    <div class="fenster-kopf">
+      <div>
+        <strong id="fenster-titel">Anfrage an Mustermann Haustechnik</strong>
+        <span>Antwort per E-Mail in wenigen Sekunden</span>
+      </div>
+      <button type="button" class="zu" id="fenster-zu" aria-label="Fenster schließen">&times;</button>
+    </div>
+    <div class="fenster-inhalt">
+      <iframe
+        id="fenster-formular"
+        data-quelle="formular.html?betrieb=Mustermann%20Haustechnik&farbe=%23c2410c&kopf=aus"
+        height="980"
+        title="Anfrageformular von Mustermann Haustechnik"></iframe>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="oben">
+      <div>
+        <strong>Mustermann Haustechnik GmbH</strong><br />
+        Musterstraße 1, 00000 Musterstadt<br />
+        Ein frei erfundener Betrieb.
+      </div>
+      <div>
+        <strong>Erreichbarkeit</strong><br />
+        Mo bis Fr, 7 bis 17 Uhr<br />
+        Notdienst rund um die Uhr
+      </div>
+    </div>
+    <div class="erfunden">
+      <strong>Hinweis:</strong> „Mustermann Haustechnik“ gibt es nicht. Name, Adresse, Telefonnummer und alle Zahlen auf dieser Seite sind erfunden.
+      Diese Seite ist eine Vorführung des Anfrage-Systems von
+      <a href="index.html">anfrageprofi.de</a> (Florian Boldt). Das Formular selbst funktioniert echt.
+      Es gelten das <a href="impressum.html">Impressum</a> und die <a href="datenschutz.html">Datenschutzerklärung</a> von anfrageprofi.de.
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // Bei der lokalen Vorfuehrung den Sprung zur Datenbank zeigen.
+  // Auf anfrageprofi.de gibt es diesen Server nicht, dort bleibt er aus.
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    var dbLink = document.getElementById('db-link');
+    if (dbLink) { dbLink.hidden = false; }
+  }
+
+  var eingebaut = document.getElementById('anfrage-formular');
+  var imFenster = document.getElementById('fenster-formular');
+  var vorhang = document.getElementById('vorhang');
+  var fenster = document.getElementById('fenster');
+  var zuKnopf = document.getElementById('fenster-zu');
+  var vorherFokus = null;
+
+  // ---- Hoehe: beide iframes melden sich, jeder stellt sich selbst ein ----
+  // Genau dieses Schnipsel bekommt spaeter auch jeder Kunde dazu.
+  window.addEventListener('message', function (ereignis) {
+    var d = ereignis.data;
+    if (!d || d.anfrageprofi !== 'hoehe') { return; }
+    var h = parseInt(d.hoehe, 10);
+    if (!(h > 200 && h < 4000)) { return; }
+    // Die Nachricht kommt aus genau einem der beiden Rahmen.
+    if (eingebaut && ereignis.source === eingebaut.contentWindow) { eingebaut.style.height = h + 'px'; }
+    if (imFenster && ereignis.source === imFenster.contentWindow) { imFenster.style.height = h + 'px'; }
+  });
+
+  // ---- Fenster oeffnen und schliessen ----
+  function oeffne(ereignis) {
+    if (ereignis) { ereignis.preventDefault(); }
+    // Adresse erst jetzt setzen: schnellerer Seitenaufbau, und beim
+    // erneuten Oeffnen steht wieder ein leeres Formular da.
+    var quelle = imFenster.getAttribute('data-quelle');
+    if (imFenster.getAttribute('src') !== quelle) { imFenster.setAttribute('src', quelle); }
+
+    vorherFokus = document.activeElement;
+    vorhang.classList.add('offen');
+    document.body.style.overflow = 'hidden';   // Seite dahinter nicht mitscrollen
+    vorhang.scrollTop = 0;
+    zuKnopf.focus();
+  }
+
+  function schliesse() {
+    if (!vorhang.classList.contains('offen')) { return; }
+    vorhang.classList.remove('offen');
+    document.body.style.overflow = '';
+    if (vorherFokus && vorherFokus.focus) { vorherFokus.focus(); }
+  }
+
+  var knoepfe = document.querySelectorAll('.oeffnet');
+  for (var i = 0; i < knoepfe.length; i++) {
+    knoepfe[i].addEventListener('click', oeffne);
+  }
+
+  zuKnopf.addEventListener('click', schliesse);
+
+  // Klick auf den dunklen Rand schliesst, Klick ins Fenster nicht.
+  vorhang.addEventListener('click', function (ereignis) {
+    if (!fenster.contains(ereignis.target)) { schliesse(); }
+  });
+
+  // Escape schliesst. Tab bleibt im Fenster, damit man nicht
+  // unbemerkt in die Seite dahinter tabbt.
+  document.addEventListener('keydown', function (ereignis) {
+    if (ereignis.key === 'Escape') { schliesse(); }
+    if (ereignis.key === 'Tab' && vorhang.classList.contains('offen')) {
+      // Im Fenster gibt es nur den Schliessen-Knopf und den iframe.
+      // Alles andere liegt dahinter und ist gerade nicht gemeint.
+      if (ereignis.target === zuKnopf && ereignis.shiftKey) { ereignis.preventDefault(); }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
