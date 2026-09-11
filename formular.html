@@ -47,6 +47,12 @@
     --rot: #b91c1c;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* Das hidden-Attribut muss IMMER gewinnen. Ohne diese Regel schlaegt
+     "form { display: grid }" weiter unten das Attribut: Nach dem Absenden
+     bliebe das ausgefuellte Formular stehen, die Bestaetigung rutschte
+     darunter aus dem Blickfeld, und der Kunde saehe nicht, dass es geklappt
+     hat. Genau das ist vor dieser Regel live passiert. */
+  [hidden] { display: none !important; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: var(--text); line-height: 1.6; background: transparent;
@@ -272,6 +278,25 @@
     document.getElementById('einwilligung-text').textContent =
       'Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage an '
       + betrieb + ' übermittelt, gespeichert und verarbeitet werden.*';
+  }
+
+  // Vorfuehrung (?demo=1, gesetzt von der Musterseite): Der Betrieb im
+  // Formular ist erfunden, die Daten gehen in Wahrheit an anfrageprofi.de.
+  // Dann darf die Einwilligung nicht "an Mustermann Haustechnik" sagen,
+  // sonst willigt der Besucher in etwas ein, das gar nicht passiert.
+  // Wortlaut bewusst wie bei der Live-Demo auf der Startseite.
+  // Nur fester Text, keine Eingabe aus der Adresse, deshalb innerHTML hier
+  // unbedenklich.
+  if (p.get('demo') === '1') {
+    document.getElementById('einwilligung-text').innerHTML =
+      'Ich bin einverstanden, dass meine Angaben zur Durchführung der Vorführung verarbeitet werden ' +
+      '(Speicherung im Demo-System von anfrageprofi.de, automatische Bestätigungs-E-Mail an mich, ' +
+      'Info an Florian Boldt; Löschung nach 7 Tagen). Details in der ' +
+      '<a href="https://anfrageprofi.de/datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.*';
+    var fuss = document.querySelector('#anfrage .fuss');
+    if (fuss) {
+      fuss.textContent = '* Pflichtfeld. Vorführung: Sie erhalten genau eine E-Mail, keinen Newsletter.';
+    }
   }
 
   var form = document.getElementById('anfrage');
