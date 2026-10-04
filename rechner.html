@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Was kosten verpasste Anfragen? | Verlustrechner von anfrageprofi.de</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231d4ed8'/><text x='50' y='70' font-size='54' font-family='Arial,sans-serif' font-weight='bold' fill='%23ffffff' text-anchor='middle'>FB</text></svg>" />
+  <meta name="description" content="Drei Regler, Ihre eigenen Zahlen: Der Verlustrechner zeigt in 30 Sekunden, was liegengebliebene Kundenanfragen im Jahr kosten. Kostenlos, ohne Anmeldung, rechnet nur im Browser." />
+  <meta property="og:title" content="Was kosten verpasste Anfragen im Jahr?" />
+  <meta property="og:description" content="Drei Regler, Ihre eigenen Zahlen. Kein Formular, keine E-Mail, rechnet nur im Browser." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:url" content="https://anfrageprofi.de/rechner.html" />
+  <meta property="og:site_name" content="anfrageprofi.de" />
+  <meta property="og:image" content="https://anfrageprofi.de/og-vorschau.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="author" content="Florian Boldt" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0f1f3d" />
+  <meta name="color-scheme" content="light" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="canonical" href="https://anfrageprofi.de/rechner.html" />
+  <style>
+    :root {
+      --blau: #1d4ed8;
+      --blau-dunkel: #1e40af;
+      --navy: #0f1f3d;
+      --text: #0f172a;
+      --grau: #475569;
+      --grau-hell: #64748b;
+      --rand: #e2e8f0;
+      --tint: #f8fafc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); line-height: 1.65; background: #fff; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 28px; }
+    header { background: var(--navy); color: #fff; padding: 20px 0; }
+    header .container { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .logo { font-weight: 700; font-size: 1.1rem; color: #fff; display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo .logo-mark { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--blau), var(--navy)); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    header a.zurueck { color: #b8c4d6; text-decoration: none; font-size: 0.95rem; }
+    header a.zurueck:hover { color: #fff; }
+    main { padding: 64px 0 80px; }
+    .eyebrow { text-align: center; color: var(--blau); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+    h1 { font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 14px; }
+    .lead { text-align: center; color: var(--grau); font-size: 1.08rem; max-width: 620px; margin: 0 auto 44px; }
+
+    .rechner { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 34px; max-width: 940px; margin: 0 auto; }
+    .rechner-regler { background: var(--tint); border: 1px solid var(--rand); border-radius: 12px; padding: 28px 30px; }
+    .regler { margin-bottom: 26px; }
+    .regler:last-child { margin-bottom: 0; }
+    .regler-kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+    .regler-kopf label { font-weight: 600; font-size: 0.98rem; }
+    .regler-wert { font-weight: 700; color: var(--blau); font-size: 1.05rem; white-space: nowrap; }
+    .regler input[type="range"] { width: 100%; height: 6px; border-radius: 4px; background: #e2e8f0; appearance: none; -webkit-appearance: none; outline-offset: 5px; }
+    .regler input[type="range"]::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--blau); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(15,31,61,0.28); cursor: pointer; }
+    .regler input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border: 3px solid #fff; border-radius: 50%; background: var(--blau); box-shadow: 0 2px 6px rgba(15,31,61,0.28); cursor: pointer; }
+    .regler-hinweis { color: var(--grau-hell); font-size: 0.85rem; margin-top: 8px; }
+    .rechner-ergebnis { background: var(--navy); color: #fff; border-radius: 12px; padding: 32px 30px; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+    .r-label { color: #a9c1e8; font-size: 0.84rem; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600; }
+    .r-zahl { font-size: 2.9rem; font-weight: 800; line-height: 1.15; margin: 10px 0 4px; letter-spacing: -1px; }
+    .r-monat { color: #c8dcf7; font-size: 0.98rem; }
+    .r-auftraege { font-size: 0.98rem; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.16); color: #e8f1fd; }
+    .r-auftraege strong { color: #ffd166; }
+    .btn { display: inline-block; align-self: center; margin-top: 22px; text-decoration: none; padding: 13px 24px; border-radius: 9px; font-weight: 600; font-size: 1rem; background: #fff; color: var(--navy); transition: background 0.15s, transform 0.1s; }
+    .btn:hover { background: #eef2f8; transform: translateY(-1px); }
+    .rechner-formel { max-width: 720px; margin: 24px auto 0; text-align: center; color: var(--grau-hell); font-size: 0.86rem; line-height: 1.65; }
+    .weiter { max-width: 720px; margin: 36px auto 0; text-align: center; color: var(--grau); font-size: 1rem; }
+    .weiter a { color: var(--blau); font-weight: 600; text-underline-offset: 2px; }
+
+    footer { border-top: 1px solid var(--rand); padding: 28px 0; color: var(--grau-hell); font-size: 0.88rem; }
+    .foot-nav { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
+    .foot-nav a { color: var(--blau); text-decoration: none; font-weight: 500; }
+    .foot-nav a:hover { text-decoration: underline; }
+
+    @media (max-width: 820px) {
+      .rechner { grid-template-columns: 1fr; gap: 22px; }
+      .r-zahl { font-size: 2.4rem; }
+      .rechner-regler { padding: 24px 22px; }
+      main { padding: 44px 0 60px; }
+    }
+    @media (max-width: 560px) {
+      .container { padding: 0 18px; }
+      header a.zurueck { font-size: 0.88rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="logo" href="index.html"><span class="logo-mark">FB</span>anfrageprofi.de</a>
+      <a class="zurueck" href="index.html">← Zur Startseite</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <p class="eyebrow">Rechnen Sie selbst nach</p>
+      <h1>Was kosten Sie verpasste Anfragen im Jahr?</h1>
+      <p class="lead">Drei Regler, Ihre eigenen Zahlen. Kein Formular, keine E-Mail, nichts abzuschicken.</p>
+
+      <div class="rechner">
+        <div class="rechner-regler">
+          <div class="regler">
+            <div class="regler-kopf">
+              <label for="r-anfragen">Anfragen pro Woche</label>
+              <span class="regler-wert" id="r-anfragen-wert">8</span>
+            </div>
+            <input type="range" id="r-anfragen" min="1" max="40" step="1" value="8" />
+            <p class="regler-hinweis">Alles zusammen: Telefon, E-Mail, Formular, WhatsApp.</p>
+          </div>
+
+          <div class="regler">
+            <div class="regler-kopf">
+              <label for="r-quote">Davon bleiben liegen oder werden zu spät beantwortet</label>
+              <span class="regler-wert" id="r-quote-wert">15 %</span>
+            </div>
+            <input type="range" id="r-quote" min="0" max="50" step="1" value="15" />
+            <p class="regler-hinweis">Ehrlich schätzen: Wie viele rutschen in einer vollen Woche durch?</p>
+          </div>
+
+          <div class="regler">
+            <div class="regler-kopf">
+              <label for="r-wert">Durchschnittlicher Auftragswert</label>
+              <span class="regler-wert" id="r-wert-wert">900 €</span>
+            </div>
+            <input type="range" id="r-wert" min="200" max="8000" step="100" value="900" />
+            <p class="regler-hinweis">Ihr typischer Auftrag, nicht der größte des Jahres.</p>
+          </div>
+        </div>
+
+        <div class="rechner-ergebnis">
+          <p class="r-label">Geschätzter Verlust pro Jahr</p>
+          <p class="r-zahl" id="r-summe">16.848 €</p>
+          <p class="r-monat" id="r-monat">das sind rund 1.404 € im Monat</p>
+          <p class="r-auftraege" id="r-auftraege">Entspricht etwa <strong>19 Aufträgen</strong> im Jahr, die bei einem anderen Betrieb landen.</p>
+          <a class="btn" href="index.html#demo">System 60 Sekunden testen</a>
+        </div>
+      </div>
+
+      <p class="rechner-formel">
+        So wird gerechnet: Anfragen pro Woche × 52 Wochen × Anteil, der liegen bleibt × 30 % Abschlussquote × Auftragswert.
+        Die 30 % sind bewusst vorsichtig angesetzt: So viele dieser Anfragen wären bei einer schnellen Antwort
+        realistisch zu einem Auftrag geworden. Das Ergebnis ist eine grobe Schätzung mit Ihren eigenen Zahlen, keine Garantie.
+      </p>
+      <p class="weiter">Wie das Anfrage-System verpasste Anfragen verhindert, zeigt der <a href="index.html#film">Erklärfilm in 67 Sekunden</a>.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav class="foot-nav">
+        <a href="index.html">Startseite</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="index.html#kontakt">Kontakt</a>
+      </nav>
+      <div>© 2026 Florian Boldt · Anfrage-System, Abläufe, Websites, Erklärfilme</div>
+    </div>
+  </footer>
+
+  <script>
+    // Verlustrechner: rechnet rein im Browser, es wird nichts gesendet oder gespeichert
+    const rAnfragen = document.getElementById('r-anfragen');
+    const rQuote = document.getElementById('r-quote');
+    const rWert = document.getElementById('r-wert');
+    const ABSCHLUSSQUOTE = 0.3;
+    const euro = (n) => Math.round(n).toLocaleString('de-DE') + ' €';
+    const rechne = () => {
+      const anfragen = Number(rAnfragen.value);
+      const quote = Number(rQuote.value) / 100;
+      const wert = Number(rWert.value);
+      const verpasst = anfragen * 52 * quote;
+      const auftraege = verpasst * ABSCHLUSSQUOTE;
+      const jahr = auftraege * wert;
+      document.getElementById('r-anfragen-wert').textContent = anfragen;
+      document.getElementById('r-quote-wert').textContent = rQuote.value + ' %';
+      document.getElementById('r-wert-wert').textContent = euro(wert);
+      document.getElementById('r-summe').textContent = euro(jahr);
+      document.getElementById('r-monat').textContent = 'das sind rund ' + euro(jahr / 12) + ' im Monat';
+      const anzahl = Math.round(auftraege);
+      document.getElementById('r-auftraege').innerHTML = anzahl === 0
+        ? 'Kein rechnerischer Verlust. Dann ist Ihr Büro besser organisiert als bei den meisten Betrieben.'
+        : 'Entspricht etwa <strong>' + anzahl + (anzahl === 1 ? ' Auftrag' : ' Aufträgen') + '</strong> im Jahr, die bei einem anderen Betrieb landen.';
+    };
+    [rAnfragen, rQuote, rWert].forEach((el) => el.addEventListener('input', rechne));
+    rechne();
+  </script>
+</body>
+</html>
