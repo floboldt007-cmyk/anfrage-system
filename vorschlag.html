@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ihr Anfrageformular: ein Vorschlag | anfrageprofi.de</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231d4ed8'/><text x='50' y='70' font-size='54' font-family='Arial,sans-serif' font-weight='bold' fill='%23ffffff' text-anchor='middle'>FB</text></svg>" />
+  <!--
+    Persoenlicher Vorschlag an einen Betrieb (gehoert zu akquise.html).
+    Name, Gewerk und Farbe kommen ueber die Adresse:
+      vorschlag.html?betrieb=Malerbetrieb%20Schmidt&name=Herr%20Schmidt&gewerk=maler&farbe=%23047857
+    Die Seite spricht im Namen von anfrageprofi.de und behauptet nichts ueber
+    den Betrieb selbst. Das eingebettete Formular laeuft mit ?vorschau=1:
+    Es speichert nichts und verschickt keine Mail.
+    Nicht verlinkt, nicht in der sitemap.xml, fuer Suchmaschinen gesperrt.
+  -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Florian Boldt" />
+  <meta name="theme-color" content="#0f1f3d" />
+  <meta name="color-scheme" content="light" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <style>
+    :root {
+      --blau: #1d4ed8;
+      --blau-dunkel: #1e40af;
+      --navy: #0f1f3d;
+      --text: #0f172a;
+      --grau: #475569;
+      --grau-hell: #64748b;
+      --rand: #e2e8f0;
+      --tint: #f8fafc;
+      --gruen: #16a34a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); line-height: 1.65; background: #fff; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+    header { background: var(--navy); color: #fff; padding: 20px 0; }
+    header .container { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .logo { font-weight: 700; font-size: 1.1rem; color: #fff; display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo .logo-mark { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--blau), var(--navy)); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    header a.zurueck { color: #b8c4d6; text-decoration: none; font-size: 0.95rem; }
+    header a.zurueck:hover { color: #fff; }
+    main { padding: 56px 0 80px; }
+    .eyebrow { text-align: center; color: var(--blau); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+    h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 14px; line-height: 1.25; }
+    .lead { text-align: center; color: var(--grau); font-size: 1.08rem; max-width: 640px; margin: 0 auto 40px; }
+
+    .raster { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 36px; align-items: start; }
+    .formular-kasten { background: var(--tint); border: 1px solid var(--rand); border-radius: 14px; padding: 14px; }
+    .formular-rahmen { border: 0; width: 100%; display: block; height: 1060px; background: transparent; }
+    .vorschau-band { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; color: var(--grau-hell); padding: 2px 6px 10px; }
+    .vorschau-band span { width: 8px; height: 8px; border-radius: 50%; background: var(--gruen); flex-shrink: 0; }
+
+    .info h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 14px; }
+    .schritte { list-style: none; counter-reset: s; margin-bottom: 26px; }
+    .schritte li { counter-increment: s; position: relative; padding: 0 0 16px 44px; color: var(--grau); }
+    .schritte li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 8px; background: var(--blau); color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; }
+    .schritte strong { color: var(--text); }
+    .kasten { background: #eff4ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 18px 20px; margin-bottom: 26px; }
+    .kasten h3 { font-size: 1rem; color: var(--blau-dunkel); margin-bottom: 6px; }
+    .kasten p { color: #1e3a8a; font-size: 0.96rem; }
+    .kontakt { background: var(--navy); color: #fff; border-radius: 14px; padding: 24px 22px; }
+    .kontakt-titel { font-weight: 700; font-size: 1.08rem; margin-bottom: 14px; }
+    .btn { display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 13px 20px; border-radius: 9px; font-weight: 600; font-size: 1rem; transition: background 0.15s, transform 0.1s; margin-bottom: 10px; }
+    .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .btn-wa { background: #25d366; color: #fff; }
+    .btn-wa:hover { background: #1ebe5b; transform: translateY(-1px); }
+    .btn-tel { background: #fff; color: var(--navy); }
+    .btn-tel:hover { background: #eef2f8; transform: translateY(-1px); }
+    .kontakt .mail { color: #b8c4d6; font-size: 0.94rem; margin-top: 6px; }
+    .kontakt .mail a { color: #fff; }
+    .kontakt .person { color: #8295ad; font-size: 0.88rem; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.12); }
+    .film { margin-top: 20px; color: var(--grau); font-size: 0.96rem; }
+    .film a { color: var(--blau); font-weight: 600; text-underline-offset: 2px; }
+
+    footer { border-top: 1px solid var(--rand); padding: 28px 0; color: var(--grau-hell); font-size: 0.88rem; }
+    .foot-nav { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
+    .foot-nav a { color: var(--blau); text-decoration: none; font-weight: 500; }
+    .foot-nav a:hover { text-decoration: underline; }
+
+    @media (max-width: 860px) {
+      .raster { grid-template-columns: 1fr; gap: 28px; }
+      main { padding: 40px 0 60px; }
+    }
+    @media (max-width: 560px) {
+      .container { padding: 0 16px; }
+      header a.zurueck { font-size: 0.88rem; }
+      .lead { margin-bottom: 28px; }
+      .formular-kasten { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="logo" href="index.html"><span class="logo-mark">FB</span>anfrageprofi.de</a>
+      <a class="zurueck" href="index.html">← Zur Startseite</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <p class="eyebrow">Persönlicher Vorschlag</p>
+      <h1 id="titel">So sähe Ihr eigenes Anfrageformular aus</h1>
+      <p class="lead" id="gruss">Probieren Sie es ruhig aus: Füllen Sie das Formular aus, als wären Sie Ihr eigener Kunde. In dieser Vorschau wird nichts gespeichert und nichts verschickt.</p>
+
+      <div class="raster">
+        <div class="formular-kasten">
+          <p class="vorschau-band"><span></span>Vorschau zum Ausprobieren</p>
+          <iframe id="vorschau" class="formular-rahmen" title="Vorschau Ihres Anfrageformulars"></iframe>
+        </div>
+
+        <aside class="info">
+          <h2>Was danach passiert</h2>
+          <ol class="schritte">
+            <li><strong>Sofort bestätigt.</strong> Ihr Kunde bekommt in Sekunden eine Bestätigung in Ihrem Namen und sucht nicht weiter.</li>
+            <li><strong>Geordnet in Ihrer Liste.</strong> Wer, was, wo und wie dringend, auch wenn Sie gerade beim Kunden arbeiten.</li>
+            <li><strong>Ein Klick genügt.</strong> Termin oder Absage gehen automatisch raus, der Termin steht im Kalender.</li>
+          </ol>
+          <div class="kasten">
+            <h3>Was Sie dafür tun müssen</h3>
+            <p>Nichts installieren. Ich richte alles ein und baue das Formular auf Ihrer Website ein. Fester Monatsbetrag, monatlich kündbar.</p>
+          </div>
+          <div class="kontakt">
+            <p class="kontakt-titel">Interesse? Sprechen Sie mich direkt an.</p>
+            <a class="btn btn-wa" id="wa" href="https://wa.me/491629152715"><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 .5C7.4.5.5 7.4.5 16c0 2.8.7 5.5 2.1 7.9L.4 31.5l7.8-2.1c2.3 1.3 4.9 1.9 7.6 1.9h.1C24.6 31.3 31.5 24.4 31.5 16 31.5 7.4 24.6.5 16 .5zm0 28.3c-2.4 0-4.8-.7-6.9-1.9l-.5-.3-5.1 1.3 1.4-5-.3-.5C3.3 19.4 2.6 17 2.6 16 2.6 8.6 8.6 2.6 16 2.6S29.4 8.6 29.4 16 23.4 28.8 16 28.8zm7.4-9.6c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-2.4-1.2-3.9-2.1-5.5-4.8-.4-.7.4-.6 1.1-2.1.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.6-.8-.7h-.7c-.2 0-.6.1-.9.4-1.2 1.3-1.5 2.7-.9 4.5.9 2.6 2.7 4.7 5.1 6.1 2.6 1.5 3.6 1.3 4.9 1.1.8-.1 2.4-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.3-.3-.7-.5z"/></svg>WhatsApp schreiben</a>
+            <a class="btn btn-tel" href="tel:+491629152715"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z" fill="currentColor"/></svg>Anrufen: 0162 9152715</a>
+            <p class="mail">oder per E-Mail: <a id="mail" href="mailto:kontakt@anfrageprofi.de">kontakt@anfrageprofi.de</a></p>
+            <p class="person">Florian Boldt, anfrageprofi.de, Leverkusen</p>
+          </div>
+          <p class="film">Lieber erst sehen, wie alles zusammenspielt? <a href="index.html#film">Erklärfilm in 67 Sekunden</a></p>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav class="foot-nav">
+        <a href="index.html">Startseite</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+      <div>© 2026 Florian Boldt · Dieses Angebot richtet sich ausschließlich an Unternehmen, Gewerbetreibende und Selbstständige.</div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    var p = new URLSearchParams(location.search);
+    // Alles aus der Adresse kuerzen und von Zeichen befreien, die HTML bilden
+    // koennten. Ausgegeben wird ohnehin nur ueber textContent.
+    function sauber(wert, max) { return String(wert || '').replace(/[<>&"]/g, '').trim().slice(0, max); }
+
+    var betrieb = sauber(p.get('betrieb'), 60);
+    var name = sauber(p.get('name'), 60);
+    var farbe = /^#[0-9a-fA-F]{6}$/.test(p.get('farbe') || '') ? p.get('farbe') : '';
+    var gewerk = String(p.get('gewerk') || '').toLowerCase().replace(/[^a-z]/g, '').slice(0, 20);
+
+    if (betrieb) {
+      document.getElementById('titel').textContent = 'So sähe das Anfrageformular für ' + betrieb + ' aus';
+      document.title = 'Vorschlag für ' + betrieb + ' | anfrageprofi.de';
+    }
+    if (name) {
+      document.getElementById('gruss').textContent = 'Guten Tag ' + name + ', probieren Sie es ruhig aus: '
+        + 'Füllen Sie das Formular aus, als wären Sie Ihr eigener Kunde. In dieser Vorschau wird nichts '
+        + 'gespeichert und nichts verschickt.';
+    }
+
+    // Das echte Formular, im Vorschau-Modus und in der Farbe des Betriebs
+    var q = new URLSearchParams();
+    if (betrieb) { q.set('betrieb', betrieb); }
+    if (farbe) { q.set('farbe', farbe); }
+    if (gewerk) { q.set('gewerk', gewerk); }
+    q.set('vorschau', '1');
+    var rahmen = document.getElementById('vorschau');
+    rahmen.src = 'formular.html?' + q.toString();
+
+    var bezug = betrieb ? ' für ' + betrieb : '';
+    document.getElementById('wa').href = 'https://wa.me/491629152715?text=' + encodeURIComponent(
+      'Hallo Herr Boldt, ich habe Ihren Vorschlag' + bezug + ' gesehen und interessiere mich für das Anfrage-System.');
+    document.getElementById('mail').href = 'mailto:kontakt@anfrageprofi.de?subject=' + encodeURIComponent('Ihr Vorschlag' + bezug);
+
+    // Das Formular meldet seine Hoehe, damit der Rahmen mitwaechst statt innen zu scrollen.
+    window.addEventListener('message', function (ereignis) {
+      var d = ereignis.data;
+      if (!d || d.anfrageprofi !== 'hoehe' || ereignis.source !== rahmen.contentWindow) { return; }
+      var h = parseInt(d.hoehe, 10);
+      if (h > 200 && h < 4000) { rahmen.style.height = h + 'px'; }
+    });
+  })();
+  </script>
+</body>
+</html>

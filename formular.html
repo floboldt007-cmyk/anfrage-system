@@ -28,6 +28,10 @@
     ?betrieb=Name%20des%20Betriebs   Name in Text und Bestaetigung
     ?farbe=%23c2410c                 Akzentfarbe (# als %23 schreiben)
     ?ziel=https://script.google...   eigene Backend-Adresse je Kunde
+    ?gewerk=maler                    passende Auswahl bei "Worum geht es?"
+                                     (elektro, maler, dach, tischler, garten,
+                                     reinigung, allgemein; ohne Angabe: Heizung/Sanitaer)
+    ?vorschau=1                      reine Ansicht: speichert und verschickt nichts
 
   DATENFELDER: exakt die Spalten, die das echte System in
   "Datenbank Roh" erwartet (siehe Formular_Eingang_V2.gs). Wer hier ein
@@ -296,6 +300,59 @@
     var fuss = document.querySelector('#anfrage .fuss');
     if (fuss) {
       fuss.textContent = '* Pflichtfeld. Vorführung: Sie erhalten genau eine E-Mail, keinen Newsletter.';
+    }
+  }
+
+  // Branchen-Vorlage (?gewerk=...): passende Auswahl bei "Worum geht es?" und
+  // ein passendes Beispiel im Beschreibungsfeld. Ohne Angabe oder bei einem
+  // unbekannten Wert bleibt die Heizung/Sanitaer-Liste oben stehen.
+  var GEWERKE = {
+    elektro: { liste: ['Störung oder Stromausfall', 'Neue Steckdosen oder Leitungen', 'Beleuchtung',
+      'Wallbox oder Photovoltaik', 'Prüfung (E-Check)', 'Etwas anderes'],
+      beispiel: 'z. B. Sicherung fliegt ständig raus, Altbau, Küche betroffen' },
+    maler: { liste: ['Innenanstrich', 'Fassade', 'Tapezieren', 'Lackierarbeiten (Türen, Fenster)',
+      'Bodenbelag', 'Etwas anderes'],
+      beispiel: 'z. B. Wohnzimmer und Flur streichen, ca. 45 m², Altbau mit Stuck' },
+    dach: { liste: ['Reparatur oder Undichtigkeit', 'Dachrinne', 'Neueindeckung oder Sanierung', 'Dämmung',
+      'Dachfenster', 'Etwas anderes'],
+      beispiel: 'z. B. Nach dem Sturm tropft es im Dachgeschoss, Ziegeldach, Baujahr ca. 1985' },
+    tischler: { liste: ['Möbel nach Maß', 'Türen', 'Fenster', 'Treppen', 'Reparatur', 'Etwas anderes'],
+      beispiel: 'z. B. Einbauschrank für eine Dachschräge, Breite ca. 2,40 m' },
+    garten: { liste: ['Gartenpflege', 'Baumpflege oder Fällung', 'Pflasterarbeiten', 'Zaun',
+      'Neuanlage', 'Etwas anderes'],
+      beispiel: 'z. B. Hecke schneiden und Rasen neu anlegen, Garten ca. 300 m²' },
+    reinigung: { liste: ['Unterhaltsreinigung', 'Grundreinigung', 'Fensterreinigung',
+      'Endreinigung nach Umzug', 'Treppenhausreinigung', 'Etwas anderes'],
+      beispiel: 'z. B. Büro, 120 m², zweimal pro Woche abends' },
+    allgemein: { liste: ['Angebot anfragen', 'Termin vereinbaren', 'Reparatur', 'Beratung', 'Etwas anderes'],
+      beispiel: 'z. B. Was gemacht werden soll, wo und bis wann' }
+  };
+  var gewerk = GEWERKE.hasOwnProperty((p.get('gewerk') || '').toLowerCase())
+    ? GEWERKE[(p.get('gewerk') || '').toLowerCase()] : null;
+  if (gewerk) {
+    var auswahl = document.querySelector('select[name=leistung]');
+    while (auswahl.options.length > 1) { auswahl.remove(1); }
+    gewerk.liste.forEach(function (text) { auswahl.add(new Option(text)); });
+    document.querySelector('textarea[name=beschreibung]').placeholder = gewerk.beispiel;
+  }
+
+  // Vorschau fuer einen Interessenten (?vorschau=1, gesetzt von vorschlag.html):
+  // Das Formular laesst sich ausprobieren, speichert aber nichts und verschickt
+  // keine Mail, auch wenn ?ziel gesetzt ist. Die Texte sagen das ehrlich.
+  // Nur feste Texte, keine Eingabe aus der Adresse, deshalb innerHTML unbedenklich.
+  if (p.get('vorschau') === '1') {
+    ZIEL = PLATZHALTER;
+    var bestaetigung = document.querySelector('#erfolg h3 + p');
+    if (bestaetigung) {
+      bestaetigung.textContent = 'So sieht Ihr Kunde die Bestätigung. In der echten Version hätte er jetzt '
+        + 'zusätzlich eine E-Mail in Ihrem Namen im Postfach.';
+    }
+    document.getElementById('vorschau-hinweis').innerHTML =
+      '<strong>Vorschau.</strong> Ihre Eingaben wurden <strong>nicht</strong> gespeichert, '
+      + 'und es wurde <strong>keine</strong> E-Mail verschickt.';
+    var fussVorschau = document.querySelector('#anfrage .fuss');
+    if (fussVorschau) {
+      fussVorschau.textContent = '* Pflichtfeld. Vorschau: Hier wird nichts gespeichert und nichts verschickt.';
     }
   }
 

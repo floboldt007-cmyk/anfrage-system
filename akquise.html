@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akquise per Brief | Werkzeug</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231d4ed8'/><text x='50' y='70' font-size='54' font-family='Arial,sans-serif' font-weight='bold' fill='%23ffffff' text-anchor='middle'>FB</text></svg>" />
+  <!--
+    Internes Werkzeug fuer Florian (nicht verlinkt, fuer Suchmaschinen gesperrt).
+    Erzeugt zu einem Betrieb den persoenlichen Link auf vorschlag.html, den
+    QR-Code dazu und einen druckfertigen Brief (DIN A4, Form B, passt in einen
+    Fensterumschlag DIN lang). Alles passiert im Browser: nichts wird
+    gespeichert oder verschickt. QR-Code: qrcode.js (MIT, selbst gehostet).
+  -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="color-scheme" content="light" />
+  <script src="qrcode.js"></script>
+  <style>
+    :root {
+      --blau: #1d4ed8;
+      --blau-dunkel: #1e40af;
+      --navy: #0f1f3d;
+      --text: #0f172a;
+      --grau: #475569;
+      --grau-hell: #64748b;
+      --rand: #e2e8f0;
+      --tint: #f8fafc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); line-height: 1.6; background: #eef1f6; -webkit-font-smoothing: antialiased; }
+    .werkzeug-kopf { background: var(--navy); color: #fff; padding: 18px 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .werkzeug-kopf .container { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .werkzeug-kopf strong { font-size: 1.1rem; }
+    .werkzeug-kopf span { color: #b8c4d6; font-size: 0.92rem; }
+    .werkzeug { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 28px 0; }
+    .karte { background: #fff; border: 1px solid var(--rand); border-radius: 12px; padding: 22px 24px; }
+    .karte h1, .karte h2 { font-size: 1.15rem; margin-bottom: 12px; }
+    .karte label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; }
+    .karte input[type=text], .karte select { display: block; width: 100%; margin-top: 5px; padding: 10px 12px; border: 1px solid var(--rand); border-radius: 8px; font: inherit; font-weight: 400; background: #fff; color: var(--text); }
+    .karte input:focus, .karte select:focus { outline: none; border-color: var(--blau); box-shadow: 0 0 0 3px rgba(29,78,216,0.15); }
+    .farbe-zeile { display: flex; align-items: center; gap: 10px; margin-top: 5px; font-weight: 400; color: var(--grau); }
+    .farbe-zeile input { width: 52px; height: 38px; border: 1px solid var(--rand); border-radius: 8px; padding: 2px; background: #fff; cursor: pointer; }
+    .klein { font-size: 0.86rem; color: var(--grau-hell); }
+    .link-zeile { display: flex; gap: 8px; margin-bottom: 10px; }
+    .link-zeile input { flex: 1; min-width: 0; padding: 10px 12px; border: 1px solid var(--rand); border-radius: 8px; font: inherit; font-size: 0.86rem; color: var(--grau); background: var(--tint); }
+    button, .knopf { font: inherit; font-weight: 600; font-size: 0.95rem; border: none; border-radius: 8px; padding: 10px 16px; cursor: pointer; background: var(--blau); color: #fff; text-decoration: none; display: inline-block; text-align: center; }
+    button:hover, .knopf:hover { background: var(--blau-dunkel); }
+    button:disabled { background: #94a3b8; cursor: not-allowed; }
+    .knopf-hell { background: #fff; color: var(--blau); border: 1px solid #bfdbfe; }
+    .knopf-hell:hover { background: #eff4ff; }
+    .knopfreihe { display: flex; gap: 10px; flex-wrap: wrap; margin: 6px 0 18px; }
+    .recht { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px; padding: 14px 16px; font-size: 0.9rem; color: #7c2d12; }
+    .recht strong { display: block; margin-bottom: 6px; }
+    .recht ul { padding-left: 18px; }
+    .recht li + li { margin-top: 4px; }
+    .recht .quelle { margin-top: 8px; font-size: 0.8rem; color: #9a3412; }
+    .vorschau-titel { text-align: center; color: var(--grau-hell); font-size: 0.9rem; margin: 6px 0 12px; }
+    .brief-buehne { overflow-x: auto; padding: 0 0 48px; }
+
+    /* ---------- Der Brief: DIN A4, DIN 5008 Form B ---------- */
+    .brief { position: relative; width: 210mm; height: 297mm; margin: 0 auto; background: #fff; color: #111827; box-shadow: 0 10px 40px rgba(15,31,61,0.18); font-family: Arial, Helvetica, sans-serif; font-size: 10.5pt; line-height: 1.45; overflow: hidden; }
+    .brief .marke { position: absolute; top: 16mm; left: 25mm; right: 20mm; display: flex; justify-content: space-between; align-items: flex-start; }
+    .brief .marke-links { display: flex; align-items: center; gap: 3mm; }
+    .brief .marke-zeichen { width: 11mm; height: 11mm; border-radius: 2.5mm; background: #1d4ed8; color: #fff; font-weight: 700; font-size: 11pt; display: flex; align-items: center; justify-content: center; }
+    .brief .marke-name { font-weight: 700; font-size: 13pt; line-height: 1.2; }
+    .brief .marke-name span { display: block; font-weight: 400; font-size: 9pt; color: #1d4ed8; }
+    .brief .marke-rechts { text-align: right; font-size: 8.5pt; color: #475569; line-height: 1.5; }
+    .brief .ruecksende { position: absolute; top: 56mm; left: 25mm; width: 80mm; font-size: 7pt; color: #475569; border-bottom: 0.2mm solid #94a3b8; padding-bottom: 0.6mm; white-space: nowrap; overflow: hidden; }
+    .brief .anschrift { position: absolute; top: 63mm; left: 25mm; width: 80mm; height: 27mm; font-size: 10.5pt; line-height: 1.35; overflow: hidden; }
+    .brief .datum { position: absolute; top: 98.5mm; right: 20mm; }
+    .brief .betreff { position: absolute; top: 108mm; left: 25mm; right: 20mm; font-weight: 700; }
+    .brief .text { position: absolute; top: 120mm; left: 25mm; right: 20mm; }
+    .brief .text p { margin-bottom: 3.6mm; }
+    .brief .qr-block { display: flex; gap: 6mm; align-items: center; background: #f3f6fb; border-radius: 2.5mm; padding: 4mm 5mm; margin: 1mm 0 4.5mm; }
+    .brief .qr { width: 30mm; height: 30mm; flex-shrink: 0; background: #fff; padding: 1.5mm; }
+    .brief .qr svg { width: 100%; height: 100%; display: block; }
+    .brief .qr-block p { margin: 0; }
+    .brief .gruss { margin-top: 5mm; }
+    .brief .unterschrift { margin-top: 12mm; }
+    .brief .datenschutz { position: absolute; bottom: 17mm; left: 25mm; right: 20mm; font-size: 7pt; color: #64748b; line-height: 1.4; }
+    .brief .fusszeile { position: absolute; bottom: 9mm; left: 25mm; right: 20mm; font-size: 7.5pt; color: #475569; border-top: 0.2mm solid #cbd5e1; padding-top: 1.6mm; text-align: center; }
+    .brief .marker { position: absolute; left: 0; width: 5mm; border-top: 0.2mm solid #94a3b8; }
+    .brief .falz-1 { top: 105mm; }
+    .brief .falz-2 { top: 210mm; }
+    .brief .loch { top: 148.5mm; width: 7mm; }
+
+    @media (max-width: 860px) { .werkzeug { grid-template-columns: 1fr; } }
+    @page { size: A4; margin: 0; }
+    @media print {
+      body { background: #fff; }
+      .werkzeug-kopf, .werkzeug, .vorschau-titel { display: none !important; }
+      .brief-buehne { padding: 0; overflow: visible; }
+      .brief { box-shadow: none; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="werkzeug-kopf">
+    <div class="container">
+      <strong>Akquise per Brief</strong>
+      <span>Nur für dich: nicht verlinkt, für Suchmaschinen gesperrt. Nichts wird gespeichert oder verschickt.</span>
+    </div>
+  </div>
+
+  <div class="container werkzeug">
+    <section class="karte">
+      <h1>1. Betrieb eintragen</h1>
+      <label>Name des Betriebs*<input type="text" id="f-betrieb" maxlength="60" placeholder="z. B. Malerbetrieb Schmidt" autocomplete="off" /></label>
+      <label>Ansprechpartner<input type="text" id="f-person" maxlength="60" placeholder="z. B. Herr Max Schmidt" autocomplete="off" /></label>
+      <label>Straße und Hausnummer<input type="text" id="f-strasse" maxlength="60" autocomplete="off" /></label>
+      <label>PLZ und Ort<input type="text" id="f-ort" maxlength="60" autocomplete="off" /></label>
+      <label>Gewerk (bestimmt die Auswahl im Formular)
+        <select id="f-gewerk">
+          <option value="">Heizung, Sanitär, Bad</option>
+          <option value="elektro">Elektro</option>
+          <option value="maler">Maler</option>
+          <option value="dach">Dach</option>
+          <option value="tischler">Tischler, Schreiner</option>
+          <option value="garten">Garten- und Landschaftsbau</option>
+          <option value="reinigung">Reinigung</option>
+          <option value="allgemein">Allgemein, andere Branche</option>
+        </select>
+      </label>
+      <label>Farbe des Betriebs
+        <span class="farbe-zeile"><input type="color" id="f-farbe" value="#1d4ed8" /> <span class="klein">z. B. die Farbe aus dem Logo des Betriebs</span></span>
+      </label>
+    </section>
+
+    <section class="karte">
+      <h2>2. Link und Brief</h2>
+      <div class="link-zeile">
+        <input type="text" id="link" readonly aria-label="Persönlicher Link" />
+        <button type="button" id="kopieren">Kopieren</button>
+      </div>
+      <div class="knopfreihe">
+        <a class="knopf knopf-hell" id="ansehen" href="vorschlag.html" target="_blank" rel="noopener">Vorschlag ansehen</a>
+        <button type="button" id="drucken" disabled>Brief drucken oder als PDF speichern</button>
+      </div>
+      <p class="klein" style="margin-bottom:16px;">Der Brief passt in einen Fensterumschlag DIN lang (zweimal an den Strichen am Rand falten).</p>
+      <div class="recht">
+        <strong>Rechtlich sauber bleiben</strong>
+        <ul>
+          <li>Per Post verschicken ist grundsätzlich erlaubt, außer der Betrieb lehnt Werbung ab (z. B. Aufkleber am Briefkasten).</li>
+          <li>Per E-Mail, WhatsApp oder SMS nur, wenn der Betrieb vorher ausdrücklich zugestimmt hat.</li>
+          <li>Anrufen nur, wenn schon Kontakt bestand. Dass dein Angebot zur Branche passt, reicht nicht.</li>
+          <li>Widerspricht ein Betrieb, schreibst du ihn nicht mehr an (Hinweis steht im Brief).</li>
+        </ul>
+        <p class="quelle">Quelle: IHK-Merkblätter zu Werbung per Telefon, Brief und E-Mail (§ 7 UWG), Art. 14 und 21 DSGVO.</p>
+      </div>
+    </section>
+  </div>
+
+  <p class="vorschau-titel">Vorschau des Briefs (so wird er gedruckt)</p>
+  <div class="brief-buehne">
+    <article class="brief" id="brief" aria-label="Brief">
+      <div class="marke">
+        <div class="marke-links">
+          <div class="marke-zeichen">FB</div>
+          <div class="marke-name">Florian Boldt<span>anfrageprofi.de</span></div>
+        </div>
+        <div class="marke-rechts">Telefon 0162 9152715<br />kontakt@anfrageprofi.de<br />anfrageprofi.de</div>
+      </div>
+      <div class="ruecksende">Florian Boldt · Gartenstraße 49 · 51379 Leverkusen</div>
+      <div class="anschrift" id="b-anschrift"></div>
+      <div class="datum" id="b-datum"></div>
+      <div class="betreff" id="b-betreff"></div>
+      <div class="text">
+        <p id="b-anrede">Guten Tag,</p>
+        <p>wie viele Anfragen erreichen Ihren Betrieb, während Sie gerade beim Kunden arbeiten? Oft ruft der Kunde dann einfach den Nächsten an.</p>
+        <p>Ich habe für <span class="b-betrieb">Ihren Betrieb</span> vorbereitet, wie Ihr eigenes Anfrageformular aussehen könnte. Ihre Kunden schicken ihre Anfrage zu jeder Uhrzeit und bekommen sofort eine Bestätigung in Ihrem Namen. Sie sehen alles geordnet in einer Liste und schicken einen Termin mit einem Klick.</p>
+        <div class="qr-block">
+          <div class="qr" id="b-qr"></div>
+          <p><strong>Scannen Sie den Code mit der Handykamera</strong> und probieren Sie das Formular aus, als wären Sie Ihr eigener Kunde. In der Vorschau wird nichts gespeichert und nichts verschickt.</p>
+        </div>
+        <p>Wenn Sie mehr wissen möchten, rufen Sie mich gern an oder schreiben Sie mir. Ich richte alles für Sie ein, Sie müssen nichts installieren und können monatlich kündigen.</p>
+        <p class="gruss">Mit freundlichen Grüßen</p>
+        <p class="unterschrift">Florian Boldt</p>
+      </div>
+      <div class="datenschutz">Datenschutz: Ihre Geschäftsdaten (Name des Betriebs, Anschrift, Ansprechperson) stammen aus öffentlich zugänglichen Quellen. Ich nutze sie nur, um Ihnen mein Angebot vorzustellen (Art. 6 Abs. 1 lit. f DSGVO). Sie können dem jederzeit widersprechen, eine kurze Nachricht an kontakt@anfrageprofi.de genügt. Mehr dazu: anfrageprofi.de/datenschutz.html</div>
+      <div class="fusszeile">Florian Boldt · Gartenstraße 49 · 51379 Leverkusen · Telefon 0162 9152715 · kontakt@anfrageprofi.de · anfrageprofi.de</div>
+      <div class="marker falz-1"></div>
+      <div class="marker loch"></div>
+      <div class="marker falz-2"></div>
+    </article>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    // Der Link im Brief zeigt immer auf die echte Seite, egal wo dieses Werkzeug laeuft.
+    var BASIS = 'https://anfrageprofi.de/';
+
+    function wert(id) { return document.getElementById(id).value.replace(/[<>&"]/g, '').trim(); }
+    function setze(id, text) { document.getElementById(id).textContent = text; }
+
+    // "Herr Max Schmidt" -> "Herr Schmidt", "Frau Anna Müller" -> "Frau Müller", sonst unveraendert
+    function anredeName(person) {
+      var m = person.match(/^(Herrn?|Frau)\s+(.+)$/i);
+      if (!m) { return person; }
+      var teile = m[2].trim().split(/\s+/);
+      return (/^frau$/i.test(m[1]) ? 'Frau' : 'Herr') + ' ' + teile[teile.length - 1];
+    }
+    // In der Anschrift heisst es "Herrn Max Schmidt"
+    function anschriftName(person) { return person.replace(/^Herrn?\s+/i, 'Herrn '); }
+
+    function aktualisiere() {
+      var betrieb = wert('f-betrieb');
+      var person = wert('f-person');
+      var gewerk = document.getElementById('f-gewerk').value;
+      var farbe = document.getElementById('f-farbe').value;
+      var kurz = anredeName(person);
+
+      var q = new URLSearchParams();
+      if (betrieb) { q.set('betrieb', betrieb); }
+      if (kurz) { q.set('name', kurz); }
+      if (gewerk) { q.set('gewerk', gewerk); }
+      if (/^#[0-9a-fA-F]{6}$/.test(farbe)) { q.set('farbe', farbe); }
+      var pfad = 'vorschlag.html' + (q.toString() ? '?' + q.toString() : '');
+      var link = BASIS + pfad;
+      document.getElementById('link').value = link;
+      document.getElementById('ansehen').href = pfad;
+      document.getElementById('drucken').disabled = !betrieb;
+
+      var zeilen = [betrieb || 'Name des Betriebs'];
+      if (person) { zeilen.push(anschriftName(person)); }
+      if (wert('f-strasse')) { zeilen.push(wert('f-strasse')); }
+      if (wert('f-ort')) { zeilen.push(wert('f-ort')); }
+      var anschrift = document.getElementById('b-anschrift');
+      anschrift.textContent = '';
+      zeilen.forEach(function (z) {
+        var d = document.createElement('div');
+        d.textContent = z;
+        anschrift.appendChild(d);
+      });
+
+      setze('b-datum', 'Leverkusen, ' + new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }));
+      setze('b-betreff', 'Ein Vorschlag für ' + (betrieb || 'Ihren Betrieb') + ': Ihr eigenes Anfrageformular');
+      setze('b-anrede', kurz ? 'Guten Tag ' + kurz + ',' : 'Guten Tag,');
+      Array.prototype.forEach.call(document.querySelectorAll('.b-betrieb'), function (el) {
+        el.textContent = betrieb || 'Ihren Betrieb';
+      });
+
+      // QR-Code als SVG: bleibt beim Drucken gestochen scharf
+      var qr = qrcode(0, 'M');
+      qr.addData(link);
+      qr.make();
+      document.getElementById('b-qr').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+    }
+
+    ['f-betrieb', 'f-person', 'f-strasse', 'f-ort', 'f-gewerk', 'f-farbe'].forEach(function (id) {
+      document.getElementById(id).addEventListener('input', aktualisiere);
+      document.getElementById(id).addEventListener('change', aktualisiere);
+    });
+
+    document.getElementById('kopieren').addEventListener('click', function () {
+      var feld = document.getElementById('link');
+      var knopf = this;
+      function fertig() { knopf.textContent = 'Kopiert'; setTimeout(function () { knopf.textContent = 'Kopieren'; }, 1500); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(feld.value).then(fertig, function () { feld.select(); document.execCommand('copy'); fertig(); });
+      } else {
+        feld.select(); document.execCommand('copy'); fertig();
+      }
+    });
+
+    document.getElementById('drucken').addEventListener('click', function () { window.print(); });
+
+    aktualisiere();
+  })();
+  </script>
+</body>
+</html>
