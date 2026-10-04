@@ -43,8 +43,9 @@ header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.9
 .btn-hell:hover { background: #eef2f8; transform: translateY(-1px); }
 .btn-rand { color: #fff; border: 1px solid rgba(255,255,255,0.3); }
 .btn-rand:hover { background: rgba(255,255,255,0.08); }
-.btn-wa { background: #25d366; color: #fff; }
-.btn-wa:hover { background: #1ebe5b; transform: translateY(-1px); }
+/* Dunkleres Gruen als das WhatsApp-Gruen #25d366: weisse Schrift darauf ist schwer lesbar (Kontrast 2:1). */
+.btn-wa { background: #15803d; color: #fff; }
+.btn-wa:hover { background: #166534; transform: translateY(-1px); }
 .direkt { margin-top: 16px; color: #b8c4d6; font-size: 0.98rem; }
 .direkt a { color: #fff; font-weight: 600; text-underline-offset: 2px; white-space: nowrap; }
 .buehne-raster { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
@@ -78,7 +79,7 @@ h2 { font-size: clamp(1.55rem, 2.7vw, 2.05rem); letter-spacing: -0.02em; text-al
 .lage h3 { font-size: 1.1rem; margin-bottom: 8px; }
 .lage .problem { color: var(--grau); font-size: 0.97rem; margin-bottom: 16px; }
 .lage .loesung { margin-top: auto; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 14px; color: #14532d; font-size: 0.95rem; }
-.lage .loesung strong { display: block; color: var(--gruen); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+.lage .loesung strong { display: block; color: #15803d; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
 
 /* Formular-Vorschau */
 .formular-raster { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: start; }
@@ -130,6 +131,7 @@ footer { background: var(--navy); color: #8295ad; font-size: 0.88rem; padding: 3
 footer a { color: #b8c4d6; text-decoration: none; }
 footer a:hover { color: #fff; }
 .fuss-unten { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; }
+.fuss-unten a { text-decoration: underline; text-underline-offset: 2px; }
 
 @media (max-width: 900px) {
   .buehne-raster { grid-template-columns: 1fr; gap: 36px; }
