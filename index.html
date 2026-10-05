@@ -55,7 +55,7 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      { "@type": "Question", "name": "Passt das auch zu meiner Branche?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, wenn Ihre Kunden bei Ihnen anfragen. Entstanden ist das System für Handwerksbetriebe, es passt aber genauso zu Dienstleistern, etwa Reinigungsfirmen, Umzugsunternehmen oder Fotografen. Formular, Texte und Abläufe richte ich auf Ihre Branche ein." } },
+      { "@type": "Question", "name": "Passt das auch zu meiner Branche?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, wenn Ihre Kunden bei Ihnen anfragen. Entstanden ist das System für Handwerksbetriebe, es passt aber genauso zu Dienstleistern, etwa Reinigungsfirmen, Umzugsunternehmen oder Fotografen. Formular, Texte und Abläufe richte ich auf Ihre Branche ein. Beispiele: Elektriker, Maler sowie Heizung und Sanitär." } },
       { "@type": "Question", "name": "Ist die Einrichtung kompliziert für mich?", "acceptedAnswer": { "@type": "Answer", "text": "Nein. Ich richte alles für Sie ein und passe es an Ihren Betrieb an. Sie müssen nichts installieren: Das System läuft auf Googles Servern, Sie bedienen es im Browser oder am Handy. Meist sind Sie nach 3 bis 5 Werktagen startklar." } },
       { "@type": "Question", "name": "Bekommt der Kunde wirklich sofort eine Antwort?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Sobald eine Anfrage eingeht, verschickt das System in Sekunden eine automatische Eingangsbestätigung mit Ihrem Namen, auch nachts und am Wochenende. Den richtigen Terminvorschlag schicken dann Sie mit einem Klick." } },
       { "@type": "Question", "name": "Was ist mit dem Datenschutz (DSGVO)?", "acceptedAnswer": { "@type": "Answer", "text": "Ihre Anfragedaten gehören Ihnen. Ich verarbeite sie nur in Ihrem Auftrag, dafür schließen wir einen Auftragsverarbeitungsvertrag (AVV nach Art. 28 DSGVO). Die Daten jedes Betriebs werden getrennt gespeichert, und Sie erhalten sie jederzeit als Export. Das Anfrageformular enthält einen Einwilligungstext zur Datenverarbeitung." } },
@@ -256,6 +256,7 @@
     .faq summary::after { content: "+"; color: var(--blau); font-size: 1.5rem; font-weight: 400; line-height: 1; flex-shrink: 0; }
     .faq details[open] summary::after { content: "\2212"; }
     .faq details p { color: var(--grau); font-size: 0.98rem; padding: 0 0 18px; margin: 0; }
+    .faq details p a { color: var(--blau); font-weight: 600; text-underline-offset: 2px; }
 
     /* Footer */
     footer { padding: 44px 0 30px; background: var(--navy); color: #8295ad; font-size: 0.88rem; }
@@ -510,7 +511,7 @@
       <div class="faq reveal">
         <details>
           <summary>Passt das auch zu meiner Branche?</summary>
-          <p>Ja, wenn Ihre Kunden bei Ihnen anfragen. Entstanden ist das System für Handwerksbetriebe, es passt aber genauso zu Dienstleistern, etwa Reinigungsfirmen, Umzugsunternehmen oder Fotografen. Formular, Texte und Abläufe richte ich auf Ihre Branche ein.</p>
+          <p>Ja, wenn Ihre Kunden bei Ihnen anfragen. Entstanden ist das System für Handwerksbetriebe, es passt aber genauso zu Dienstleistern, etwa Reinigungsfirmen, Umzugsunternehmen oder Fotografen. Formular, Texte und Abläufe richte ich auf Ihre Branche ein. Beispiele: <a href="anfrage-system-elektriker.html">Elektriker</a>, <a href="anfrage-system-maler.html">Maler</a> sowie <a href="anfrage-system-heizung-sanitaer.html">Heizung und Sanitär</a>.</p>
         </details>
         <details>
           <summary>Ist die Einrichtung kompliziert für mich?</summary>
