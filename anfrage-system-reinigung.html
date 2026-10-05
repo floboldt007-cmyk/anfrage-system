@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anfrage-System für Reinigungsfirmen und Hausservice | anfrageprofi</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231d4ed8'/><path d='M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z' fill='%23ffffff'/><path d='M11.5 14.5l3 3 6-6' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <!--
+    Branchen-Seite fuer Reinigung und Hausservice. Gemeinsames Aussehen: branche.css.
+    Das Formular unten laeuft mit ?vorschau=1: Es speichert nichts und
+    verschickt keine Mail. Beispielbetrieb wie in der Mail-Vorschau der
+    Startseite: Mustermann Gebaeudereinigung. Inhalt bewusst eigen je
+    Branche, sonst wertet Google die Seiten als Brueckenseiten.
+  -->
+  <meta name="description" content="Für Gebäudereinigung und Hausservice: Anfragen mit Objekt, Fläche und Rhythmus kommen geordnet an und werden dem Kunden sofort in Ihrem Namen bestätigt." />
+  <meta property="og:title" content="Anfrage-System für Reinigungsfirmen: Angebotsanfragen sofort bestätigt" />
+  <meta property="og:description" content="Büro, Treppenhaus, Endreinigung: Jede Anfrage wird sofort bestätigt und landet geordnet in Ihrer Liste. Besichtigung oder Absage verschicken Sie mit einem Klick." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:url" content="https://anfrageprofi.de/anfrage-system-reinigung.html" />
+  <meta property="og:site_name" content="anfrageprofi.de" />
+  <meta property="og:image" content="https://anfrageprofi.de/og-vorschau.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="author" content="Florian Boldt" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0f1f3d" />
+  <meta name="color-scheme" content="light" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="canonical" href="https://anfrageprofi.de/anfrage-system-reinigung.html" />
+  <link rel="stylesheet" href="branche.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Anfrage-System für Reinigungsfirmen und Hausservice",
+    "brand": { "@type": "Brand", "name": "anfrageprofi" },
+    "serviceType": "Automatisches Anfrage- und Terminsystem",
+    "description": "Anfragen an einen Reinigungsbetrieb, etwa zu Unterhaltsreinigung, Treppenhausreinigung, Fensterreinigung oder Endreinigung nach Umzug, werden sofort erfasst, dem Kunden im Namen des Betriebs bestätigt und geordnet abgelegt. Besichtigungstermin oder Absage gehen mit einem Klick raus.",
+    "provider": {
+      "@type": "Person",
+      "name": "Florian Boldt",
+      "email": "kontakt@anfrageprofi.de",
+      "telephone": "+491629152715",
+      "address": { "@type": "PostalAddress", "addressLocality": "Leverkusen", "postalCode": "51379", "addressCountry": "DE" }
+    },
+    "offers": { "@type": "Offer", "price": "39", "priceCurrency": "EUR", "description": "ab 39 € im Monat, Einrichtung einmalig ab 249 €, monatlich kündbar" },
+    "areaServed": { "@type": "Country", "name": "Deutschland" },
+    "audience": { "@type": "BusinessAudience", "name": "Gebäudereinigungen, Reinigungsfirmen und Hausmeisterdienste" },
+    "url": "https://anfrageprofi.de/anfrage-system-reinigung.html"
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+  <header>
+    <div class="container kopf">
+      <a class="logo" href="index.html" aria-label="anfrageprofi, zur Startseite"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1d4ed8"/><path d="M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" fill="#fff"/><path d="M11.5 14.5l3 3 6-6" fill="none" stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>anfrage<span class="profi">profi</span></span></a>
+      <nav aria-label="Hauptnavigation">
+        <a href="#ablauf">So läuft es</a>
+        <a href="#formular">Formular</a>
+        <a href="#faq">Fragen</a>
+        <a class="kopf-cta" href="#kontakt">Kostenlose Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inhalt">
+    <section class="buehne">
+      <div class="container buehne-raster">
+        <div>
+          <span class="badge">Für Reinigung und Hausservice</span>
+          <h1>Jede Reinigungsanfrage sofort bestätigt, das Angebot kalkulieren Sie in Ruhe.</h1>
+          <p class="sub">Ob Bürofläche, Treppenhaus oder Wohnungsübergabe: Ihr Kunde beschreibt Objekt, Quadratmeter und gewünschten Rhythmus im Formular und hat Sekunden später eine Bestätigung im Namen Ihres Betriebs. Den Besichtigungstermin oder eine Absage schicken Sie mit einem Klick.</p>
+          <div class="knopfreihe">
+            <a class="btn btn-hell" href="#kontakt">Kostenlose Demo anfragen</a>
+            <a class="btn btn-rand" href="#formular">Formular ausprobieren</a>
+          </div>
+          <p class="direkt">Lieber direkt? <a href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20habe%20einen%20Reinigungsbetrieb%20und%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System.">WhatsApp schreiben</a> oder <a href="tel:+491629152715">anrufen:&nbsp;0162&nbsp;9152715</a></p>
+          <p class="direkt">Ab 39 € im Monat, monatlich kündbar und ohne Mindestlaufzeit.</p>
+        </div>
+        <figure class="liste-karte" aria-label="Beispiel einer Anfragenliste eines Reinigungsbetriebs">
+          <div class="liste-kopf"><span>Ihre Anfragenliste</span><span class="liste-tag">Beispiel</span></div>
+          <ul>
+            <li><div class="li-oben"><span>Treppenhausreinigung</span><span class="status neu">Neu</span></div><div class="li-unten">In den nächsten Wochen · Hausverwaltung, 3 Aufgänge · eingegangen 22:14 Uhr</div></li>
+            <li><div class="li-oben"><span>Endreinigung nach Umzug</span><span class="status gesendet">Termin gesendet</span></div><div class="li-unten">Diese Woche · 2 Zimmer, Übergabe am Donnerstag</div></li>
+            <li><div class="li-oben"><span>Unterhaltsreinigung</span><span class="status bestaetigt">Bestätigt</span></div><div class="li-unten">Kein Zeitdruck · Arztpraxis, 180 m², dreimal pro Woche</div></li>
+            <li><div class="li-oben"><span>Fensterreinigung</span><span class="status abgesagt">Abgesagt</span></div><div class="li-unten">In den nächsten Wochen · Glasfassade, nur mit Hubsteiger</div></li>
+          </ul>
+          <figcaption>Vereinfachte Darstellung mit Beispieldaten. Die echte Liste ist eine Google-Tabelle, die Sie im Browser oder am Handy öffnen.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block tint" id="alltag">
+      <div class="container">
+        <p class="eyebrow">Aus dem Alltag in der Gebäudereinigung</p>
+        <h2>Wo Reinigungsaufträge sonst liegen bleiben</h2>
+        <p class="lead">Drei Situationen aus dem Betrieb und was das Anfrage-System Ihnen dabei abnimmt.</p>
+        <div class="lagen">
+          <article class="lage">
+            <h3>Die Hausverwaltung holt mehrere Angebote ein</h3>
+            <p class="problem">Für fünf Treppenhäuser sucht eine Verwaltung einen neuen Dienstleister und schreibt mehrere Firmen gleichzeitig an. Wer sich erst nach Tagen meldet, hat die Objekte oft nicht einmal gesehen, wenn die Entscheidung fällt.</p>
+            <p class="loesung"><strong>So läuft es dann</strong>Die Verwalterin hat sofort eine Eingangsbestätigung von Ihnen. In der Liste stehen Objektadresse und Beschreibung, und mit „Termin senden“ geht Ihr Vorschlag für die Besichtigung raus. Der Termin steht samt Adresse in Ihrem Google Kalender.</p>
+          </article>
+          <article class="lage">
+            <h3>Endreinigung kurz vor der Übergabe</h3>
+            <p class="problem">Der Umzug ist geschafft, am Donnerstag kommt der Vermieter zur Abnahme. Der Mieter schreibt am Sonntagabend an mehrere Reinigungsfirmen und braucht schnell eine Zusage.</p>
+            <p class="loesung"><strong>So läuft es dann</strong>Er wählt „Endreinigung nach Umzug“ und „Diese Woche“ und bekommt noch am Sonntag eine Bestätigung. Montagfrüh sehen Sie die Anfrage mit Adresse und Übergabedatum aus seiner Beschreibung und schicken Ihren Terminvorschlag mit einem Klick.</p>
+          </article>
+          <article class="lage">
+            <h3>Fenster, die zweimal im Jahr dran sind</h3>
+            <p class="problem">Fensterreinigung im Frühjahr und Herbst, die Grundreinigung einmal im Jahr: Diese Aufträge kommen wieder, wenn rechtzeitig jemand daran denkt. Im laufenden Tagesgeschäft rutscht das leicht durch.</p>
+            <p class="loesung"><strong>Auf Wunsch dazu</strong>Vor dem nächsten fälligen Fenstertermin erstellt das System den passenden Text für Ihren Kunden und legt ihn als Gmail-Entwurf ab, dazu bekommen Sie eine kurze Übersicht als Erinnerung. Abgeschickt wird nichts von allein: Sie lesen drüber und senden selbst.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="formular">
+      <div class="container formular-raster">
+        <div class="formular-text">
+          <p class="eyebrow">Ihr Formular</p>
+          <h2>Die Angaben, die Sie für ein Angebot brauchen</h2>
+          <p>Unterhaltsreinigung, Grundreinigung, Fensterreinigung, Endreinigung nach Umzug oder Treppenhausreinigung: Ihr Kunde wählt aus, worum es geht. Fläche, Rhythmus und Art des Objekts schreibt er in die Beschreibung. Das Beispiel im Feld zeigt ihm, was gemeint ist.</p>
+          <ul class="haken-liste">
+            <li>Adresse des Objekts, damit Sie Anfahrt und Besichtigung planen können</li>
+            <li>Die Frage „Wie dringend ist es?“ mit Antworten wie „Diese Woche“, damit eine nahe Übergabe sofort auffällt</li>
+            <li>Bevorzugter Kontaktweg, ob Anruf, E-Mail oder WhatsApp, praktisch bei Verwaltern, die tagsüber in Terminen sitzen</li>
+            <li>Fehlt eine Leistung wie Hausmeisterservice, nehme ich sie bei der Einrichtung in Ihre Auswahl auf</li>
+          </ul>
+          <p class="hinweis-klein">Probieren Sie es aus, als wären Sie eine Hausverwaltung auf der Suche nach einem neuen Dienstleister. Mustermann Gebäudereinigung ist ein erfundener Beispielbetrieb, und diese Vorschau speichert und versendet nichts.</p>
+        </div>
+        <div class="formular-kasten">
+          <p class="band">Beispiel: Formular von Mustermann Gebäudereinigung</p>
+          <iframe id="vorschau" class="formular-rahmen" title="Beispiel-Anfrageformular eines Reinigungsbetriebs" loading="lazy" src="formular.html?gewerk=reinigung&amp;vorschau=1&amp;betrieb=Mustermann%20Geb%C3%A4udereinigung"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="block tint" id="ablauf">
+      <div class="container">
+        <p class="eyebrow">So läuft es</p>
+        <h2>Drei Schritte bis zur Besichtigung</h2>
+        <p class="lead">Sie arbeiten weiter wie bisher. Annehmen, bestätigen und ordnen erledigt das System.</p>
+        <div class="schritte">
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Der Kunde fragt an</h3>
+            <p>Abends, am Wochenende oder zwischen zwei Objekten: Die Anfrage kommt mit Leistung, Objektadresse und Beschreibung geordnet in Ihrer Liste an.</p>
+          </div>
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Bestätigung in Sekunden</h3>
+            <p>Automatisch erhält der Kunde eine Eingangsbestätigung im Namen Ihres Betriebs. So weiß er, dass seine Anfrage angekommen ist.</p>
+          </div>
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Besichtigung oder Absage per Klick</h3>
+            <p>„Termin senden“ verschickt Ihren Vorschlag und trägt ihn mit Adresse in Ihren Kalender ein. Passt ein Auftrag nicht, etwa wegen der Entfernung, geht mit „Absagen“ eine freundliche Absage raus.</p>
+          </div>
+        </div>
+        <p class="extra">Auf Wunsch dazu: eine Erinnerung vor wiederkehrenden Einsätzen wie Fenster- oder Grundreinigung als Gmail-Entwurf, eine freundliche Nachfass-Mail einige Tage nach Ihrem Angebot, eine Mail mit der Bitte um eine Google-Bewertung, sobald die Reinigung erledigt ist, und ein Monatsbericht per Mail. Was unbeantwortete Anfragen kosten können, zeigt der <a href="rechner.html">Verlustrechner</a>.</p>
+      </div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="container">
+        <p class="eyebrow">Häufige Fragen</p>
+        <h2>Was Reinigungsbetriebe oft fragen</h2>
+        <p class="lead">Kurze, ehrliche Antworten. Fehlt Ihre Frage, rufen Sie mich gern an.</p>
+        <div class="faq">
+          <details>
+            <summary>Bekomme ich Fläche und Rhythmus schon mit der Anfrage?</summary>
+            <p>In den meisten Fällen ja. Ein eigenes Zahlenfeld gibt es dafür nicht, aber das Beispiel im Beschreibungsfeld („Büro, 120 m², zweimal pro Woche abends“) zeigt Ihrem Kunden, welche Angaben Sie brauchen. Fehlt etwas, stehen Telefonnummer und bevorzugter Kontaktweg direkt dabei. Fotos vom Objekt schickt der Kunde am einfachsten per WhatsApp hinterher.</p>
+          </details>
+          <details>
+            <summary>Ich habe nur ein Google-Profil und keine Website. Reicht das?</summary>
+            <p>Ja. Ihr Formular bekommt dann einen eigenen Link. Den hinterlegen Sie im Google-Profil, setzen ihn unter Ihre Mails oder drucken ihn als QR-Code auf die Visitenkarte. Kommt später eine Website dazu, ob WordPress, Jimdo oder Wix, übernehme ich den Einbau dort.</p>
+          </details>
+          <details>
+            <summary>Was verschickt das System selbst, und was entscheide ich?</summary>
+            <p>Von selbst geht die Eingangsbestätigung direkt nach der Anfrage raus und, wenn Sie das möchten, eine freundliche Nachfass-Mail einige Tage nach einem Angebot ohne Auftrag. Terminvorschlag und Absage verschicken Sie per Klick. Erinnerungen an wiederkehrende Reinigungen liegen als Entwurf in Ihrem Gmail-Postfach und gehen nie automatisch raus.</p>
+          </details>
+          <details>
+            <summary>Was kostet das?</summary>
+            <p>Ab 39 € im Monat, dazu einmalig ab 249 € für die Einrichtung. Für die ersten Pilotbetriebe ist die Einrichtung kostenlos. Monatlich kündbar, ohne Mindestlaufzeit. Als Kleinunternehmer berechne ich keine Umsatzsteuer (§ 19 UStG).</p>
+          </details>
+        </div>
+        <p class="extra">Weitere Antworten, zum Beispiel zu Datenschutz und Kündigung, finden Sie im <a href="index.html#faq">Fragenteil der Startseite</a>.</p>
+      </div>
+    </section>
+
+    <section class="kontakt" id="kontakt">
+      <div class="container">
+        <h2>Wie das für Ihren Reinigungsbetrieb aussieht, zeige ich Ihnen gern</h2>
+        <p>Schreiben Sie mir, welche Objekte Sie betreuen, ob Büros, Treppenhäuser oder Wohnungen. In einer kostenlosen Demo sehen Sie Formular und Anfragenliste mit Ihren eigenen Leistungen. Unverbindlich.</p>
+        <div class="knopfreihe">
+          <a class="btn btn-wa" href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20habe%20einen%20Reinigungsbetrieb%20und%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System."><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 .5C7.4.5.5 7.4.5 16c0 2.8.7 5.5 2.1 7.9L.4 31.5l7.8-2.1c2.3 1.3 4.9 1.9 7.6 1.9h.1C24.6 31.3 31.5 24.4 31.5 16 31.5 7.4 24.6.5 16 .5zm0 28.3c-2.4 0-4.8-.7-6.9-1.9l-.5-.3-5.1 1.3 1.4-5-.3-.5C3.3 19.4 2.6 17 2.6 16 2.6 8.6 8.6 2.6 16 2.6S29.4 8.6 29.4 16 23.4 28.8 16 28.8zm7.4-9.6c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-2.4-1.2-3.9-2.1-5.5-4.8-.4-.7.4-.6 1.1-2.1.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.6-.8-.7h-.7c-.2 0-.6.1-.9.4-1.2 1.3-1.5 2.7-.9 4.5.9 2.6 2.7 4.7 5.1 6.1 2.6 1.5 3.6 1.3 4.9 1.1.8-.1 2.4-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.3-.3-.7-.5z"/></svg>WhatsApp schreiben</a>
+          <a class="btn btn-hell" href="tel:+491629152715"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z" fill="currentColor"/></svg>Anrufen:&nbsp;0162&nbsp;9152715</a>
+        </div>
+        <p class="klein">oder per E-Mail an <a href="mailto:kontakt@anfrageprofi.de?subject=Anfrage-System%20f%C3%BCr%20meinen%20Reinigungsbetrieb">kontakt@anfrageprofi.de</a> · <a href="index.html#kontakt">zum Kontaktformular</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="fuss-raster">
+        <div>
+          <a class="logo logo-hell" href="index.html" aria-label="anfrageprofi, zur Startseite"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1d4ed8"/><path d="M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" fill="#fff"/><path d="M11.5 14.5l3 3 6-6" fill="none" stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>anfrage<span class="profi">profi</span></span></a>
+          <div class="fuss-zeile">Ein Angebot von Florian Boldt, Leverkusen</div>
+        </div>
+        <nav aria-label="Weitere Seiten">
+          <a href="index.html">Startseite</a>
+          <a href="rechner.html">Verlustrechner</a>
+          <a href="musterbetrieb.html">Musterseite</a>
+          <a href="anfrage-system-handwerk.html">Für Handwerk</a>
+          <a href="anfrage-system-events.html">Für Fotografie und Events</a>
+        </nav>
+      </div>
+      <div class="fuss-unten">
+        © 2026 Florian Boldt · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+        <div style="margin-top:8px;">Dieses Angebot richtet sich ausschließlich an Unternehmen, Gewerbetreibende und Selbstständige (kein Verbrauchergeschäft).</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    // Das Formular meldet seine Hoehe, damit der Rahmen mitwaechst statt innen zu scrollen.
+    var rahmen = document.getElementById('vorschau');
+    window.addEventListener('message', function (ereignis) {
+      var d = ereignis.data;
+      if (!d || d.anfrageprofi !== 'hoehe' || ereignis.source !== rahmen.contentWindow) { return; }
+      var h = parseInt(d.hoehe, 10);
+      if (h > 200 && h < 4000) { rahmen.style.height = h + 'px'; }
+    });
+  })();
+  </script>
+</body>
+</html>
