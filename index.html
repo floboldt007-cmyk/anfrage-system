@@ -131,8 +131,9 @@
     .btn-primaer:hover { background: var(--blau-dunkel); transform: translateY(-1px); }
     .btn-hell { background: #fff; color: var(--navy); }
     .btn-hell:hover { background: #eef2f8; transform: translateY(-1px); }
-    .btn-wa { background: #25d366; color: #fff; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-wa:hover { background: #1ebe5b; transform: translateY(-1px); }
+    /* Dunkleres Gruen als das WhatsApp-Gruen #25d366: weisse Schrift darauf ist schwer lesbar (Kontrast 2:1). */
+    .btn-wa { background: #15803d; color: #fff; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-wa:hover { background: #166534; transform: translateY(-1px); }
     .btn-wa svg { width: 20px; height: 20px; }
     .hero-direkt { margin-top: 16px; font-size: 0.98rem; color: #b8c4d6; }
     .hero-direkt a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
@@ -264,6 +265,7 @@
     footer a { color: #b8c4d6; text-decoration: none; transition: color 0.13s; }
     footer a:hover { color: #fff; }
     .footer-unten { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px; text-align: center; }
+    .footer-unten a { text-decoration: underline; text-underline-offset: 2px; }
 
     /* Scroll-Reveal (nur mit JS aktiv, sonst alles sichtbar) */
     .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -559,7 +561,7 @@
         <label>Nachricht<textarea name="Nachricht" rows="4" placeholder="Worum geht es? (optional)"></textarea></label>
         <label class="check"><input type="checkbox" name="Einwilligung" required value="Ja" /> <span>Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet und dafür an den Versanddienst FormSubmit übermittelt werden. Hinweise dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.*</span></label>
         <button type="submit" class="btn-senden">Anfrage absenden</button>
-        <p style="font-size:0.8rem; color:#94a3b8; margin-top:12px; margin-bottom:0; text-align:center;">* Pflichtfeld · Ihre Angaben gehen nur an mich, kein Newsletter, keine Weitergabe an Dritte.</p>
+        <p style="font-size:0.8rem; color:#64748b; margin-top:12px; margin-bottom:0; text-align:center;">* Pflichtfeld · Ihre Angaben gehen nur an mich, kein Newsletter, keine Weitergabe an Dritte.</p>
       </form>
 
       <span class="mail">Lieber direkt schreiben? <a href="mailto:kontakt@anfrageprofi.de">kontakt@anfrageprofi.de</a></span>
