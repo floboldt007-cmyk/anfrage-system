@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anfrage-System für Fotografen und Eventdienstleister | anfrageprofi</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231d4ed8'/><path d='M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z' fill='%23ffffff'/><path d='M11.5 14.5l3 3 6-6' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <!--
+    Branchen-Seite fuer Fotografie und Events (Hochzeits- und Eventfotografen,
+    DJs, Catering, Eventtechnik, Dekoration, mobile Bars). Gemeinsames Aussehen:
+    branche.css. Das Formular unten laeuft mit gewerk=event und vorschau=1:
+    Es fragt "Wann ist der Termin?" und nach dem Ort der Veranstaltung,
+    speichert nichts und verschickt keine Mail. Inhalt bewusst eigen je
+    Branche, sonst wertet Google die Seiten als Brueckenseiten.
+  -->
+  <meta name="description" content="Für Hochzeitsfotografen, DJs, Catering und Eventtechnik: Jede Anfrage kommt mit Anlass, Datum und Ort an und wird in Sekunden in Ihrem Namen bestätigt." />
+  <meta property="og:title" content="Anfrage-System für Fotografie und Events: Anfragen sofort bestätigt, auch am Wochenende" />
+  <meta property="og:description" content="Hochzeit, Firmenfeier oder Shooting: Ihr Kunde nennt Anlass, Datum und Ort und hat in Sekunden eine Bestätigung. Vorgespräch oder Absage mit einem Klick." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:url" content="https://anfrageprofi.de/anfrage-system-events.html" />
+  <meta property="og:site_name" content="anfrageprofi.de" />
+  <meta property="og:image" content="https://anfrageprofi.de/og-vorschau.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="author" content="Florian Boldt" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0f1f3d" />
+  <meta name="color-scheme" content="light" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="canonical" href="https://anfrageprofi.de/anfrage-system-events.html" />
+  <link rel="stylesheet" href="branche.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Anfrage-System für Fotografie und Events",
+    "brand": { "@type": "Brand", "name": "anfrageprofi" },
+    "serviceType": "Automatisches Anfrage- und Terminsystem",
+    "description": "Anfragen an Fotografen, DJs, Caterer und andere Eventdienstleister, etwa für Hochzeit, Firmenfeier, Geburtstag oder Fotoshooting, kommen über ein Formular mit Anlass, Termin und Ort der Veranstaltung herein, werden dem Kunden sofort im Namen des Betriebs bestätigt und geordnet abgelegt. Der Vorschlag für ein Vorgespräch oder eine Absage geht mit einem Klick raus.",
+    "provider": {
+      "@type": "Person",
+      "name": "Florian Boldt",
+      "email": "kontakt@anfrageprofi.de",
+      "telephone": "+491629152715",
+      "address": { "@type": "PostalAddress", "addressLocality": "Leverkusen", "postalCode": "51379", "addressCountry": "DE" }
+    },
+    "offers": { "@type": "Offer", "price": "39", "priceCurrency": "EUR", "description": "ab 39 € im Monat, Einrichtung einmalig ab 249 €, monatlich kündbar" },
+    "areaServed": { "@type": "Country", "name": "Deutschland" },
+    "audience": { "@type": "BusinessAudience", "name": "Hochzeits- und Eventfotografen, DJs, Caterer, Eventtechnik, Dekoration und mobile Bars" },
+    "url": "https://anfrageprofi.de/anfrage-system-events.html"
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+  <header>
+    <div class="container kopf">
+      <a class="logo" href="index.html" aria-label="anfrageprofi, zur Startseite"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1d4ed8"/><path d="M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" fill="#fff"/><path d="M11.5 14.5l3 3 6-6" fill="none" stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>anfrage<span class="profi">profi</span></span></a>
+      <nav aria-label="Hauptnavigation">
+        <a href="#ablauf">So läuft es</a>
+        <a href="#formular">Formular</a>
+        <a href="#faq">Fragen</a>
+        <a class="kopf-cta" href="#kontakt">Kostenlose Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inhalt">
+    <section class="buehne">
+      <div class="container buehne-raster">
+        <div>
+          <span class="badge">Für Fotografie und Events</span>
+          <h1>Sie arbeiten auf einer Hochzeit, und das nächste Brautpaar hat trotzdem sofort eine Antwort.</h1>
+          <p class="sub">Anfragen für Hochzeiten, Firmenfeiern und Shootings kommen oft abends und am Wochenende, genau dann, wenn Sie selbst im Einsatz sind. Über Ihr Formular nennt der Kunde Anlass, Datum und Ort und bekommt in Sekunden eine Bestätigung in Ihrem Namen. Vorgespräch oder Absage schicken Sie danach mit einem Klick.</p>
+          <div class="knopfreihe">
+            <a class="btn btn-hell" href="#kontakt">Kostenlose Demo anfragen</a>
+            <a class="btn btn-rand" href="#formular">Formular ausprobieren</a>
+          </div>
+          <p class="direkt">Lieber direkt? <a href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20biete%20Fotografie%20oder%20Events%20an%20und%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System.">WhatsApp schreiben</a> oder <a href="tel:+491629152715">anrufen:&nbsp;0162&nbsp;9152715</a></p>
+          <p class="direkt">Ab 39 € im Monat, monatlich kündbar.</p>
+        </div>
+        <figure class="liste-karte" aria-label="Beispiel einer Anfragenliste für Fotografie und Events">
+          <div class="liste-kopf"><span>Ihre Anfragenliste</span><span class="liste-tag">Beispiel</span></div>
+          <ul>
+            <li><div class="li-oben"><span>Hochzeit</span><span class="status neu">Neu</span></div><div class="li-unten">In mehr als 6 Monaten · Raum Köln, ca. 80 Gäste · eingegangen 22:47 Uhr</div></li>
+            <li><div class="li-oben"><span>Fotoshooting</span><span class="status gesendet">Termin gesendet</span></div><div class="li-unten">Datum noch offen · Familienfotos im Freien, zwei Kinder</div></li>
+            <li><div class="li-oben"><span>Firmenfeier</span><span class="status bestaetigt">Bestätigt</span></div><div class="li-unten">In 1 bis 6 Monaten · Weihnachtsfeier, ca. 120 Gäste</div></li>
+            <li><div class="li-oben"><span>Geburtstag oder private Feier</span><span class="status abgesagt">Abgesagt</span></div><div class="li-unten">In den nächsten 4 Wochen · 60. Geburtstag, der Samstag ist schon vergeben</div></li>
+          </ul>
+          <figcaption>Vereinfachte Darstellung mit Beispieldaten. Die echte Liste ist eine Google-Tabelle, auch am Handy schnell geöffnet, etwa zwischen Trauung und Sektempfang.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block tint" id="alltag">
+      <div class="container">
+        <p class="eyebrow">Aus dem Alltag mit Hochzeiten und Events</p>
+        <h2>Jedes Datum gibt es nur einmal</h2>
+        <p class="lead">Ob Fotografie, DJ, Catering, Technik, Deko oder mobile Bar: Wer für Feiern gebucht wird, kennt diese drei Situationen.</p>
+        <div class="lagen">
+          <article class="lage">
+            <h3>Samstagabend, mitten im Einsatz</h3>
+            <p class="problem">Sie fotografieren den Eröffnungstanz, legen auf oder stehen am Buffet. Genau jetzt fragt ein Brautpaar für seine Hochzeit im nächsten Sommer an, und zwar bei mehreren Anbietern gleichzeitig. Wer zuerst klar antwortet, bekommt oft das Vorgespräch.</p>
+            <p class="loesung"><strong>So läuft es dann</strong>Das Paar hat in Sekunden eine Bestätigung in Ihrem Namen. Am nächsten Morgen finden Sie die Anfrage geordnet in Ihrer Liste. Ein Klick auf „Termin senden“, und Ihr Vorschlag für ein Vorgespräch ist unterwegs. Der Termin dafür steht dann auch in Ihrem Google Kalender.</p>
+          </article>
+          <article class="lage">
+            <h3>Der Samstag ist längst vergeben</h3>
+            <p class="problem">Beliebte Samstage in der Hochzeitssaison sind oft lange im Voraus gebucht. Trotzdem kommen weiter Anfragen für genau diese Tage. Jedes Mal eine Absage zu tippen, kostet Zeit. Also bleiben manche Anfragen liegen, und das Paar wartet vergeblich.</p>
+            <p class="loesung"><strong>So läuft es dann</strong>Ein Klick auf „Absagen“, und das Paar bekommt eine freundliche Absage. Es weiß sofort, woran es ist, und kann weitersuchen. Für beide Seiten besser als Schweigen.</p>
+          </article>
+          <article class="lage">
+            <h3>Nach dem Angebot und nach dem Fest</h3>
+            <p class="problem">Das Angebot ist raus, dann kommt nichts mehr. Und nach der Feier sind Sie in Gedanken schon beim nächsten Auftrag, die Bitte um eine Bewertung geht unter. Dabei schauen gerade Brautpaare auf Bewertungen, bevor sie anfragen.</p>
+            <p class="loesung"><strong>Auf Wunsch dazu</strong>Einige Tage nach Ihrem Angebot geht einmal eine freundliche Nachfrage raus, falls der Kunde noch nicht zugesagt hat. Nach dem Fest bitten Sie ihn mit einem Klick um eine Google-Bewertung.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="formular">
+      <div class="container formular-raster">
+        <div class="formular-text">
+          <p class="eyebrow">Ihr Formular</p>
+          <h2>Gefragt wird nach Anlass, Termin und Ort</h2>
+          <p>Ihr Formular fragt nicht, wie dringend etwas ist, sondern „Wann ist der Termin?“, mit Antworten von „In den nächsten 4 Wochen“ bis „Datum noch offen“. Bei „Worum geht es?“ wählt der Kunde zum Beispiel Hochzeit, Firmenfeier oder Fotoshooting.</p>
+          <ul class="haken-liste">
+            <li>„Ort der Veranstaltung“ statt Objektadresse: Sie sehen sofort, wie weit die Anfahrt zur Location ist</li>
+            <li>Für Datum, Gästezahl und Wünsche gibt das Beschreibungsfeld ein Beispiel vor: „Hochzeit am 14. Juni, ca. 80 Gäste, Raum Köln“</li>
+            <li>Anruf, E-Mail oder WhatsApp: Das Paar sagt gleich, wie es am liebsten erreichbar ist</li>
+            <li>Auswahl und Texte passe ich an Ihr Angebot an, ob Fotografie, DJ, Catering, Technik, Deko oder mobile Bar</li>
+          </ul>
+          <p class="hinweis-klein">Spielen Sie ruhig ein Brautpaar, das für den nächsten Sommer noch jemanden sucht. Fotografie Mustermann gibt es nicht wirklich, der Betrieb dient nur als Beispiel. Die Vorschau speichert keine Eingaben und verschickt keine Mail.</p>
+        </div>
+        <div class="formular-kasten">
+          <p class="band">Beispiel: Formular von Fotografie Mustermann</p>
+          <iframe id="vorschau" class="formular-rahmen" title="Beispiel-Anfrageformular von Fotografie Mustermann" loading="lazy" src="formular.html?gewerk=event&amp;vorschau=1&amp;betrieb=Fotografie%20Mustermann"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="block tint" id="ablauf">
+      <div class="container">
+        <p class="eyebrow">So läuft es</p>
+        <h2>Von der Anfrage bis zum Vorgespräch</h2>
+        <p class="lead">Ob Sie gerade fotografieren, auflegen oder ein Buffet aufbauen: Ihr Formular nimmt die Anfrage entgegen, und Sie antworten, wenn Sie Zeit haben. Installieren müssen Sie nichts, eingerichtet ist meist alles in 3 bis 5 Werktagen.</p>
+        <div class="schritte">
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Die Anfrage kommt an, auch spätabends</h3>
+            <p>Über Ihre Website oder einen eigenen Link, zu jeder Uhrzeit. Anlass, Termin und Ort der Veranstaltung stehen gleich dabei.</p>
+          </div>
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Bestätigung in Ihrem Namen</h3>
+            <p>Noch bevor Sie die Anfrage gelesen haben, hat der Kunde eine Mail im Namen Ihres Betriebs. So weiß er, dass alles angekommen ist.</p>
+          </div>
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Vorgespräch oder Absage per Klick</h3>
+            <p>„Termin senden“ schickt Ihren Vorschlag für ein Vorgespräch per Mail und trägt ihn in Ihren Google Kalender ein. Passt das Datum nicht, geht mit „Absagen“ eine freundliche Absage raus.</p>
+          </div>
+        </div>
+        <p class="extra">Auf Wunsch dazu: eine freundliche Nachfass-Mail, wenn einige Tage nach Ihrem Angebot keine Zusage kommt, und nach dem Fest per Klick die Bitte um eine Google-Bewertung. Bucht Sie eine Firma jedes Jahr für ihre Feier, liegt rechtzeitig vorher eine fertige Mail an sie als Gmail-Entwurf bereit. Sie bekommen eine kurze Erinnerung und schicken die Mail selbst ab. Was liegen gebliebene Anfragen bei Ihrem Auftragswert im Jahr kosten, rechnet der <a href="rechner.html">Verlustrechner</a> aus.</p>
+      </div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="container">
+        <p class="eyebrow">Häufige Fragen</p>
+        <h2>Was Fotografen und Eventdienstleister oft fragen</h2>
+        <p class="lead">Ehrliche Antworten, auch dazu, was das System nicht kann.</p>
+        <div class="faq">
+          <details>
+            <summary>Sehen meine Kunden, ob ihr Wunschtermin noch frei ist?</summary>
+            <p>Nein. Das System zeigt Ihren Kunden keinen Kalender mit freien Tagen und nimmt weder Buchungen noch Zahlungen entgegen. Der Kunde nennt seinen Wunschtermin in der Anfrage, und Sie prüfen selbst, ob er passt. Ist der Tag schon vergeben, genügt ein Klick auf „Absagen“.</p>
+          </details>
+          <details>
+            <summary>Passt das auch für DJs, Catering oder Eventtechnik?</summary>
+            <p>Ja. Anlass, Datum und Ort braucht jeder, der für Feiern gebucht wird. Die Auswahl bei „Worum geht es?“ stelle ich aus Ihrem Angebot zusammen, zum Beispiel mit Abiball oder Jubiläum. Gästezahl, Technik- oder Menüwünsche beschreibt der Kunde in eigenen Worten. Hochladen kann er im Formular nichts: Ablaufplan oder Moodboard schickt er am einfachsten per WhatsApp oder E-Mail hinterher.</p>
+          </details>
+          <details>
+            <summary>Kunden finden mich über Instagram und Hochzeitsmessen. Wie kommen sie zum Formular?</summary>
+            <p>Über einen eigenen Link zu Ihrem Formular. Den setzen Sie in Ihr Instagram-Profil, in Ihr Google-Profil oder in Ihre E-Mail-Signatur. Für die Messe kommt er als QR-Code auf Ihre Visitenkarte, den Interessierte mit dem Handy scannen. Haben Sie eine Website, etwa mit WordPress, Jimdo oder Wix, baue ich das Formular dort für Sie ein.</p>
+          </details>
+          <details>
+            <summary>Was kostet das?</summary>
+            <p>Ab 39 € im Monat, Einrichtung einmalig ab 249 €. Für die ersten Pilotbetriebe ist die Einrichtung kostenlos. Monatlich kündbar, ohne Mindestlaufzeit. Als Kleinunternehmer berechne ich keine Umsatzsteuer (§ 19 UStG).</p>
+          </details>
+        </div>
+        <p class="extra">Zu Datenschutz, Einrichtung und Kündigung finden Sie mehr in den <a href="index.html#faq">häufigen Fragen auf der Startseite</a>.</p>
+      </div>
+    </section>
+
+    <section class="kontakt" id="kontakt">
+      <div class="container">
+        <h2>Spielen wir es mit Ihren Anlässen einmal durch</h2>
+        <p>Schreiben Sie mir kurz, wofür man Sie bucht, ob Hochzeiten, Firmenfeiern oder Shootings. In einer kostenlosen Demo zeige ich Ihnen Formular und Anfragenliste mit Ihrem Angebot, ohne Verpflichtung. Danach entscheiden Sie in Ruhe: ab 39 € im Monat, Einrichtung einmalig ab 249 €, für die ersten Pilotbetriebe kostenlos.</p>
+        <div class="knopfreihe">
+          <a class="btn btn-wa" href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20biete%20Fotografie%20oder%20Events%20an%20und%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System."><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 .5C7.4.5.5 7.4.5 16c0 2.8.7 5.5 2.1 7.9L.4 31.5l7.8-2.1c2.3 1.3 4.9 1.9 7.6 1.9h.1C24.6 31.3 31.5 24.4 31.5 16 31.5 7.4 24.6.5 16 .5zm0 28.3c-2.4 0-4.8-.7-6.9-1.9l-.5-.3-5.1 1.3 1.4-5-.3-.5C3.3 19.4 2.6 17 2.6 16 2.6 8.6 8.6 2.6 16 2.6S29.4 8.6 29.4 16 23.4 28.8 16 28.8zm7.4-9.6c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-2.4-1.2-3.9-2.1-5.5-4.8-.4-.7.4-.6 1.1-2.1.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.6-.8-.7h-.7c-.2 0-.6.1-.9.4-1.2 1.3-1.5 2.7-.9 4.5.9 2.6 2.7 4.7 5.1 6.1 2.6 1.5 3.6 1.3 4.9 1.1.8-.1 2.4-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.3-.3-.7-.5z"/></svg>WhatsApp schreiben</a>
+          <a class="btn btn-hell" href="tel:+491629152715"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z" fill="currentColor"/></svg>Anrufen:&nbsp;0162&nbsp;9152715</a>
+        </div>
+        <p class="klein">oder per E-Mail an <a href="mailto:kontakt@anfrageprofi.de?subject=Anfrage-System%20f%C3%BCr%20Fotografie%20und%20Events">kontakt@anfrageprofi.de</a> · <a href="index.html#kontakt">zum Kontaktformular</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="fuss-raster">
+        <div>
+          <a class="logo logo-hell" href="index.html" aria-label="anfrageprofi, zur Startseite"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1d4ed8"/><path d="M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" fill="#fff"/><path d="M11.5 14.5l3 3 6-6" fill="none" stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>anfrage<span class="profi">profi</span></span></a>
+          <div class="fuss-zeile">Ein Angebot von Florian Boldt, Leverkusen</div>
+        </div>
+        <nav aria-label="Weitere Seiten">
+          <a href="index.html">Startseite</a>
+          <a href="rechner.html">Verlustrechner</a>
+          <a href="musterbetrieb.html">Musterseite</a>
+          <a href="anfrage-system-handwerk.html">Für Handwerk</a>
+          <a href="anfrage-system-reinigung.html">Für Reinigung</a>
+        </nav>
+      </div>
+      <div class="fuss-unten">
+        © 2026 Florian Boldt · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+        <div style="margin-top:8px;">Dieses Angebot richtet sich ausschließlich an Unternehmen, Gewerbetreibende und Selbstständige (kein Verbrauchergeschäft).</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    // Das Formular meldet seine Hoehe, damit der Rahmen mitwaechst statt innen zu scrollen.
+    var rahmen = document.getElementById('vorschau');
+    window.addEventListener('message', function (ereignis) {
+      var d = ereignis.data;
+      if (!d || d.anfrageprofi !== 'hoehe' || ereignis.source !== rahmen.contentWindow) { return; }
+      var h = parseInt(d.hoehe, 10);
+      if (h > 200 && h < 4000) { rahmen.style.height = h + 'px'; }
+    });
+  })();
+  </script>
+</body>
+</html>

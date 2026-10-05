@@ -56,6 +56,8 @@
     /* Gewerk-Umschalter ueber der Formular-Vorschau. Ohne JS bleibt er
        verborgen, dann zeigt die Vorschau einfach Heizung und Sanitaer. */
     [hidden] { display: none !important; }
+    /* Gleichmaessige Zeilen, damit kein einzelnes Wort allein in der letzten Zeile steht */
+    .buehne h1 { text-wrap: balance; }
     .gewerk-wahl { padding: 2px 6px 12px; }
     .gewerk-titel { font-size: 0.84rem; font-weight: 600; color: var(--grau); margin-bottom: 8px; }
     .gewerk-knoepfe { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -102,24 +104,24 @@
       <div class="container buehne-raster">
         <div>
           <span class="badge">Für Handwerksbetriebe aller Gewerke</span>
-          <h1>Während Sie auf der Baustelle sind, kommt jede Anfrage geordnet bei Ihnen an.</h1>
+          <h1>Sie arbeiten beim Kunden. Jede neue Anfrage kommt trotzdem geordnet bei Ihnen an.</h1>
           <p class="sub">Heizung, Elektro, Maler, Dach oder Tischler: Ihr Kunde schreibt über ein Formular auf Ihrer Website und nennt gleich Leistung, Dringlichkeit und Adresse. In Sekunden hat er eine Bestätigung in Ihrem Namen. Termin oder Absage schicken Sie später mit einem Klick, auch vom Handy.</p>
           <div class="knopfreihe">
             <a class="btn btn-hell" href="#kontakt">Kostenlose Demo anfragen</a>
             <a class="btn btn-rand" href="#formular">Formular ausprobieren</a>
           </div>
           <p class="direkt">Lieber direkt? <a href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20habe%20einen%20Handwerksbetrieb%20und%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System.">WhatsApp schreiben</a> oder <a href="tel:+491629152715">anrufen:&nbsp;0162&nbsp;9152715</a></p>
-          <p class="direkt">Ab 39&nbsp;€ im Monat, monatlich kündbar. Startklar in 3 bis 5 Werktagen.</p>
+          <p class="direkt">Ab 39&nbsp;€ im Monat, monatlich kündbar. Meist startklar in 3 bis 5 Werktagen.</p>
         </div>
         <figure class="liste-karte" aria-label="Beispiel einer Anfragenliste eines Handwerksbetriebs">
           <div class="liste-kopf"><span>Ihre Anfragenliste</span><span class="liste-tag">Beispiel</span></div>
           <ul>
-            <li><div class="li-oben"><span>Heizung: Störung oder Ausfall</span><span class="status neu">Neu</span></div><div class="li-unten">Notfall, heute noch · eingegangen Freitag, 16:55 Uhr</div></li>
-            <li><div class="li-oben"><span>Bad: Umbau oder Sanierung</span><span class="status gesendet">Termin gesendet</span></div><div class="li-unten">In den nächsten Wochen · Besichtigung vor dem Angebot</div></li>
-            <li><div class="li-oben"><span>Heizung: Wartung</span><span class="status bestaetigt">Bestätigt</span></div><div class="li-unten">Kein Zeitdruck · Wartung wie jedes Jahr im Herbst</div></li>
+            <li><div class="li-oben"><span>Heizung: Störung oder Ausfall</span><span class="status neu">Neu</span></div><div class="li-unten">Notfall, heute noch · Freitag 16:55 · Heizung bleibt kalt</div></li>
+            <li><div class="li-oben"><span>Bad: Umbau oder Sanierung</span><span class="status gesendet">Termin gesendet</span></div><div class="li-unten">Kein Zeitdruck · Besichtigung vor dem Angebot</div></li>
+            <li><div class="li-oben"><span>Heizung: Wartung</span><span class="status bestaetigt">Bestätigt</span></div><div class="li-unten">In den nächsten Wochen · Wartung wie jedes Jahr im Herbst</div></li>
             <li><div class="li-oben"><span>Sanitär: Reparatur</span><span class="status abgesagt">Abgesagt</span></div><div class="li-unten">Diese Woche · liegt außerhalb des Einsatzgebiets</div></li>
           </ul>
-          <figcaption>Vereinfachte Darstellung mit Beispieldaten. Die echte Liste ist eine Google-Tabelle, die Sie am Rechner oder am Handy öffnen.</figcaption>
+          <figcaption>Vereinfachte Darstellung mit Beispieldaten. Ihre richtige Liste liegt in Google Sheets, griffbereit im Büro und auf der Baustelle.</figcaption>
         </figure>
       </div>
     </section>
@@ -132,18 +134,18 @@
         <div class="lagen">
           <article class="lage">
             <h3>Freitag, kurz vor Feierabend</h3>
-            <p class="problem">Bei einem Kunden bleibt die Heizung kalt, beim nächsten fliegt die Sicherung, beim dritten tropft es nach dem Sturm ins Dachgeschoss. Sie stehen gerade selbst bei einem Auftrag und können nicht ans Telefon. Wer Sie nicht erreicht, ruft den nächsten Betrieb an.</p>
-            <p class="loesung"><strong>So läuft es dann</strong>Der Kunde schreibt über Ihr Formular und wählt „Notfall, heute noch“. In Sekunden hat er eine Bestätigung in Ihrem Namen. In Ihrer Liste stehen Problem, Adresse und Dringlichkeit, und Sie entscheiden, wen Sie zuerst zurückrufen.</p>
+            <p class="problem">Bei einem Kunden bleibt die Heizung kalt, beim nächsten fliegt die Sicherung, beim dritten tropft es nach dem Sturm ins Dachgeschoss. Sie stehen gerade selbst bei einem Auftrag und können nicht ans Telefon. Wer Sie nicht erreicht, wählt die nächste Nummer auf seiner Liste.</p>
+            <p class="loesung"><strong>So läuft es dann</strong>Ihr Kunde nutzt das Formular und gibt „Notfall, heute noch“ an. Eine Bestätigung in Ihrem Namen hat er sofort im Postfach. In Ihrer Liste stehen Problem, Adresse und Dringlichkeit, und Sie entscheiden, wen Sie zuerst zurückrufen.</p>
           </article>
           <article class="lage">
             <h3>Erst ansehen, dann anbieten</h3>
             <p class="problem">Wallbox, neues Bad, Fassade oder Treppe: Für ein Angebot brauchen Sie Eckdaten und meist eine Besichtigung. Am Telefon fehlt die Hälfte, und bis der Termin steht, telefonieren Sie dreimal hin und her.</p>
-            <p class="loesung"><strong>So läuft es dann</strong>Der Kunde beschreibt sein Vorhaben schon im Formular, etwa wo der Zählerschrank sitzt oder wie breit die Nische ist. Mit „Termin senden“ geht Ihr Vorschlag für die Besichtigung per Mail raus, und der Termin steht mit Adresse in Ihrem Google Kalender.</p>
+            <p class="loesung"><strong>So läuft es dann</strong>Schon im Formular beschreibt der Kunde sein Vorhaben, etwa wo der Zählerschrank sitzt oder wie breit die Nische ist. Passt es Ihnen, klicken Sie auf „Termin senden“: Der Kunde bekommt Ihren Besichtigungstermin per Mail, und im Google Kalender steht der Termin mit seiner Adresse.</p>
           </article>
           <article class="lage">
             <h3>Angebote und Wartungen, die liegen bleiben</h3>
             <p class="problem">Nach dem Angebot für die Badsanierung hören Sie wochenlang nichts. Die Wartung der Heizung oder der E-Check beim Vermieter ist bald wieder fällig, steht aber nur in Ihrem Kopf. Im Tagesgeschäft rutscht beides durch.</p>
-            <p class="loesung"><strong>Auf Wunsch dazu</strong>Einige Tage nach dem Angebot geht einmal eine freundliche Nachfrage an den Kunden. Vor einer fälligen Wartung liegt eine fertige Mail an ihn als Entwurf in Ihrem Gmail-Postfach. Sie lesen kurz drüber und schicken selbst ab.</p>
+            <p class="loesung"><strong>Auf Wunsch dazu</strong>Ist einige Tage nach Ihrem Angebot noch kein Auftrag da, fragt eine freundliche Mail einmal beim Kunden nach. Vor einer fälligen Wartung oder Prüfung liegt eine fertige Mail an ihn als Entwurf in Ihrem Gmail-Postfach. Sie lesen kurz drüber und klicken selbst auf Senden.</p>
           </article>
         </div>
       </div>
@@ -156,12 +158,12 @@
           <h2>Die Auswahl richtet sich nach Ihrem Gewerk</h2>
           <p>Bei „Worum geht es?“ sieht Ihr Kunde nur Leistungen, die Sie auch anbieten. Wählen Sie über dem Formular ein Gewerk, dann wechselt die Auswahl: von „Heizung: Wartung“ über „Wallbox oder Photovoltaik“ bis „Möbel nach Maß“.</p>
           <ul class="haken-liste">
-            <li>Der Kunde sagt selbst, wie eilig es ist: von „Notfall, heute noch“ bis „Kein Zeitdruck“</li>
+            <li>Der Kunde sagt selbst, wie eilig es ist, zum Beispiel „Notfall, heute noch“ oder „Kein Zeitdruck“</li>
             <li>Adresse des Objekts, damit Sie Besichtigung und Route planen können</li>
-            <li>Anruf, E-Mail oder WhatsApp: Ihr Kunde wählt den Weg, auf dem er erreichbar ist</li>
-            <li>Leistungen, Texte und Farben stelle ich für Ihren Betrieb zusammen, auch wenn Sie mehrere Gewerke anbieten</li>
+            <li>Anruf, E-Mail oder WhatsApp: Ihr Kunde wählt, wie Sie ihn am besten erreichen</li>
+            <li>Ich stelle Auswahl, Texte und Farben für Ihren Betrieb zusammen, auch für mehrere Gewerke in einem Formular</li>
           </ul>
-          <p class="hinweis-klein">Füllen Sie es ruhig einmal aus, als wären Sie ein Kunde mit tropfendem Wasserhahn. Alle Betriebe im Beispiel sind erfunden, und die Vorschau speichert nichts und verschickt nichts. Wie das Formular auf einer kompletten Website wirkt, zeigt die <a href="musterbetrieb.html">Musterseite</a> eines erfundenen SHK-Betriebs.</p>
+          <p class="hinweis-klein">Tun Sie ruhig so, als wären Sie ein Kunde mit tropfendem Wasserhahn, einer Steckdose ohne Strom oder einem klemmenden Dachfenster. Alle Betriebe im Beispiel sind erfunden, und die Vorschau speichert nichts und verschickt nichts. Wie das Formular auf einer kompletten Website wirkt, zeigt die <a href="musterbetrieb.html">Musterseite</a> eines erfundenen Heizungs- und Sanitärbetriebs.</p>
         </div>
         <div class="formular-kasten">
           <div class="gewerk-wahl" id="gewerk-wahl" role="group" aria-labelledby="gewerk-wahl-titel" hidden>
@@ -184,25 +186,25 @@
       <div class="container">
         <p class="eyebrow">So läuft es</p>
         <h2>Drei Schritte, egal welches Gewerk</h2>
-        <p class="lead">Sie installieren nichts und ändern nichts an Ihrer Arbeitsweise. Das System läuft auf Googles Servern, das Ergebnis sehen Sie im Browser oder am Handy.</p>
+        <p class="lead">Sie installieren nichts und ändern nichts an Ihrer Arbeitsweise. Die Technik läuft auf Googles Servern. Ihre Anfragenliste öffnen Sie im Büro am Rechner oder unterwegs im Transporter am Handy.</p>
         <div class="schritte">
           <div class="schritt">
             <div class="nr"></div>
             <h3>Der Kunde fragt an</h3>
-            <p>Zu jeder Uhrzeit über das Formular auf Ihrer Website. Ohne Website geht es über einen eigenen Link, etwa in Ihrem Google-Profil oder als QR-Code auf der Visitenkarte.</p>
+            <p>Zu jeder Uhrzeit über das Formular auf Ihrer Website, das ich Ihnen dort einbaue, egal ob WordPress, Jimdo oder Wix. Ohne eigene Website verteilen Sie einfach einen Link: im Google-Profil, in der E-Mail-Signatur oder als QR-Code auf Ihren Visitenkarten.</p>
           </div>
           <div class="schritt">
             <div class="nr"></div>
             <h3>Er weiß sofort Bescheid</h3>
-            <p>Eine Mail in Ihrem Namen bestätigt ihm in Sekunden, dass alles angekommen ist. Bei Ihnen steht die Anfrage mit dem Status „Neu“ in der Liste.</p>
+            <p>Eine Mail in Ihrem Namen bestätigt ihm in Sekunden, dass alles angekommen ist, auch nachts und am Wochenende. Bei Ihnen steht die Anfrage mit dem Status „Neu“ in der Liste.</p>
           </div>
           <div class="schritt">
             <div class="nr"></div>
             <h3>Sie antworten mit einem Klick</h3>
-            <p>„Termin senden“ verschickt Ihren Terminvorschlag und trägt ihn mit Adresse in Ihren Google Kalender ein. „Absagen“ schickt eine freundliche Absage.</p>
+            <p>Bei „Termin senden“ geht der Vorschlag per Mail an den Kunden, und Ihr Google Kalender bekommt den Eintrag gleich mit Adresse. „Absagen“ schickt ihm stattdessen eine freundliche Absage.</p>
           </div>
         </div>
-        <p class="extra">Auf Wunsch dazu: Erinnerung an Wartungen, Prüfungen und andere wiederkehrende Arbeiten als fertiger Mail-Entwurf samt Übersicht für Sie, einmaliges Nachfassen bei offenen Angeboten, die Bitte um eine Google-Bewertung nach dem Auftrag und ein Monatsreport per Mail. Was Sie verpasste Anfragen kosten, rechnet der <a href="rechner.html">Verlustrechner</a> mit Ihren eigenen Zahlen aus.</p>
+        <p class="extra">Auf Wunsch dazu: Erinnerungen an Wartungen, Prüfungen und andere wiederkehrende Arbeiten, als fertiger Mail-Entwurf samt Übersicht für Sie. Eine einmalige Nachfrage, wenn auf ein Angebot kein Auftrag folgt. Nach getaner Arbeit die Bitte um eine Google-Bewertung per Klick, und einmal im Monat ein Bericht per Mail. Was Sie verpasste Anfragen kosten, rechnet der <a href="rechner.html">Verlustrechner</a> mit Ihren eigenen Zahlen aus.</p>
       </div>
     </section>
 
@@ -217,26 +219,26 @@
             <p>Ja. Viele Betriebe machen mehr als eins, etwa Heizung und Bad oder Elektro und Photovoltaik. Die Auswahl bei „Worum geht es?“ stelle ich aus Ihren tatsächlichen Leistungen zusammen, auch gemischt. Der Ablauf dahinter bleibt derselbe.</p>
           </details>
           <details>
-            <summary>Ersetzt das Formular meinen Notdienst?</summary>
-            <p>Nein. Wenn es gefährlich wird, etwa bei einem Wasserrohrbruch, soll der Kunde anrufen und nicht schreiben. Ihre Notdienstnummer bleibt deshalb gut sichtbar. Das Formular fängt alles auf, was sonst auf der Mailbox landet, und jede Anfrage bekommt sofort eine Bestätigung.</p>
+            <summary>Was gilt bei echten Notfällen wie einem Rohrbruch?</summary>
+            <p>Dann gehört der Kunde ans Telefon, nicht ins Formular. Ihre Telefon- oder Notdienstnummer steht deshalb weiter gut sichtbar auf Ihrer Website. Das Formular ist für alles andere da: Es nimmt die Anfrage auf, wenn Sie nicht rangehen können, bestätigt sie sofort, und Sie melden sich, sobald Sie die Hände frei haben.</p>
           </details>
           <details>
             <summary>Kann der Kunde Fotos vom Schaden mitschicken?</summary>
-            <p>Im Formular selbst nicht, dort beschreibt er den Schaden in Worten. Fotos schickt er am einfachsten per WhatsApp hinterher, wenn er WhatsApp als Kontaktweg wählt. So haben Sie die Bilder, bevor Sie zurückrufen.</p>
+            <p>Nicht über das Formular, dort beschreibt er den Schaden in Worten. Hat er WhatsApp als Kontaktweg gewählt, schickt er Bilder vom Leck, vom Sicherungskasten oder vom Dachfenster einfach dort hinterher. So sehen Sie den Schaden, bevor Sie zurückrufen.</p>
           </details>
           <details>
             <summary>Was kostet das?</summary>
             <p>Ab 39 € im Monat, dazu einmalig ab 249 € für die Einrichtung. Für die ersten Pilotbetriebe ist die Einrichtung kostenlos. Monatlich kündbar, ohne Mindestlaufzeit. Als Kleinunternehmer berechne ich keine Umsatzsteuer (§ 19 UStG).</p>
           </details>
         </div>
-        <p class="extra">Mehr Antworten, etwa zu Datenschutz und Kündigung, finden Sie in den <a href="index.html#faq">häufigen Fragen auf der Startseite</a>.</p>
+        <p class="extra">Mehr Antworten, etwa zu Datenschutz und Kündigung, stehen bei den <a href="index.html#faq">Fragen auf der Startseite</a>.</p>
       </div>
     </section>
 
     <section class="kontakt" id="kontakt">
       <div class="container">
         <h2>Wie sähe das für Ihr Gewerk aus?</h2>
-        <p>Schreiben Sie mir kurz, welche Arbeiten Sie anbieten. In einer kurzen Demo zeige ich Ihnen das Formular mit Ihren eigenen Leistungen und die Anfragenliste dazu. Kostenlos und ohne Verpflichtung.</p>
+        <p>Schreiben Sie mir kurz, welche Arbeiten Sie anbieten. Daraus richte ich ein Beispiel mit Ihren eigenen Leistungen ein und führe es Ihnen samt Anfragenliste vor. Kostenlos und ohne Verpflichtung.</p>
         <div class="knopfreihe">
           <a class="btn btn-wa" href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20habe%20einen%20Handwerksbetrieb%20und%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System."><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 .5C7.4.5.5 7.4.5 16c0 2.8.7 5.5 2.1 7.9L.4 31.5l7.8-2.1c2.3 1.3 4.9 1.9 7.6 1.9h.1C24.6 31.3 31.5 24.4 31.5 16 31.5 7.4 24.6.5 16 .5zm0 28.3c-2.4 0-4.8-.7-6.9-1.9l-.5-.3-5.1 1.3 1.4-5-.3-.5C3.3 19.4 2.6 17 2.6 16 2.6 8.6 8.6 2.6 16 2.6S29.4 8.6 29.4 16 23.4 28.8 16 28.8zm7.4-9.6c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-2.4-1.2-3.9-2.1-5.5-4.8-.4-.7.4-.6 1.1-2.1.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.6-.8-.7h-.7c-.2 0-.6.1-.9.4-1.2 1.3-1.5 2.7-.9 4.5.9 2.6 2.7 4.7 5.1 6.1 2.6 1.5 3.6 1.3 4.9 1.1.8-.1 2.4-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.3-.3-.7-.5z"/></svg>WhatsApp schreiben</a>
           <a class="btn btn-hell" href="tel:+491629152715"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z" fill="currentColor"/></svg>Anrufen:&nbsp;0162&nbsp;9152715</a>
@@ -293,18 +295,37 @@
     var band = document.getElementById('vorschau-band');
     if (!rahmen || !wahl || !band) { return; }
     var knoepfe = wahl.querySelectorAll('button[data-gewerk]');
+
+    // Knoepfe, Band und iframe-Titel auf ein Gewerk setzen.
+    function markiere(schluessel) {
+      var g = GEWERKE[schluessel];
+      Array.prototype.forEach.call(knoepfe, function (k) {
+        k.setAttribute('aria-pressed', k.getAttribute('data-gewerk') === schluessel ? 'true' : 'false');
+      });
+      rahmen.title = 'Beispiel-Anfrageformular ' + g.art;
+      var text = 'Beispiel: Formular ' + g.art;
+      if (band.textContent !== text) { band.textContent = text; }
+    }
+
     Array.prototype.forEach.call(knoepfe, function (knopf) {
       knopf.addEventListener('click', function () {
-        var g = GEWERKE[knopf.getAttribute('data-gewerk')];
+        var schluessel = knopf.getAttribute('data-gewerk');
+        var g = GEWERKE[schluessel];
         if (!g || knopf.getAttribute('aria-pressed') === 'true') { return; }
-        Array.prototype.forEach.call(knoepfe, function (k) {
-          k.setAttribute('aria-pressed', k === knopf ? 'true' : 'false');
-        });
         rahmen.src = 'formular.html?vorschau=1&betrieb=' + encodeURIComponent(g.betrieb)
           + (g.gewerk ? '&gewerk=' + g.gewerk : '');
-        rahmen.title = 'Beispiel-Anfrageformular ' + g.art;
-        band.textContent = 'Beispiel: Formular ' + g.art;
+        markiere(schluessel);
       });
+    });
+
+    // Geht der Besucher mit "Zurueck" im Verlauf, laedt der Rahmen das vorige
+    // Formular. Dann richtet sich die Anzeige nach dem, was wirklich zu sehen ist.
+    rahmen.addEventListener('load', function () {
+      var schluessel;
+      try {
+        schluessel = new URLSearchParams(rahmen.contentWindow.location.search).get('gewerk') || 'shk';
+      } catch (e) { return; }
+      if (GEWERKE.hasOwnProperty(schluessel)) { markiere(schluessel); }
     });
     wahl.hidden = false;
   })();
