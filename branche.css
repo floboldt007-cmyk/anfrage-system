@@ -23,8 +23,11 @@ a { color: inherit; }
 /* Kopf */
 header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rand); }
 .kopf { display: flex; align-items: center; justify-content: space-between; gap: 18px; height: 66px; }
-.logo { font-weight: 700; font-size: 1.12rem; color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 9px; }
-.logo-mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--blau), var(--navy)); color: #fff; font-size: 0.82rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.03em; color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.logo svg { width: 32px; height: 32px; flex-shrink: 0; }
+.logo .profi { color: var(--blau); }
+.logo-hell { color: #fff; }
+.logo-hell .profi { color: #93c5fd; }
 .kopf nav { display: flex; align-items: center; gap: 4px; }
 .kopf nav a { padding: 8px 12px; border-radius: 8px; color: var(--grau); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
 .kopf nav a:hover { color: var(--navy); background: var(--tint); }
@@ -128,6 +131,7 @@ footer { background: var(--navy); color: #8295ad; font-size: 0.88rem; padding: 3
 .fuss-raster { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin-bottom: 18px; }
 .fuss-raster nav { display: flex; flex-wrap: wrap; gap: 16px; }
 .fuss-marke { color: #fff; font-weight: 700; }
+.fuss-zeile { margin-top: 10px; }
 footer a { color: #b8c4d6; text-decoration: none; }
 footer a:hover { color: #fff; }
 .fuss-unten { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; }

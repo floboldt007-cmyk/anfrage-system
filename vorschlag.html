@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ihr Anfrageformular: ein Vorschlag | anfrageprofi.de</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231d4ed8'/><text x='50' y='70' font-size='54' font-family='Arial,sans-serif' font-weight='bold' fill='%23ffffff' text-anchor='middle'>FB</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231d4ed8'/><path d='M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z' fill='%23ffffff'/><path d='M11.5 14.5l3 3 6-6' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
   <!--
     Persoenlicher Vorschlag an einen Betrieb (gehoert zu akquise.html).
     Name, Gewerk und Farbe kommen ueber die Adresse:
@@ -36,8 +36,9 @@
     .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
     header { background: var(--navy); color: #fff; padding: 20px 0; }
     header .container { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-    .logo { font-weight: 700; font-size: 1.1rem; color: #fff; display: flex; align-items: center; gap: 9px; text-decoration: none; }
-    .logo .logo-mark { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--blau), var(--navy)); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .logo { font-weight: 800; letter-spacing: -0.03em; font-size: 1.15rem; color: #fff; display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo svg { width: 30px; height: 30px; flex-shrink: 0; }
+    .logo .profi { color: #93c5fd; }
     header a.zurueck { color: #b8c4d6; text-decoration: none; font-size: 0.95rem; }
     header a.zurueck:hover { color: #fff; }
     main { padding: 56px 0 80px; }
@@ -94,7 +95,7 @@
 <body>
   <header>
     <div class="container">
-      <a class="logo" href="index.html"><span class="logo-mark">FB</span>anfrageprofi.de</a>
+      <a class="logo" href="index.html" aria-label="anfrageprofi, zur Startseite"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1d4ed8"/><path d="M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" fill="#fff"/><path d="M11.5 14.5l3 3 6-6" fill="none" stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>anfrage<span class="profi">profi</span></span></a>
       <a class="zurueck" href="index.html">← Zur Startseite</a>
     </div>
   </header>
@@ -125,7 +126,7 @@
           <div class="kontakt">
             <p class="kontakt-titel">Interesse? Sprechen Sie mich direkt an.</p>
             <a class="btn btn-wa" id="wa" href="https://wa.me/491629152715"><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 .5C7.4.5.5 7.4.5 16c0 2.8.7 5.5 2.1 7.9L.4 31.5l7.8-2.1c2.3 1.3 4.9 1.9 7.6 1.9h.1C24.6 31.3 31.5 24.4 31.5 16 31.5 7.4 24.6.5 16 .5zm0 28.3c-2.4 0-4.8-.7-6.9-1.9l-.5-.3-5.1 1.3 1.4-5-.3-.5C3.3 19.4 2.6 17 2.6 16 2.6 8.6 8.6 2.6 16 2.6S29.4 8.6 29.4 16 23.4 28.8 16 28.8zm7.4-9.6c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-2.4-1.2-3.9-2.1-5.5-4.8-.4-.7.4-.6 1.1-2.1.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.6-.8-.7h-.7c-.2 0-.6.1-.9.4-1.2 1.3-1.5 2.7-.9 4.5.9 2.6 2.7 4.7 5.1 6.1 2.6 1.5 3.6 1.3 4.9 1.1.8-.1 2.4-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.3-.3-.7-.5z"/></svg>WhatsApp schreiben</a>
-            <a class="btn btn-tel" href="tel:+491629152715"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z" fill="currentColor"/></svg>Anrufen: 0162 9152715</a>
+            <a class="btn btn-tel" href="tel:+491629152715"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z" fill="currentColor"/></svg>Anrufen:&nbsp;0162&nbsp;9152715</a>
             <p class="mail">oder per E-Mail: <a id="mail" href="mailto:kontakt@anfrageprofi.de">kontakt@anfrageprofi.de</a></p>
             <p class="person">Florian Boldt, anfrageprofi.de, Leverkusen</p>
           </div>

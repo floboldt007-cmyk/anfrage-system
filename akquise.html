@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Akquise per Brief | Werkzeug</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231d4ed8'/><text x='50' y='70' font-size='54' font-family='Arial,sans-serif' font-weight='bold' fill='%23ffffff' text-anchor='middle'>FB</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231d4ed8'/><path d='M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z' fill='%23ffffff'/><path d='M11.5 14.5l3 3 6-6' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
   <!--
     Internes Werkzeug fuer Florian (nicht verlinkt, fuer Suchmaschinen gesperrt).
     Erzeugt zu einem Betrieb den persoenlichen Link auf vorschlag.html, den
@@ -62,7 +62,9 @@
     .brief { position: relative; width: 210mm; height: 297mm; margin: 0 auto; background: #fff; color: #111827; box-shadow: 0 10px 40px rgba(15,31,61,0.18); font-family: Arial, Helvetica, sans-serif; font-size: 10.5pt; line-height: 1.45; overflow: hidden; }
     .brief .marke { position: absolute; top: 16mm; left: 25mm; right: 20mm; display: flex; justify-content: space-between; align-items: flex-start; }
     .brief .marke-links { display: flex; align-items: center; gap: 3mm; }
-    .brief .marke-zeichen { width: 11mm; height: 11mm; border-radius: 2.5mm; background: #1d4ed8; color: #fff; font-weight: 700; font-size: 11pt; display: flex; align-items: center; justify-content: center; }
+    .brief .marke-zeichen { width: 11mm; height: 11mm; flex-shrink: 0; }
+    .brief .marke-zeichen svg { display: block; width: 100%; height: 100%; }
+    .brief .marke-name .profi { color: #1d4ed8; }
     .brief .marke-name { font-weight: 700; font-size: 13pt; line-height: 1.2; }
     .brief .marke-name span { display: block; font-weight: 400; font-size: 9pt; color: #1d4ed8; }
     .brief .marke-rechts { text-align: right; font-size: 8.5pt; color: #475569; line-height: 1.5; }
@@ -119,6 +121,7 @@
           <option value="tischler">Tischler, Schreiner</option>
           <option value="garten">Garten- und Landschaftsbau</option>
           <option value="reinigung">Reinigung</option>
+          <option value="event">Fotografie und Events</option>
           <option value="allgemein">Allgemein, andere Branche</option>
         </select>
       </label>
@@ -156,8 +159,8 @@
     <article class="brief" id="brief" aria-label="Brief">
       <div class="marke">
         <div class="marke-links">
-          <div class="marke-zeichen">FB</div>
-          <div class="marke-name">Florian Boldt<span>anfrageprofi.de</span></div>
+          <div class="marke-zeichen"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1d4ed8"/><path d="M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" fill="#fff"/><path d="M11.5 14.5l3 3 6-6" fill="none" stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="marke-name">anfrage<b class="profi">profi</b><span>Florian Boldt, Leverkusen</span></div>
         </div>
         <div class="marke-rechts">Telefon 0162 9152715<br />kontakt@anfrageprofi.de<br />anfrageprofi.de</div>
       </div>
