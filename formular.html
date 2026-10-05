@@ -30,7 +30,8 @@
     ?ziel=https://script.google...   eigene Backend-Adresse je Kunde
     ?gewerk=maler                    passende Auswahl bei "Worum geht es?"
                                      (elektro, maler, dach, tischler, garten,
-                                     reinigung, allgemein; ohne Angabe: Heizung/Sanitaer)
+                                     reinigung, event, allgemein; ohne Angabe:
+                                     Heizung/Sanitaer)
     ?vorschau=1                      reine Ansicht: speichert und verschickt nichts
 
   DATENFELDER: exakt die Spalten, die das echte System in
@@ -324,6 +325,13 @@
     reinigung: { liste: ['Unterhaltsreinigung', 'Grundreinigung', 'Fensterreinigung',
       'Endreinigung nach Umzug', 'Treppenhausreinigung', 'Etwas anderes'],
       beispiel: 'z. B. Büro, 120 m², zweimal pro Woche abends' },
+    event: { liste: ['Hochzeit', 'Firmenfeier', 'Geburtstag oder private Feier', 'Fotoshooting', 'Etwas anderes'],
+      beispiel: 'z. B. Hochzeit am 14. Juni, ca. 80 Gäste, Raum Köln',
+      // Bei Events geht es nicht um Eile, sondern um das Datum. Das Feld
+      // heisst im Backend weiter "dringlichkeit", nur Frage und Auswahl aendern sich.
+      dringlichkeitFrage: 'Wann ist der Termin?',
+      dringlichkeit: ['In den nächsten 4 Wochen', 'In 1 bis 6 Monaten', 'In mehr als 6 Monaten', 'Datum noch offen'],
+      adresseFrage: 'Ort der Veranstaltung' },
     allgemein: { liste: ['Angebot anfragen', 'Termin vereinbaren', 'Reparatur', 'Beratung', 'Etwas anderes'],
       beispiel: 'z. B. Was gemacht werden soll, wo und bis wann' }
   };
@@ -334,6 +342,17 @@
     while (auswahl.options.length > 1) { auswahl.remove(1); }
     gewerk.liste.forEach(function (text) { auswahl.add(new Option(text)); });
     document.querySelector('textarea[name=beschreibung]').placeholder = gewerk.beispiel;
+    // Optional: andere Frage und Auswahl bei "Wie dringend ist es?" sowie
+    // eine andere Beschriftung fuer die Adresse. Nur feste Texte aus GEWERKE.
+    var dring = document.querySelector('select[name=dringlichkeit]');
+    if (gewerk.dringlichkeit) {
+      while (dring.options.length > 1) { dring.remove(1); }
+      gewerk.dringlichkeit.forEach(function (text) { dring.add(new Option(text)); });
+    }
+    if (gewerk.dringlichkeitFrage) { dring.parentNode.firstChild.nodeValue = gewerk.dringlichkeitFrage + '*\n        '; }
+    if (gewerk.adresseFrage) {
+      document.querySelector('input[name=adresse]').parentNode.firstChild.nodeValue = gewerk.adresseFrage + '\n        ';
+    }
   }
 
   // Vorschau fuer einen Interessenten (?vorschau=1, gesetzt von vorschlag.html):

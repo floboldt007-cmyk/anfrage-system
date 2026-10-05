@@ -1,7 +1,7 @@
 {
   "name": "anfrageprofi.de",
   "short_name": "anfrageprofi",
-  "description": "Automatisches Anfrage-System fuer Handwerksbetriebe",
+  "description": "Anfrage-System fuer Handwerk und Dienstleister",
   "lang": "de",
   "start_url": "/",
   "scope": "/",

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anfrage-System für Handwerksbetriebe aller Gewerke | anfrageprofi</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231d4ed8'/><path d='M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z' fill='%23ffffff'/><path d='M11.5 14.5l3 3 6-6' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <!--
+    Branchen-Seite fuer alle Handwerksbetriebe (Heizung/Sanitaer, Elektro,
+    Maler, Dach, Tischler). Ersetzt die frueheren Einzelseiten fuer Elektro,
+    Maler und Heizung/Sanitaer. Gemeinsames Aussehen: branche.css.
+    Das Formular unten laeuft mit ?vorschau=1: Es speichert nichts und
+    verschickt keine Mail. Die Gewerk-Knoepfe wechseln nur die Vorschau.
+  -->
+  <meta name="description" content="Anfrage-System für Handwerksbetriebe: Heizung und Sanitär, Elektro, Maler, Dach, Tischler. Jede Anfrage sofort bestätigt, Termin per Klick. Ab 39 € im Monat." />
+  <meta property="og:title" content="Anfrage-System für Handwerksbetriebe aller Gewerke" />
+  <meta property="og:description" content="Heizung, Elektro, Maler, Dach oder Tischler: Jede Anfrage kommt geordnet an und wird in Sekunden in Ihrem Namen bestätigt. Termin oder Absage mit einem Klick." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:url" content="https://anfrageprofi.de/anfrage-system-handwerk.html" />
+  <meta property="og:site_name" content="anfrageprofi.de" />
+  <meta property="og:image" content="https://anfrageprofi.de/og-vorschau.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="author" content="Florian Boldt" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0f1f3d" />
+  <meta name="color-scheme" content="light" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="canonical" href="https://anfrageprofi.de/anfrage-system-handwerk.html" />
+  <link rel="stylesheet" href="branche.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Anfrage-System für Handwerksbetriebe",
+    "brand": { "@type": "Brand", "name": "anfrageprofi" },
+    "serviceType": "Automatisches Anfrage- und Terminsystem",
+    "description": "Kundenanfragen an Handwerksbetriebe, etwa zu Heizungsausfall, Wallbox, Malerarbeiten, Dachreparatur oder Möbeln nach Maß, kommen über ein Formular herein, werden dem Kunden sofort im Namen des Betriebs bestätigt und geordnet abgelegt. Terminvorschlag oder Absage gehen mit einem Klick raus.",
+    "provider": {
+      "@type": "Person",
+      "name": "Florian Boldt",
+      "email": "kontakt@anfrageprofi.de",
+      "telephone": "+491629152715",
+      "address": { "@type": "PostalAddress", "addressLocality": "Leverkusen", "postalCode": "51379", "addressCountry": "DE" }
+    },
+    "offers": { "@type": "Offer", "price": "39", "priceCurrency": "EUR", "description": "ab 39 € im Monat, Einrichtung einmalig ab 249 €, monatlich kündbar" },
+    "areaServed": { "@type": "Country", "name": "Deutschland" },
+    "audience": { "@type": "BusinessAudience", "name": "Handwerksbetriebe: Heizung und Sanitär, Elektro, Maler, Dachdecker, Tischler" },
+    "url": "https://anfrageprofi.de/anfrage-system-handwerk.html"
+  }
+  </script>
+  <style>
+    /* Gewerk-Umschalter ueber der Formular-Vorschau. Ohne JS bleibt er
+       verborgen, dann zeigt die Vorschau einfach Heizung und Sanitaer. */
+    [hidden] { display: none !important; }
+    /* Gleichmaessige Zeilen, damit kein einzelnes Wort allein in der letzten Zeile steht */
+    .buehne h1 { text-wrap: balance; }
+    .gewerk-wahl { padding: 2px 6px 12px; }
+    .gewerk-titel { font-size: 0.84rem; font-weight: 600; color: var(--grau); margin-bottom: 8px; }
+    .gewerk-knoepfe { display: flex; flex-wrap: wrap; gap: 8px; }
+    .gewerk-knoepfe button {
+      display: inline-flex; align-items: center; gap: 6px;
+      font: inherit; font-size: 0.9rem; font-weight: 600; line-height: 1.2;
+      padding: 8px 14px; border-radius: 999px; cursor: pointer;
+      border: 1px solid #cbd5e1; background: #fff; color: var(--navy);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .gewerk-knoepfe button:hover { border-color: var(--blau); background: #eff4ff; }
+    /* Gewaehlt: gefuellt und mit Haken, also nicht nur ueber die Farbe erkennbar */
+    .gewerk-knoepfe button[aria-pressed="true"] { background: var(--blau); border-color: var(--blau); color: #fff; }
+    .gewerk-knoepfe button[aria-pressed="true"]:hover { background: var(--blau-dunkel); border-color: var(--blau-dunkel); }
+    .gewerk-knoepfe button[aria-pressed="true"]::before {
+      content: ""; width: 14px; height: 14px; flex-shrink: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat;
+    }
+    .gewerk-knoepfe button:focus-visible { outline: 3px solid var(--blau); outline-offset: 2px; }
+    @media (max-width: 560px) {
+      .gewerk-wahl { padding: 4px 4px 10px; }
+      .gewerk-knoepfe { gap: 6px; }
+      .gewerk-knoepfe button { padding: 8px 12px; font-size: 0.86rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+  <header>
+    <div class="container kopf">
+      <a class="logo" href="index.html" aria-label="anfrageprofi, zur Startseite"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1d4ed8"/><path d="M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" fill="#fff"/><path d="M11.5 14.5l3 3 6-6" fill="none" stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>anfrage<span class="profi">profi</span></span></a>
+      <nav aria-label="Hauptnavigation">
+        <a href="#ablauf">So läuft es</a>
+        <a href="#formular">Formular</a>
+        <a href="#faq">Fragen</a>
+        <a class="kopf-cta" href="#kontakt">Kostenlose Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inhalt">
+    <section class="buehne">
+      <div class="container buehne-raster">
+        <div>
+          <span class="badge">Für Handwerksbetriebe aller Gewerke</span>
+          <h1>Sie arbeiten beim Kunden. Jede neue Anfrage kommt trotzdem geordnet bei Ihnen an.</h1>
+          <p class="sub">Heizung, Elektro, Maler, Dach oder Tischler: Ihr Kunde schreibt über ein Formular auf Ihrer Website und nennt gleich Leistung, Dringlichkeit und Adresse. In Sekunden hat er eine Bestätigung in Ihrem Namen. Termin oder Absage schicken Sie später mit einem Klick, auch vom Handy.</p>
+          <div class="knopfreihe">
+            <a class="btn btn-hell" href="#kontakt">Kostenlose Demo anfragen</a>
+            <a class="btn btn-rand" href="#formular">Formular ausprobieren</a>
+          </div>
+          <p class="direkt">Lieber direkt? <a href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20habe%20einen%20Handwerksbetrieb%20und%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System.">WhatsApp schreiben</a> oder <a href="tel:+491629152715">anrufen:&nbsp;0162&nbsp;9152715</a></p>
+          <p class="direkt">Ab 39&nbsp;€ im Monat, monatlich kündbar. Meist startklar in 3 bis 5 Werktagen.</p>
+        </div>
+        <figure class="liste-karte" aria-label="Beispiel einer Anfragenliste eines Handwerksbetriebs">
+          <div class="liste-kopf"><span>Ihre Anfragenliste</span><span class="liste-tag">Beispiel</span></div>
+          <ul>
+            <li><div class="li-oben"><span>Heizung: Störung oder Ausfall</span><span class="status neu">Neu</span></div><div class="li-unten">Notfall, heute noch · Freitag 16:55 · Heizung bleibt kalt</div></li>
+            <li><div class="li-oben"><span>Bad: Umbau oder Sanierung</span><span class="status gesendet">Termin gesendet</span></div><div class="li-unten">Kein Zeitdruck · Besichtigung vor dem Angebot</div></li>
+            <li><div class="li-oben"><span>Heizung: Wartung</span><span class="status bestaetigt">Bestätigt</span></div><div class="li-unten">In den nächsten Wochen · Wartung wie jedes Jahr im Herbst</div></li>
+            <li><div class="li-oben"><span>Sanitär: Reparatur</span><span class="status abgesagt">Abgesagt</span></div><div class="li-unten">Diese Woche · liegt außerhalb des Einsatzgebiets</div></li>
+          </ul>
+          <figcaption>Vereinfachte Darstellung mit Beispieldaten. Ihre richtige Liste liegt in Google Sheets, griffbereit im Büro und auf der Baustelle.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block tint" id="alltag">
+      <div class="container">
+        <p class="eyebrow">Aus dem Alltag im Handwerk</p>
+        <h2>Wo Anfragen im Handwerk verloren gehen</h2>
+        <p class="lead">Ob Heizung, Leitung, Fassade, Dach oder Einbauschrank: Die Lagen ähneln sich. So nimmt Ihnen das Anfrage-System dabei Arbeit ab.</p>
+        <div class="lagen">
+          <article class="lage">
+            <h3>Freitag, kurz vor Feierabend</h3>
+            <p class="problem">Bei einem Kunden bleibt die Heizung kalt, beim nächsten fliegt die Sicherung, beim dritten tropft es nach dem Sturm ins Dachgeschoss. Sie stehen gerade selbst bei einem Auftrag und können nicht ans Telefon. Wer Sie nicht erreicht, wählt die nächste Nummer auf seiner Liste.</p>
+            <p class="loesung"><strong>So läuft es dann</strong>Ihr Kunde nutzt das Formular und gibt „Notfall, heute noch“ an. Eine Bestätigung in Ihrem Namen hat er sofort im Postfach. In Ihrer Liste stehen Problem, Adresse und Dringlichkeit, und Sie entscheiden, wen Sie zuerst zurückrufen.</p>
+          </article>
+          <article class="lage">
+            <h3>Erst ansehen, dann anbieten</h3>
+            <p class="problem">Wallbox, neues Bad, Fassade oder Treppe: Für ein Angebot brauchen Sie Eckdaten und meist eine Besichtigung. Am Telefon fehlt die Hälfte, und bis der Termin steht, telefonieren Sie dreimal hin und her.</p>
+            <p class="loesung"><strong>So läuft es dann</strong>Schon im Formular beschreibt der Kunde sein Vorhaben, etwa wo der Zählerschrank sitzt oder wie breit die Nische ist. Passt es Ihnen, klicken Sie auf „Termin senden“: Der Kunde bekommt Ihren Besichtigungstermin per Mail, und im Google Kalender steht der Termin mit seiner Adresse.</p>
+          </article>
+          <article class="lage">
+            <h3>Angebote und Wartungen, die liegen bleiben</h3>
+            <p class="problem">Nach dem Angebot für die Badsanierung hören Sie wochenlang nichts. Die Wartung der Heizung oder der E-Check beim Vermieter ist bald wieder fällig, steht aber nur in Ihrem Kopf. Im Tagesgeschäft rutscht beides durch.</p>
+            <p class="loesung"><strong>Auf Wunsch dazu</strong>Ist einige Tage nach Ihrem Angebot noch kein Auftrag da, fragt eine freundliche Mail einmal beim Kunden nach. Vor einer fälligen Wartung oder Prüfung liegt eine fertige Mail an ihn als Entwurf in Ihrem Gmail-Postfach. Sie lesen kurz drüber und klicken selbst auf Senden.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="formular">
+      <div class="container formular-raster">
+        <div class="formular-text">
+          <p class="eyebrow">Ihr Formular</p>
+          <h2>Die Auswahl richtet sich nach Ihrem Gewerk</h2>
+          <p>Bei „Worum geht es?“ sieht Ihr Kunde nur Leistungen, die Sie auch anbieten. Wählen Sie über dem Formular ein Gewerk, dann wechselt die Auswahl: von „Heizung: Wartung“ über „Wallbox oder Photovoltaik“ bis „Möbel nach Maß“.</p>
+          <ul class="haken-liste">
+            <li>Der Kunde sagt selbst, wie eilig es ist, zum Beispiel „Notfall, heute noch“ oder „Kein Zeitdruck“</li>
+            <li>Adresse des Objekts, damit Sie Besichtigung und Route planen können</li>
+            <li>Anruf, E-Mail oder WhatsApp: Ihr Kunde wählt, wie Sie ihn am besten erreichen</li>
+            <li>Ich stelle Auswahl, Texte und Farben für Ihren Betrieb zusammen, auch für mehrere Gewerke in einem Formular</li>
+          </ul>
+          <p class="hinweis-klein">Tun Sie ruhig so, als wären Sie ein Kunde mit tropfendem Wasserhahn, einer Steckdose ohne Strom oder einem klemmenden Dachfenster. Alle Betriebe im Beispiel sind erfunden, und die Vorschau speichert nichts und verschickt nichts. Wie das Formular auf einer kompletten Website wirkt, zeigt die <a href="musterbetrieb.html">Musterseite</a> eines erfundenen Heizungs- und Sanitärbetriebs.</p>
+        </div>
+        <div class="formular-kasten">
+          <div class="gewerk-wahl" id="gewerk-wahl" role="group" aria-labelledby="gewerk-wahl-titel" hidden>
+            <p class="gewerk-titel" id="gewerk-wahl-titel">Beispiel ansehen für</p>
+            <div class="gewerk-knoepfe">
+              <button type="button" data-gewerk="shk" aria-pressed="true">Heizung und Sanitär</button>
+              <button type="button" data-gewerk="elektro" aria-pressed="false">Elektro</button>
+              <button type="button" data-gewerk="maler" aria-pressed="false">Maler</button>
+              <button type="button" data-gewerk="dach" aria-pressed="false">Dach</button>
+              <button type="button" data-gewerk="tischler" aria-pressed="false">Tischler</button>
+            </div>
+          </div>
+          <p class="band" id="vorschau-band" aria-live="polite">Beispiel: Formular eines Betriebs für Heizung und Sanitär</p>
+          <iframe id="vorschau" class="formular-rahmen" title="Beispiel-Anfrageformular eines Betriebs für Heizung und Sanitär" loading="lazy" src="formular.html?vorschau=1&amp;betrieb=Mustermann%20Haustechnik"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="block tint" id="ablauf">
+      <div class="container">
+        <p class="eyebrow">So läuft es</p>
+        <h2>Drei Schritte, egal welches Gewerk</h2>
+        <p class="lead">Sie installieren nichts und ändern nichts an Ihrer Arbeitsweise. Die Technik läuft auf Googles Servern. Ihre Anfragenliste öffnen Sie im Büro am Rechner oder unterwegs im Transporter am Handy.</p>
+        <div class="schritte">
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Der Kunde fragt an</h3>
+            <p>Zu jeder Uhrzeit über das Formular auf Ihrer Website, das ich Ihnen dort einbaue, egal ob WordPress, Jimdo oder Wix. Ohne eigene Website verteilen Sie einfach einen Link: im Google-Profil, in der E-Mail-Signatur oder als QR-Code auf Ihren Visitenkarten.</p>
+          </div>
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Er weiß sofort Bescheid</h3>
+            <p>Eine Mail in Ihrem Namen bestätigt ihm in Sekunden, dass alles angekommen ist, auch nachts und am Wochenende. Bei Ihnen steht die Anfrage mit dem Status „Neu“ in der Liste.</p>
+          </div>
+          <div class="schritt">
+            <div class="nr"></div>
+            <h3>Sie antworten mit einem Klick</h3>
+            <p>Bei „Termin senden“ geht der Vorschlag per Mail an den Kunden, und Ihr Google Kalender bekommt den Eintrag gleich mit Adresse. „Absagen“ schickt ihm stattdessen eine freundliche Absage.</p>
+          </div>
+        </div>
+        <p class="extra">Auf Wunsch dazu: Erinnerungen an Wartungen, Prüfungen und andere wiederkehrende Arbeiten, als fertiger Mail-Entwurf samt Übersicht für Sie. Eine einmalige Nachfrage, wenn auf ein Angebot kein Auftrag folgt. Nach getaner Arbeit die Bitte um eine Google-Bewertung per Klick, und einmal im Monat ein Bericht per Mail. Was Sie verpasste Anfragen kosten, rechnet der <a href="rechner.html">Verlustrechner</a> mit Ihren eigenen Zahlen aus.</p>
+      </div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="container">
+        <p class="eyebrow">Häufige Fragen</p>
+        <h2>Fragen aus dem Handwerk</h2>
+        <p class="lead">Kurz und ehrlich beantwortet. Fehlt etwas, fragen Sie mich direkt.</p>
+        <div class="faq">
+          <details>
+            <summary>Passt das, wenn mein Betrieb mehrere Gewerke anbietet?</summary>
+            <p>Ja. Viele Betriebe machen mehr als eins, etwa Heizung und Bad oder Elektro und Photovoltaik. Die Auswahl bei „Worum geht es?“ stelle ich aus Ihren tatsächlichen Leistungen zusammen, auch gemischt. Der Ablauf dahinter bleibt derselbe.</p>
+          </details>
+          <details>
+            <summary>Was gilt bei echten Notfällen wie einem Rohrbruch?</summary>
+            <p>Dann gehört der Kunde ans Telefon, nicht ins Formular. Ihre Telefon- oder Notdienstnummer steht deshalb weiter gut sichtbar auf Ihrer Website. Das Formular ist für alles andere da: Es nimmt die Anfrage auf, wenn Sie nicht rangehen können, bestätigt sie sofort, und Sie melden sich, sobald Sie die Hände frei haben.</p>
+          </details>
+          <details>
+            <summary>Kann der Kunde Fotos vom Schaden mitschicken?</summary>
+            <p>Nicht über das Formular, dort beschreibt er den Schaden in Worten. Hat er WhatsApp als Kontaktweg gewählt, schickt er Bilder vom Leck, vom Sicherungskasten oder vom Dachfenster einfach dort hinterher. So sehen Sie den Schaden, bevor Sie zurückrufen.</p>
+          </details>
+          <details>
+            <summary>Was kostet das?</summary>
+            <p>Ab 39 € im Monat, dazu einmalig ab 249 € für die Einrichtung. Für die ersten Pilotbetriebe ist die Einrichtung kostenlos. Monatlich kündbar, ohne Mindestlaufzeit. Als Kleinunternehmer berechne ich keine Umsatzsteuer (§ 19 UStG).</p>
+          </details>
+        </div>
+        <p class="extra">Mehr Antworten, etwa zu Datenschutz und Kündigung, stehen bei den <a href="index.html#faq">Fragen auf der Startseite</a>.</p>
+      </div>
+    </section>
+
+    <section class="kontakt" id="kontakt">
+      <div class="container">
+        <h2>Wie sähe das für Ihr Gewerk aus?</h2>
+        <p>Schreiben Sie mir kurz, welche Arbeiten Sie anbieten. Daraus richte ich ein Beispiel mit Ihren eigenen Leistungen ein und führe es Ihnen samt Anfragenliste vor. Kostenlos und ohne Verpflichtung.</p>
+        <div class="knopfreihe">
+          <a class="btn btn-wa" href="https://wa.me/491629152715?text=Hallo%20Herr%20Boldt%2C%20ich%20habe%20einen%20Handwerksbetrieb%20und%20interessiere%20mich%20f%C3%BCr%20das%20Anfrage-System."><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 .5C7.4.5.5 7.4.5 16c0 2.8.7 5.5 2.1 7.9L.4 31.5l7.8-2.1c2.3 1.3 4.9 1.9 7.6 1.9h.1C24.6 31.3 31.5 24.4 31.5 16 31.5 7.4 24.6.5 16 .5zm0 28.3c-2.4 0-4.8-.7-6.9-1.9l-.5-.3-5.1 1.3 1.4-5-.3-.5C3.3 19.4 2.6 17 2.6 16 2.6 8.6 8.6 2.6 16 2.6S29.4 8.6 29.4 16 23.4 28.8 16 28.8zm7.4-9.6c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-2.4-1.2-3.9-2.1-5.5-4.8-.4-.7.4-.6 1.1-2.1.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.6-.8-.7h-.7c-.2 0-.6.1-.9.4-1.2 1.3-1.5 2.7-.9 4.5.9 2.6 2.7 4.7 5.1 6.1 2.6 1.5 3.6 1.3 4.9 1.1.8-.1 2.4-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.3-.3-.7-.5z"/></svg>WhatsApp schreiben</a>
+          <a class="btn btn-hell" href="tel:+491629152715"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z" fill="currentColor"/></svg>Anrufen:&nbsp;0162&nbsp;9152715</a>
+        </div>
+        <p class="klein">oder per E-Mail an <a href="mailto:kontakt@anfrageprofi.de?subject=Anfrage-System%20f%C3%BCr%20meinen%20Handwerksbetrieb">kontakt@anfrageprofi.de</a> · <a href="index.html#kontakt">zum Kontaktformular</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="fuss-raster">
+        <div>
+          <a class="logo logo-hell" href="index.html" aria-label="anfrageprofi, zur Startseite"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1d4ed8"/><path d="M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" fill="#fff"/><path d="M11.5 14.5l3 3 6-6" fill="none" stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>anfrage<span class="profi">profi</span></span></a>
+          <div class="fuss-zeile">Ein Angebot von Florian Boldt, Leverkusen</div>
+        </div>
+        <nav aria-label="Weitere Seiten">
+          <a href="index.html">Startseite</a>
+          <a href="rechner.html">Verlustrechner</a>
+          <a href="musterbetrieb.html">Musterseite</a>
+          <a href="anfrage-system-reinigung.html">Für Reinigung</a>
+          <a href="anfrage-system-events.html">Für Fotografie und Events</a>
+          <a href="index.html#leistungen">Weitere Leistungen</a>
+        </nav>
+      </div>
+      <div class="fuss-unten">
+        © 2026 Florian Boldt · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+        <div style="margin-top:8px;">Dieses Angebot richtet sich ausschließlich an Unternehmen, Gewerbetreibende und Selbstständige (kein Verbrauchergeschäft).</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    // Das Formular meldet seine Hoehe, damit der Rahmen mitwaechst statt innen zu scrollen.
+    var rahmen = document.getElementById('vorschau');
+    window.addEventListener('message', function (ereignis) {
+      var d = ereignis.data;
+      if (!d || d.anfrageprofi !== 'hoehe' || ereignis.source !== rahmen.contentWindow) { return; }
+      var h = parseInt(d.hoehe, 10);
+      if (h > 200 && h < 4000) { rahmen.style.height = h + 'px'; }
+    });
+
+    // Gewerk-Umschalter: wechselt nur die Vorschau (?vorschau=1 bleibt immer gesetzt).
+    // contentWindow bleibt beim Wechsel derselbe, der Hoehen-Empfang oben laeuft also weiter.
+    var GEWERKE = {
+      shk: { gewerk: '', betrieb: 'Mustermann Haustechnik', art: 'eines Betriebs für Heizung und Sanitär' },
+      elektro: { gewerk: 'elektro', betrieb: 'Elektro Mustermann', art: 'eines Elektrobetriebs' },
+      maler: { gewerk: 'maler', betrieb: 'Malerbetrieb Mustermann', art: 'eines Malerbetriebs' },
+      dach: { gewerk: 'dach', betrieb: 'Dachdeckerei Mustermann', art: 'einer Dachdeckerei' },
+      tischler: { gewerk: 'tischler', betrieb: 'Tischlerei Mustermann', art: 'einer Tischlerei' }
+    };
+    var wahl = document.getElementById('gewerk-wahl');
+    var band = document.getElementById('vorschau-band');
+    if (!rahmen || !wahl || !band) { return; }
+    var knoepfe = wahl.querySelectorAll('button[data-gewerk]');
+
+    // Knoepfe, Band und iframe-Titel auf ein Gewerk setzen.
+    function markiere(schluessel) {
+      var g = GEWERKE[schluessel];
+      Array.prototype.forEach.call(knoepfe, function (k) {
+        k.setAttribute('aria-pressed', k.getAttribute('data-gewerk') === schluessel ? 'true' : 'false');
+      });
+      rahmen.title = 'Beispiel-Anfrageformular ' + g.art;
+      var text = 'Beispiel: Formular ' + g.art;
+      if (band.textContent !== text) { band.textContent = text; }
+    }
+
+    Array.prototype.forEach.call(knoepfe, function (knopf) {
+      knopf.addEventListener('click', function () {
+        var schluessel = knopf.getAttribute('data-gewerk');
+        var g = GEWERKE[schluessel];
+        if (!g || knopf.getAttribute('aria-pressed') === 'true') { return; }
+        rahmen.src = 'formular.html?vorschau=1&betrieb=' + encodeURIComponent(g.betrieb)
+          + (g.gewerk ? '&gewerk=' + g.gewerk : '');
+        markiere(schluessel);
+      });
+    });
+
+    // Geht der Besucher mit "Zurueck" im Verlauf, laedt der Rahmen das vorige
+    // Formular. Dann richtet sich die Anzeige nach dem, was wirklich zu sehen ist.
+    rahmen.addEventListener('load', function () {
+      var schluessel;
+      try {
+        schluessel = new URLSearchParams(rahmen.contentWindow.location.search).get('gewerk') || 'shk';
+      } catch (e) { return; }
+      if (GEWERKE.hasOwnProperty(schluessel)) { markiere(schluessel); }
+    });
+    wahl.hidden = false;
+  })();
+  </script>
+</body>
+</html>
