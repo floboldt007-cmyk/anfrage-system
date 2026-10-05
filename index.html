@@ -749,17 +749,17 @@
 
       <!--
         Versand ueber FormSubmit (formsubmit.co):
-        - Ziel ist direkt das Gmail-Postfach, nicht kontakt@anfrageprofi.de.
-          Ueber die Weiterleitung kam die Freischalt-Mail nie an.
-          Nach dem Freischalten liefert FormSubmit einen Code, der die
-          Adresse hier ersetzt. Dann steht sie nicht mehr im Quelltext.
+        - Ziel ist kontakt@anfrageprofi.de. Das Formular ist bei FormSubmit
+          fuer diese Adresse freigeschaltet, INWX leitet an Gmail weiter.
+          Die Mails kommen dort manchmal erst nach ein paar Minuten an.
+          Eine neue Zieladresse braucht eine neue Freischaltung.
         - _captcha=false: keine englische Roboter-Seite nach dem Absenden.
           Gegen Spam bleibt der unsichtbare Honigtopf (_honey).
         - Das E-Mail-Feld MUSS name="email" heissen. Nur dann schickt
           FormSubmit die Eingangsbestaetigung (_autoresponse) an den Kunden
           und "Antworten" geht direkt an ihn.
       -->
-      <form action="https://formsubmit.co/floboldt007@gmail.com" method="POST" accept-charset="UTF-8" class="kontakt-form">
+      <form action="https://formsubmit.co/kontakt@anfrageprofi.de" method="POST" accept-charset="UTF-8" class="kontakt-form">
         <input type="hidden" name="_subject" value="Neue Anfrage über anfrageprofi.de" />
         <input type="hidden" name="_template" value="table" />
         <input type="hidden" name="_captcha" value="false" />
