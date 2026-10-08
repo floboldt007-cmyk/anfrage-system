@@ -72,8 +72,28 @@
     .kontakt .mail { color: #b8c4d6; font-size: 0.94rem; margin-top: 6px; }
     .kontakt .mail a { color: #fff; }
     .kontakt .person { color: #8295ad; font-size: 0.88rem; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.12); }
-    .film { margin-top: 20px; color: var(--grau); font-size: 0.96rem; }
-    .film a { color: var(--blau); font-weight: 600; text-underline-offset: 2px; }
+    /* Erklärfilm unter der Begrüßung: eigener Abspielknopf, ohne JS bleiben die normalen Bedienelemente.
+       Der Film lädt erst beim Klick (preload="none"), vorher nur das Vorschaubild. */
+    .film { max-width: 640px; margin: -12px auto 44px; }
+    .film-rahmen { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0b1730; box-shadow: 0 18px 44px rgba(15,31,61,0.22); }
+    .film-video { display: block; width: 100%; height: 100%; object-fit: cover; background: #0b1730; }
+    .film-play { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: none; padding: 0; margin: 0; cursor: pointer; font: inherit; color: #fff; background: linear-gradient(180deg, rgba(15,31,61,0) 40%, rgba(15,31,61,0.5) 100%); }
+    .film-play-kreis { width: 72px; height: 72px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(15,31,61,0.4); transition: transform 0.15s; }
+    .film-play-kreis svg { width: 28px; height: 28px; fill: var(--blau); margin-left: 4px; }
+    .film-play-text { background: rgba(15,31,61,0.85); padding: 7px 15px; border-radius: 999px; font-size: 0.92rem; font-weight: 600; }
+    .film-play:hover .film-play-kreis, .film-play:focus-visible .film-play-kreis { transform: scale(1.07); }
+    .film-play:focus-visible { outline: 3px solid #93c5fd; outline-offset: -3px; border-radius: 14px; }
+    .film figcaption { margin-top: 10px; text-align: center; font-size: 0.86rem; color: var(--grau-hell); }
+
+    /* Weitere Leistungen: Websites, Kurzvideos, Abläufe */
+    .extras { border: 1px solid var(--rand); border-radius: 12px; padding: 18px 20px; margin-bottom: 26px; }
+    .extras h3 { font-size: 1rem; margin-bottom: 12px; }
+    .extras ul { list-style: none; display: grid; gap: 12px; }
+    .extras li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; color: var(--grau); font-size: 0.95rem; line-height: 1.55; }
+    .extras li strong { color: var(--text); display: block; }
+    .extras .icon { width: 34px; height: 34px; border-radius: 8px; background: #eff4ff; display: flex; align-items: center; justify-content: center; }
+    .extras .icon svg { width: 18px; height: 18px; stroke: var(--blau); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .extras .einzeln { margin-top: 14px; font-size: 0.88rem; color: var(--grau-hell); }
 
     footer { border-top: 1px solid var(--rand); padding: 28px 0; color: var(--grau-hell); font-size: 0.88rem; }
     .foot-nav { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -106,6 +126,20 @@
       <h1 id="titel">So sähe Ihr eigenes Anfrageformular aus</h1>
       <p class="lead" id="gruss">Probieren Sie es ruhig aus: Füllen Sie das Formular aus, als wären Sie Ihr eigener Kunde. In dieser Vorschau wird nichts gespeichert und nichts verschickt.</p>
 
+      <figure class="film" id="film">
+        <div class="film-rahmen">
+          <video class="film-video" controls preload="none" playsinline poster="erklaerfilm-poster.jpg" width="1920" height="1080" aria-label="Erklärfilm: anfrageprofi in 67 Sekunden">
+            <source src="erklaerfilm.mp4" type="video/mp4" />
+            <a href="erklaerfilm.mp4">Erklärfilm ansehen (MP4, 7 MB)</a>
+          </video>
+          <button type="button" class="film-play" hidden aria-label="Erklärfilm abspielen, 67 Sekunden, mit Ton">
+            <span class="film-play-kreis"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+            <span class="film-play-text">So funktioniert es · 67 Sek.</span>
+          </button>
+        </div>
+        <figcaption>Am Beispiel eines Handwerksbetriebs · mit Ton und Untertiteln · KI-Sprecherstimme</figcaption>
+      </figure>
+
       <div class="raster">
         <div class="formular-kasten">
           <p class="vorschau-band"><span></span>Vorschau zum Ausprobieren</p>
@@ -123,6 +157,15 @@
             <h3>Was Sie dafür tun müssen</h3>
             <p>Nichts installieren. Ich richte alles ein und baue das Formular auf Ihrer Website ein. Fester Monatsbetrag, monatlich kündbar.</p>
           </div>
+          <div class="extras">
+            <h3>Das mache ich außerdem für Betriebe</h3>
+            <ul>
+              <li><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5v5l4.5-2.5z"/></svg></span><span><strong>Kurzvideos und Erklärfilme</strong>wie den Film oben: für Ihre Website, Ihr Google-Profil oder Social Media.</span></li>
+              <li><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h6M7 16h4"/></svg></span><span><strong>Websites erstellen und verbessern</strong>Neu oder auf Basis Ihrer bestehenden Seite: klar aufgebaut, schnell und gut lesbar am Handy.</span></li>
+              <li><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="6" rx="1.5"/><rect x="13" y="15" width="8" height="6" rx="1.5"/><path d="M7 9v4a2 2 0 002 2h4"/></svg></span><span><strong>Abläufe im Betrieb vereinfachen</strong>Ich finde, wo im Alltag Zeit verloren geht, und automatisiere, was sich ständig wiederholt.</span></li>
+            </ul>
+            <p class="einzeln">Gibt es auch einzeln, ohne Anfrage-System. Vorab bekommen Sie ein schriftliches Angebot.</p>
+          </div>
           <div class="kontakt">
             <p class="kontakt-titel">Interesse? Sprechen Sie mich direkt an.</p>
             <a class="btn btn-wa" id="wa" href="https://wa.me/491629152715"><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 .5C7.4.5.5 7.4.5 16c0 2.8.7 5.5 2.1 7.9L.4 31.5l7.8-2.1c2.3 1.3 4.9 1.9 7.6 1.9h.1C24.6 31.3 31.5 24.4 31.5 16 31.5 7.4 24.6.5 16 .5zm0 28.3c-2.4 0-4.8-.7-6.9-1.9l-.5-.3-5.1 1.3 1.4-5-.3-.5C3.3 19.4 2.6 17 2.6 16 2.6 8.6 8.6 2.6 16 2.6S29.4 8.6 29.4 16 23.4 28.8 16 28.8zm7.4-9.6c-.4-.2-2.4-1.2-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.2-.4.3-.8.1-2.4-1.2-3.9-2.1-5.5-4.8-.4-.7.4-.6 1.1-2.1.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.6-.8-.7h-.7c-.2 0-.6.1-.9.4-1.2 1.3-1.5 2.7-.9 4.5.9 2.6 2.7 4.7 5.1 6.1 2.6 1.5 3.6 1.3 4.9 1.1.8-.1 2.4-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.3-.3-.7-.5z"/></svg>WhatsApp schreiben</a>
@@ -130,7 +173,6 @@
             <p class="mail">oder per E-Mail: <a id="mail" href="mailto:kontakt@anfrageprofi.de">kontakt@anfrageprofi.de</a></p>
             <p class="person">Florian Boldt, anfrageprofi.de, Leverkusen</p>
           </div>
-          <p class="film">Lieber erst sehen, wie alles zusammenspielt? <a href="index.html#film">Erklärfilm in 67 Sekunden</a></p>
         </aside>
       </div>
     </div>
@@ -183,6 +225,21 @@
     document.getElementById('wa').href = 'https://wa.me/491629152715?text=' + encodeURIComponent(
       'Hallo Herr Boldt, ich habe Ihren Vorschlag' + bezug + ' gesehen und interessiere mich für das Anfrage-System.');
     document.getElementById('mail').href = 'mailto:kontakt@anfrageprofi.de?subject=' + encodeURIComponent('Ihr Vorschlag' + bezug);
+
+    // Erklaerfilm: grosser Abspielknopf ueber dem Vorschaubild (wie auf der Startseite).
+    var film = document.querySelector('.film-video');
+    var filmKnopf = document.querySelector('.film-play');
+    if (film && filmKnopf) {
+      film.controls = false;
+      filmKnopf.hidden = false;
+      var filmLaeuft = function () { filmKnopf.hidden = true; film.controls = true; };
+      filmKnopf.addEventListener('click', function () {
+        filmLaeuft();
+        var start = film.play();
+        if (start && start.catch) { start.catch(function () {}); }
+      });
+      film.addEventListener('play', filmLaeuft);
+    }
 
     // Das Formular meldet seine Hoehe, damit der Rahmen mitwaechst statt innen zu scrollen.
     window.addEventListener('message', function (ereignis) {
