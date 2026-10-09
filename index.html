@@ -7,7 +7,7 @@
   <script>if (location.hash === '#rechner') location.replace('rechner.html');</script>
   <title>Keine Kundenanfrage mehr verlieren | anfrageprofi</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231d4ed8'/><path d='M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z' fill='%23ffffff'/><path d='M11.5 14.5l3 3 6-6' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
-  <meta name="description" content="anfrageprofi: das Anfrage-System für Handwerk und Dienstleister, ab 39 € im Monat. Dazu aus einer Hand: Websites, Kurzvideos und Automatisierung." />
+  <meta name="description" content="anfrageprofi: das Anfrage-System für Handwerk und Dienstleister, ab 39 € im Monat. Dazu aus einer Hand: Google-Profil, Websites, Kurzvideos und Automatisierung." />
   <meta property="og:title" content="Keine Kundenanfrage mehr verlieren: das Anfrage-System für Ihren Betrieb" />
   <meta property="og:description" content="Jede Anfrage wird sofort erfasst, dem Kunden bestätigt und beantwortet. Sie reagieren schneller als die Konkurrenz, ohne abends Mails zu tippen." />
   <meta property="og:type" content="website" />
@@ -60,6 +60,7 @@
       { "@type": "Question", "name": "Passt das auch zu meiner Branche?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, wenn Ihre Kunden bei Ihnen anfragen und vor dem Termin etwas geklärt werden muss, etwa ein Angebot, eine Besichtigung oder ein Rückruf. Das gilt im Handwerk ebenso wie bei Reinigung, Garten, Umzug, Fotografie oder Events. Formular, Texte und Abläufe richte ich auf Ihre Branche ein. Beispiele: Handwerk, Reinigung und Hausservice sowie Fotografie und Events." } },
       { "@type": "Question", "name": "Was kostet das?", "acceptedAnswer": { "@type": "Answer", "text": "Ab 39 € im Monat, dazu einmalig ab 249 € für die Einrichtung. Für die ersten Pilotbetriebe ist die Einrichtung kostenlos. Monatlich kündbar, ohne Mindestlaufzeit. Als Kleinunternehmer berechne ich keine Umsatzsteuer." } },
       { "@type": "Question", "name": "Machen Sie auch Websites oder Videos ohne Anfrage-System?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Websites, Kurzvideos und Automatisierungen gibt es auch einzeln, ohne Anfrage-System. Eine einseitige Website gibt es ab 690 €, ein Kurzvideo bis 60 Sekunden ab 390 €, jeweils als Endpreis. Sie bekommen vorab ein schriftliches Angebot mit festem Preis. Beispiele sind die Musterseite, diese Website und der Erklärfilm oben auf der Seite." } },
+      { "@type": "Question", "name": "Kümmern Sie sich auch um mein Google-Profil?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Für 249 € richte ich Ihr Google-Unternehmensprofil vollständig ein oder bringe ein bestehendes auf Stand: Kategorien, Leistungen, Beschreibung, Fotos, Öffnungszeiten und den Link zu Ihrem Anfrageformular. Für 69 € im Monat pflege ich es danach: Beiträge, Antworten auf Bewertungen und ein kurzer Monatsbericht, monatlich kündbar. Sie bleiben Inhaber, ich arbeite nur mit einem Verwalter-Zugang, den Sie jederzeit entziehen können. Einen Platz ganz oben kann niemand seriös versprechen, ein vollständiges und gepflegtes Profil ist aber die Grundlage dafür." } },
       { "@type": "Question", "name": "Ist die Einrichtung kompliziert für mich?", "acceptedAnswer": { "@type": "Answer", "text": "Nein. Ich richte alles für Sie ein und passe es an Ihren Betrieb an. Sie müssen nichts installieren: Das System läuft auf Googles Servern, Sie bedienen es im Browser oder am Handy. Meist sind Sie nach 3 bis 5 Werktagen startklar." } },
       { "@type": "Question", "name": "Bekommt der Kunde wirklich sofort eine Antwort?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Sobald eine Anfrage eingeht, verschickt das System in Sekunden eine automatische Eingangsbestätigung mit Ihrem Namen, auch nachts und am Wochenende. Den richtigen Terminvorschlag schicken dann Sie mit einem Klick." } },
       { "@type": "Question", "name": "Was ist mit dem Datenschutz (DSGVO)?", "acceptedAnswer": { "@type": "Answer", "text": "Ihre Anfragedaten gehören Ihnen. Ich verarbeite sie nur in Ihrem Auftrag, dafür schließen wir einen Auftragsverarbeitungsvertrag (AVV nach Art. 28 DSGVO). Die Daten jedes Betriebs werden getrennt gespeichert, und Sie erhalten sie jederzeit als Export. Das Anfrageformular enthält einen Einwilligungstext zur Datenverarbeitung." } },
@@ -253,7 +254,7 @@
     .leistungen-block .eyebrow { color: #93c5fd; }
     .leistungen-block h2 { color: #fff; }
     .leistungen-block .lead { text-align: center; color: #b8c4d6; font-size: 1.08rem; max-width: 640px; margin: 0 auto 44px; }
-    .leistungen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .leistungen { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; max-width: 920px; margin: 0 auto; }
     .leistung { background: #fff; color: var(--grau); border-radius: 14px; padding: 28px 26px 24px; display: flex; flex-direction: column; box-shadow: 0 18px 50px rgba(0,0,0,0.25); }
     .leistung .icon { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; background: #eff4ff; }
     .leistung .icon svg { width: 23px; height: 23px; stroke: var(--blau); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -261,6 +262,7 @@
     .leistung p { font-size: 0.97rem; }
     .leistung .preis-ab { margin-top: 12px; font-weight: 700; color: var(--navy); }
     .leistung .preis-ab span { font-weight: 400; color: var(--grau); }
+    .leistung .preis-zwei { margin-top: 2px; }
     .leistung .beispiel { margin-top: auto; padding-top: 14px; font-size: 0.92rem; color: var(--grau-hell); }
     .leistung .beispiel a { color: var(--blau); font-weight: 600; text-underline-offset: 2px; }
     .leistungen-fuss { margin-top: 32px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 14px 24px; text-align: center; }
@@ -531,7 +533,7 @@
             <li>Der Kunde hat in Sekunden eine Antwort in Ihrem Namen und sucht nicht weiter.</li>
             <li>Alle Anfragen an einem Ort, geordnet nach wer, was, wo und wie dringend.</li>
             <li>Feierabend bleibt Feierabend: Termin oder Absage gehen mit einem Klick raus, auch zwischendurch am Handy.</li>
-            <li>Auf Wunsch fasst das System bei Angeboten nach und bittet nach dem Auftrag um eine Google-Bewertung.</li>
+            <li>Auf Wunsch fasst das System bei Angeboten nach und bittet nach dem Auftrag um eine Google-Bewertung, wenn Ihr Kunde das im Formular erlaubt hat.</li>
           </ul>
         </div>
       </div>
@@ -601,7 +603,7 @@
         </div>
       </div>
       <p class="einblick-hinweis reveal">Vereinfachte Darstellung mit Beispieldaten. Der Mailtext stammt aus dem System, Namen und Ton passe ich an Ihren Betrieb an.</p>
-      <p class="zusatz reveal">Auf Wunsch dazu: automatisches Nachfassen bei Angeboten, die Bitte um eine Google-Bewertung nach dem Auftrag und ein Monatsreport per Mail.</p>
+      <p class="zusatz reveal">Auf Wunsch dazu: automatisches Nachfassen bei Angeboten, die Bitte um eine Google-Bewertung nach dem Auftrag (mit Einwilligung Ihres Kunden) und ein Monatsreport per Mail.</p>
     </div>
   </section>
 
@@ -635,7 +637,7 @@
             <li><strong>Einrichtung</strong>In 3 bis 5 Werktagen richte ich alles ein und baue das Formular auf Ihrer Website ein.</li>
             <li><strong>Los geht's</strong>Ab dann bekommt jede Anfrage sofort eine Antwort. Ich bleibe Ihr Ansprechpartner.</li>
           </ol>
-          <p class="pilot"><strong>Jetzt: 1 bis 2 Pilotplätze.</strong> Für die ersten Betriebe ist die Einrichtung kostenlos, im Tausch gegen eine ehrliche Bewertung und die Erlaubnis, Sie als Referenz zu nennen.</p>
+          <p class="pilot"><strong>Jetzt: 1 bis 2 Pilotplätze.</strong> Für die ersten Betriebe ist die Einrichtung kostenlos, im Tausch gegen ehrliches Feedback und die Erlaubnis, Sie als Referenz zu nennen.</p>
         </div>
       </div>
       <ul class="fakten reveal">
@@ -651,9 +653,17 @@
   <section class="leistungen-block" id="leistungen">
     <div class="container">
       <p class="eyebrow reveal">Mehr aus einer Hand</p>
-      <h2 class="reveal">Websites, Kurzvideos und Automatisierung</h2>
+      <h2 class="reveal">Google-Profil, Websites, Kurzvideos und Automatisierung</h2>
       <p class="lead reveal">Das Anfrage-System ist oft der Anfang. Wenn Ihr Betrieb mehr braucht, bekommen Sie auch das von mir: ohne Agentur dazwischen, mit demselben Ansprechpartner.</p>
       <div class="leistungen">
+        <article class="leistung reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg></div>
+          <h3>Google-Profil einrichten und pflegen</h3>
+          <p>Wer einen Betrieb in der Nähe sucht, sieht bei Google zuerst die Karte mit wenigen Einträgen. Ich richte Ihr Google-Profil vollständig ein oder bringe es auf Stand: Kategorien, Leistungen, Texte, Fotos und der Link zu Ihrem Anfrageformular. Auf Wunsch pflege ich es danach mit Beiträgen und Antworten auf Bewertungen. Sie bleiben Inhaber Ihres Profils.</p>
+          <p class="preis-ab">249&nbsp;€ <span>einmalig für die Einrichtung</span></p>
+          <p class="preis-ab preis-zwei">69&nbsp;€ <span>im Monat für die Pflege, monatlich kündbar</span></p>
+          <p class="beispiel">Ehrlich: kein Versprechen auf „Platz&nbsp;1“, keine gekauften Bewertungen</p>
+        </article>
         <article class="leistung reveal">
           <div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h6M7 16h4"/></svg></div>
           <h3>Websites erstellen</h3>
@@ -677,7 +687,7 @@
         </article>
       </div>
       <div class="leistungen-fuss reveal">
-        <p>Websites, Filme und Automatisierungen gibt es auch einzeln. Sie bekommen vorab ein schriftliches Angebot mit festem Preis. Alle Preise sind Endpreise, als Kleinunternehmer berechne ich keine Umsatzsteuer.</p>
+        <p>Google-Profil, Websites, Filme und Automatisierungen gibt es auch einzeln. Sie bekommen vorab ein schriftliches Angebot mit festem Preis. Alle Preise sind Endpreise, als Kleinunternehmer berechne ich keine Umsatzsteuer.</p>
         <a class="btn btn-hell" href="#kontakt">Projekt anfragen</a>
       </div>
     </div>
@@ -720,6 +730,10 @@
         <details>
           <summary>Machen Sie auch Websites oder Videos ohne Anfrage-System?</summary>
           <p>Ja. Websites, Kurzvideos und Automatisierungen gibt es auch einzeln, ohne Anfrage-System. Eine einseitige Website gibt es ab 690 €, ein Kurzvideo bis 60 Sekunden ab 390 €, jeweils als Endpreis. Sie bekommen vorab ein schriftliches Angebot mit festem Preis. Beispiele sind die Musterseite, diese Website und der Erklärfilm oben auf der Seite.</p>
+        </details>
+        <details>
+          <summary>Kümmern Sie sich auch um mein Google-Profil?</summary>
+          <p>Ja. Für 249 € richte ich Ihr Google-Unternehmensprofil vollständig ein oder bringe ein bestehendes auf Stand: Kategorien, Leistungen, Beschreibung, Fotos, Öffnungszeiten und den Link zu Ihrem Anfrageformular. Für 69 € im Monat pflege ich es danach: Beiträge, Antworten auf Bewertungen und ein kurzer Monatsbericht, monatlich kündbar. Sie bleiben Inhaber, ich arbeite nur mit einem Verwalter-Zugang, den Sie jederzeit entziehen können. Einen Platz ganz oben kann niemand seriös versprechen, ein vollständiges und gepflegtes Profil ist aber die Grundlage dafür.</p>
         </details>
         <details>
           <summary>Ist die Einrichtung kompliziert für mich?</summary>
