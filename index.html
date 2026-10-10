@@ -14,16 +14,16 @@
   <meta property="og:locale" content="de_DE" />
   <meta property="og:url" content="https://anfrageprofi.de/" />
   <meta property="og:site_name" content="anfrageprofi.de" />
-  <meta property="og:image" content="https://anfrageprofi.de/og-vorschau.jpg" />
-  <meta property="og:image:secure_url" content="https://anfrageprofi.de/og-vorschau.jpg" />
+  <meta property="og:image" content="https://anfrageprofi.de/og-vorschau-80.jpg" />
+  <meta property="og:image:secure_url" content="https://anfrageprofi.de/og-vorschau-80.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="anfrageprofi.de: Keine Kundenanfrage mehr verlieren. Das Anfrage-System für Ihren Betrieb, erklärt in 67 Sekunden." />
+  <meta property="og:image:alt" content="anfrageprofi.de: Keine Kundenanfrage mehr verlieren. Das Anfrage-System für Ihren Betrieb, erklärt in 80 Sekunden." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Keine Kundenanfrage mehr verlieren: das Anfrage-System für Ihren Betrieb" />
   <meta name="twitter:description" content="Jede Anfrage wird sofort erfasst, dem Kunden bestätigt und beantwortet. Sie reagieren schneller als die Konkurrenz, ohne abends Mails zu tippen." />
-  <meta name="twitter:image" content="https://anfrageprofi.de/og-vorschau.jpg" />
+  <meta name="twitter:image" content="https://anfrageprofi.de/og-vorschau-80.jpg" />
   <meta name="author" content="Florian Boldt" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0f1f3d" />
@@ -72,14 +72,14 @@
   {
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    "name": "anfrageprofi in 67 Sekunden",
-    "description": "Erklärfilm: Wie das Anfrage-System jede Kundenanfrage erfasst, dem Kunden sofort bestätigt, in der Anfragenliste sortiert und Termin oder Absage mit einem Klick verschickt.",
+    "name": "anfrageprofi in 80 Sekunden",
+    "description": "Erklärfilm: Wie das Anfrage-System jede Kundenanfrage erfasst, dem Kunden sofort bestätigt, in der Anfragenliste sortiert und Termin oder Absage mit einem Klick verschickt. Passt dem Kunden der Termin nicht, wählt er selbst einen anderen. Auf Wunsch kommt die Pflege des Google-Profils dazu.",
     "thumbnailUrl": "https://anfrageprofi.de/erklaerfilm-poster.jpg",
     "contentUrl": "https://anfrageprofi.de/erklaerfilm.mp4",
     "uploadDate": "2026-10-10",
-    "duration": "PT1M7S",
+    "duration": "PT1M20S",
     "inLanguage": "de",
-    "transcript": "Sie stecken mitten in der Arbeit. Das Handy klingelt. Sie können nicht ran. Der Kunde wartet nicht. Er fragt beim Nächsten an. Und abends tippen Sie am Küchentisch noch Antworten. Es geht auch einfacher. Mit anfrageprofi schickt Ihr Kunde seine Anfrage über ein Formular, zu jeder Uhrzeit. Sekunden später hat er die Bestätigung im Postfach. Er fühlt sich ernst genommen und sucht nicht weiter. Die Anfrage landet geordnet in Ihrer Anfragenliste: wer, was, wo. Wenn Sie Zeit haben: ein Klick auf „Termin senden“. Die Mail geht raus, der Termin steht im Kalender. Passt ein Auftrag nicht, sagen Sie mit einem Klick freundlich ab. Auf einen Blick sehen Sie, was noch offen ist. Keine Anfrage mehr verlieren. Auch wenn Sie mitten in der Arbeit stecken. Außerdem bekommen Sie aus einer Hand: Ihr Google-Profil, schlanke Abläufe, Websites und Filme wie diesen. Probieren Sie es selbst: anfrageprofi.de."
+    "transcript": "Sie stecken mitten in der Arbeit. Das Handy klingelt. Sie können nicht ran. Der Kunde wartet nicht. Er fragt beim Nächsten an. Und abends tippen Sie am Küchentisch noch Antworten. Es geht auch einfacher. Mit anfrageprofi schickt Ihr Kunde seine Anfrage über ein Formular, zu jeder Uhrzeit. Sekunden später hat er die Bestätigung im Postfach. Er fühlt sich ernst genommen und sucht nicht weiter. Die Anfrage landet geordnet in Ihrer Anfragenliste: wer, was, wo. Wenn Sie Zeit haben: ein Klick auf „Termin senden“. Die Mail geht raus, der Termin steht im Kalender. Passt ein Auftrag nicht, sagen Sie mit einem Klick freundlich ab. Und passt Ihrem Kunden der Termin nicht, wählt er selbst einen anderen. Auf einen Blick sehen Sie, was noch offen ist. Keine Anfrage mehr verlieren. Auch wenn Sie mitten in der Arbeit stecken. Und damit neue Kunden Sie finden, kümmert sich anfrageprofi auf Wunsch um Ihr Google-Profil: einrichten, pflegen, Bewertungen beantworten. Außerdem bekommen Sie aus einer Hand: schlanke Abläufe, Websites und Filme wie diesen. Probieren Sie es selbst: anfrageprofi.de."
   }
   </script>
   <style>
@@ -220,6 +220,12 @@
     .mail-text { padding: 14px 18px 18px; font-size: 0.93rem; color: #334155; }
     .mail-text p + p { margin-top: 10px; }
     .mail-termin { background: #eff4ff; border-radius: 8px; padding: 8px 12px; font-weight: 700; color: var(--blau-dunkel); }
+    /* Die drei Knöpfe der echten Terminmail (seit 10.10.2026): bestätigen, anderen Termin wählen, kein Bedarf */
+    .mail-knoepfe { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mail-knoepfe span { padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.86rem; color: #fff; white-space: nowrap; }
+    .mk-ja { background: #1e8e3e; }
+    .mk-anders { background: var(--blau); }
+    .mk-nein { background: #5f6368; }
     .liste-karte { background: #fff; color: var(--text); border: 1px solid var(--rand); border-radius: 14px; box-shadow: 0 14px 40px rgba(15,31,61,0.08); overflow: hidden; margin: 0; }
     .liste-kopf { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 18px; background: #263043; color: #fff; font-weight: 600; font-size: 0.93rem; }
     .liste-karte ul { list-style: none; }
@@ -485,13 +491,13 @@
       <div class="hero-visual">
         <figure class="film" id="film">
           <div class="film-rahmen">
-            <video class="film-video" controls preload="none" playsinline poster="erklaerfilm-poster.jpg" width="1920" height="1080" aria-label="Erklärfilm: anfrageprofi in 67 Sekunden">
+            <video class="film-video" controls preload="none" playsinline poster="erklaerfilm-poster.jpg" width="1920" height="1080" aria-label="Erklärfilm: anfrageprofi in 80 Sekunden">
               <source src="erklaerfilm.mp4" type="video/mp4" />
-              <a href="erklaerfilm.mp4">Erklärfilm ansehen (MP4, 7 MB)</a>
+              <a href="erklaerfilm.mp4">Erklärfilm ansehen (MP4, 9 MB)</a>
             </video>
-            <button type="button" class="film-play" hidden aria-label="Erklärfilm abspielen, 67 Sekunden, mit Ton">
+            <button type="button" class="film-play" hidden aria-label="Erklärfilm abspielen, 80 Sekunden, mit Ton">
               <span class="film-play-kreis"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-              <span class="film-play-text">Film ansehen · 67 Sek.</span>
+              <span class="film-play-text">Film ansehen · 80 Sek.</span>
             </button>
           </div>
           <figcaption>Am Beispiel eines Handwerksbetriebs · mit Ton und Untertiteln · <span class="nobr">KI-Sprecherstimme</span></figcaption>
@@ -636,7 +642,7 @@
         <div class="schritt reveal">
           <div class="nummer"></div>
           <h3>Ein Klick genügt</h3>
-          <p>Termin senden oder freundlich absagen: Die Mail geht automatisch raus, der Termin steht im Kalender.</p>
+          <p>Termin senden oder freundlich absagen: Die Mail geht automatisch raus, der Termin steht im Kalender. Passt er Ihrem Kunden nicht, wählt er selbst einen anderen.</p>
         </div>
         <div class="schritt reveal">
           <div class="nummer"></div>
@@ -655,7 +661,8 @@
               <p>Guten Tag Anna Becker,</p>
               <p>vielen Dank für Ihre Anfrage zu „Grundreinigung“. Wir schlagen Ihnen gerne folgenden Termin vor:</p>
               <p class="mail-termin">Donnerstag, 15.10.2026 um 10:00 Uhr</p>
-              <p>Bitte bestätigen Sie uns den Termin kurz per Antwort auf diese E-Mail oder nennen Sie uns eine Alternative.</p>
+              <p>Passt Ihnen der Termin? Bitte einmal klicken:</p>
+              <p class="mail-knoepfe"><span class="mk-ja">Termin bestätigen</span><span class="mk-anders">Anderer Termin</span><span class="mk-nein">Kein Bedarf mehr</span></p>
               <p>Freundliche Grüße<br />Mustermann Gebäudereinigung</p>
             </div>
           </div>
