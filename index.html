@@ -845,18 +845,31 @@
       </div>
       <p class="oder-form">oder ganz unverbindlich das Formular ausfüllen:</p>
 
-      <form action="https://formsubmit.co/kontakt@anfrageprofi.de" method="POST" class="kontakt-form">
-        <input type="hidden" name="_subject" value="Neue Anfrage ueber anfrageprofi.de" />
+      <!--
+        Versand ueber FormSubmit (formsubmit.co):
+        - Ziel ist kontakt@anfrageprofi.de. Das Formular ist bei FormSubmit
+          fuer diese Adresse freigeschaltet, INWX leitet an Gmail weiter.
+          Die Mails kommen dort manchmal erst nach ein paar Minuten an.
+          Eine neue Zieladresse braucht eine neue Freischaltung.
+        - _captcha=false: keine englische Roboter-Seite nach dem Absenden.
+          Gegen Spam bleibt der unsichtbare Honigtopf (_honey).
+        - Das E-Mail-Feld MUSS name="email" heissen. Nur dann schickt
+          FormSubmit die Eingangsbestaetigung (_autoresponse) an den Kunden
+          und "Antworten" geht direkt an ihn.
+      -->
+      <form action="https://formsubmit.co/kontakt@anfrageprofi.de" method="POST" accept-charset="UTF-8" class="kontakt-form">
+        <input type="hidden" name="_subject" value="Neue Anfrage über anfrageprofi.de" />
         <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_next" value="https://anfrageprofi.de/danke.html" />
-        <input type="hidden" name="_autoresponse" value="Vielen Dank fuer Ihre Nachricht! Ich habe Ihre Anfrage erhalten und melde mich innerhalb von 24 Stunden persoenlich bei Ihnen zurueck. Herzliche Gruesse, Florian Boldt - anfrageprofi.de" />
+        <input type="hidden" name="_autoresponse" value="Vielen Dank für Ihre Nachricht! Ich habe Ihre Anfrage erhalten und melde mich innerhalb von 24 Stunden persönlich bei Ihnen. Wenn es eilt, erreichen Sie mich unter 0162 9152715, auch per WhatsApp. Herzliche Grüße, Florian Boldt, anfrageprofi.de" />
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
         <div class="form-reihe">
           <label>Name*<input type="text" name="Name" required autocomplete="name" /></label>
           <label>Betrieb<input type="text" name="Betrieb" autocomplete="organization" /></label>
         </div>
         <div class="form-reihe">
-          <label>E-Mail*<input type="email" name="E-Mail" required autocomplete="email" /></label>
+          <label>E-Mail*<input type="email" name="email" required autocomplete="email" /></label>
           <label>Telefon<input type="tel" name="Telefon" autocomplete="tel" /></label>
         </div>
         <label>Worum geht es?<select name="Thema">
