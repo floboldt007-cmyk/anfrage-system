@@ -28,6 +28,9 @@
     ?betrieb=Name%20des%20Betriebs   Name in Text und Bestaetigung
     ?farbe=%23c2410c                 Akzentfarbe (# als %23 schreiben)
     ?ziel=https://script.google...   eigene Backend-Adresse je Kunde
+    ?datenschutz=https://...         Datenschutzseite des Betriebs, wird im
+                                     Pflicht-Haekchen verlinkt (nur https).
+                                     Bei jedem Kunden mitgeben.
     ?gewerk=maler                    passende Auswahl bei "Worum geht es?"
                                      (elektro, maler, dach, tischler, garten,
                                      reinigung, event, allgemein; ohne Angabe:
@@ -207,7 +210,7 @@
 
     <label class="check">
       <input type="checkbox" name="einwilligung" required />
-      <span id="einwilligung-text">Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage gespeichert und verarbeitet werden.*</span>
+      <span id="einwilligung-text">Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzhinweise</a> zur Kenntnis genommen.*</span>
     </label>
 
     <button type="submit" id="senden">Anfrage absenden</button>
@@ -280,9 +283,35 @@
     document.getElementById('kopf-titel').textContent = 'Anfrage an ' + betrieb;
     document.getElementById('erfolg-betrieb').textContent =
       betrieb + ' meldet sich zeitnah mit einem Terminvorschlag bei Ihnen.';
-    document.getElementById('einwilligung-text').textContent =
-      'Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage an '
-      + betrieb + ' übermittelt, gespeichert und verarbeitet werden.*';
+  }
+
+  // Pflicht-Haekchen (seit 10.10.2026): Kenntnisnahme statt Einwilligung.
+  // Eine Anfrage zu bearbeiten ist Vertragsanbahnung (Art. 6 Abs. 1 lit. b
+  // DSGVO), dafuer braucht es keine Einwilligung. Wer trotzdem eine
+  // einholt, muesste sie auch widerrufbar machen. Deshalb bestaetigt der
+  // Kunde hier nur, dass er die Datenschutzhinweise gesehen hat.
+  // ?datenschutz= ist die Datenschutzseite des Betriebs und gehoert bei
+  // jedem Kunden in die Einbau-Adresse. Nur https, damit ueber einen
+  // praeparierten Link kein javascript:-Verweis ins Formular kommt.
+  // Der Feldname "einwilligung" und der Wert "ja" bleiben, weil das
+  // Backend genau das erwartet.
+  var dsSeite = (p.get('datenschutz') || '').slice(0, 300);
+  if (!/^https:\/\/[^\s"'<>\\]+$/.test(dsSeite)) { dsSeite = ''; }
+  if (betrieb || dsSeite) {
+    var kenntnis = document.getElementById('einwilligung-text');
+    kenntnis.textContent = 'Ich habe die ';
+    if (dsSeite) {
+      var dsLink = document.createElement('a');
+      dsLink.href = dsSeite;
+      dsLink.target = '_blank';
+      dsLink.rel = 'noopener';
+      dsLink.textContent = 'Datenschutzhinweise';
+      kenntnis.appendChild(dsLink);
+    } else {
+      kenntnis.appendChild(document.createTextNode('Datenschutzhinweise'));
+    }
+    kenntnis.appendChild(document.createTextNode(
+      (betrieb ? ' von ' + betrieb : '') + ' zur Kenntnis genommen.*'));
   }
 
   // Vorfuehrung (?demo=1, gesetzt von der Musterseite): Der Betrieb im
@@ -382,7 +411,7 @@
   var meldungen = {
     pflicht: 'Bitte füllen Sie die mit * markierten Felder aus.',
     email: 'Diese E-Mail-Adresse sieht nicht gültig aus. Bitte prüfen Sie die Schreibweise.',
-    einwilligung: 'Bitte bestätigen Sie die Einwilligung, damit wir Ihre Anfrage bearbeiten dürfen.',
+    einwilligung: 'Bitte bestätigen Sie, dass Sie die Datenschutzhinweise zur Kenntnis genommen haben.',
     schon_gesendet: 'Diese Anfrage haben wir bereits erhalten. Wir melden uns in Kürze.',
     limit: 'Aktuell gehen sehr viele Anfragen ein. Bitte versuchen Sie es in ein paar Minuten erneut.',
     standard: 'Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder rufen Sie uns an.'
