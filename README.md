@@ -8,7 +8,7 @@ geordnet abgelegt. Termin oder Absage gehen mit einem Klick raus.
 
 ## Seiten
 
-- `index.html`: Startseite (Erklaerfilm, Fuer wen, Vorher/Nachher, So funktioniert es, Preis, Leistungen inkl. Google-Profil, Ueber mich, FAQ, Kontakt)
+- `index.html`: Startseite (Erklaerfilm, Leistungen im Ueberblick als vier Kacheln, Fuer wen, Vorher/Nachher, So funktioniert es, Preis, Leistungen im Detail inkl. Google-Profil, Ueber mich, FAQ, Kontakt)
 - `anfrage-system-handwerk.html`, `anfrage-system-reinigung.html`, `anfrage-system-events.html`: Branchen-Seiten
   (die alten Adressen `anfrage-system-elektriker.html`, `-maler.html`, `-heizung-sanitaer.html` leiten auf die Handwerk-Seite)
 - `rechner.html`: Verlustrechner
