@@ -27,7 +27,11 @@
   ANPASSEN ueber die Adresse, ohne diese Datei zu aendern:
     ?betrieb=Name%20des%20Betriebs   Name in Text und Bestaetigung
     ?farbe=%23c2410c                 Akzentfarbe (# als %23 schreiben)
-    ?ziel=https://script.google...   eigene Backend-Adresse je Kunde
+    ?ziel=https://script.google...   eigene Backend-Adresse je Kunde. Gilt nur,
+                                     wenn sie unten im Skript woertlich in
+                                     ERLAUBTE_ZIELE steht. Sonst sperrt sich
+                                     das Formular und sendet nichts.
+                                     Neuer Kunde = dort eine Zeile ergaenzen.
     ?datenschutz=https://...         Datenschutzseite des Betriebs, wird im
                                      Pflicht-Haekchen verlinkt (nur https).
                                      Bei jedem Kunden mitgeben.
@@ -130,6 +134,7 @@
   .erfolg h3 { font-size: 1.2rem; margin-bottom: 10px; }
   .erfolg p { color: var(--grau); font-size: 0.94rem; margin-bottom: 9px; }
   .erfolg .stark { color: var(--text); font-weight: 600; }
+  .erfolg button { margin-top: 10px; }
   .hinweis-vorschau {
     background: #fffbeb; border: 1px solid #fde68a; color: #92400e; text-align: left;
     border-radius: 9px; padding: 11px 14px; font-size: 0.82rem; margin-top: 16px;
@@ -148,7 +153,11 @@
     <p>Beschreiben Sie kurz Ihr Anliegen. Sie erhalten sofort eine Bestätigung per E-Mail, wir melden uns anschließend mit einem Terminvorschlag.</p>
   </div>
 
-  <form id="anfrage" novalidate>
+  <!-- method="post" ist Absicht, auch wenn das Skript das Absenden selbst
+       uebernimmt: Laeuft das Skript einmal nicht (JavaScript aus oder ein
+       Tippfehler im Skript), wuerde der Browser sonst alle Eingaben per GET
+       in die Adresse schreiben. -->
+  <form id="anfrage" method="post" novalidate>
     <div class="fehler" id="fehler" role="alert"></div>
 
     <!-- Honigtopf gegen Spam-Bots: fuer Menschen unsichtbar, Bots fuellen es aus. -->
@@ -228,6 +237,15 @@
       Sobald die Adresse eingetragen ist, läuft der Ablauf vollständig.
     </div>
   </div>
+
+  <!-- Notweg: Die Anfrage ist raus, die Antwort des Backends war aber nicht
+       lesbar. Bewusst ohne gruenen Haken und ohne "ist eingegangen". -->
+  <div class="erfolg" id="unbestaetigt" hidden>
+    <h3>Ihre Anfrage wurde abgeschickt.</h3>
+    <p>Die Rückmeldung des Servers konnten wir allerdings nicht lesen. <span class="stark">Schauen Sie bitte in Ihr E-Mail-Postfach</span>, gegebenenfalls auch im Spam-Ordner.</p>
+    <p>Kommt in den nächsten Minuten keine Bestätigung an, ist die Anfrage möglicherweise nicht angekommen. Senden Sie sie dann bitte noch einmal oder rufen Sie uns an.</p>
+    <button type="button" id="nochmal">Zurück zum Formular</button>
+  </div>
 </div>
 
 <script>
@@ -249,7 +267,48 @@
   // NICHT zu verwechseln mit der /exec-Adresse des Telefon-Assistenten,
   // die tatsaechlich geheim bleiben muss, weil dort niemand mitliest.
   var PLATZHALTER = 'HIER_EXEC_ADRESSE_EINTRAGEN';
-  var ZIEL = 'https://script.google.com/macros/s/AKfycbzLWFS2qFeR6nzqmwV3G7UFAtSGu2QB8JgyQN5akhjuKZ4eoEqzLBOVUVp-MjxY4z7yKg/exec';
+
+  // [TESTBLOCK-START] -- reine Logik ohne Browser, per cscript testbar.
+  // Dieser Bereich bleibt absichtlich reines ASCII und altes JavaScript
+  // (kein let, kein const, keine Pfeilfunktionen), damit der Selbsttest
+  // Musterbetrieb_Eingang.test.js ihn einlesen kann.
+  var ZIEL_MUSTERBETRIEB = 'https://script.google.com/macros/s/AKfycbzLWFS2qFeR6nzqmwV3G7UFAtSGu2QB8JgyQN5akhjuKZ4eoEqzLBOVUVp-MjxY4z7yKg/exec';
+
+  // ---- Erlaubte Backend-Adressen (?ziel=) ------------------------------
+  // ?ziel= darf NUR eine Adresse waehlen, die hier woertlich steht.
+  // Bis Oktober 2026 reichte jede Adresse unter script.google.com. Ein
+  // Apps-Script-Projekt kann aber jeder anlegen: Mit einem praeparierten
+  // Link auf anfrageprofi.de/formular.html?ziel=... waeren die Eingaben
+  // eines Besuchers bei einem Fremden gelandet, waehrend in der
+  // Adresszeile weiter anfrageprofi.de stand.
+  //
+  // NEUER KUNDE: seine /exec-Adresse als eigene Zeile eintragen (Komma
+  // hinter der Zeile davor nicht vergessen) und auf main bringen. Erst
+  // danach nimmt das Formular sie an. Vollstaendige Adresse, zeichengenau
+  // so, wie sie in der Einbau-Zeile hinter ?ziel= steht.
+  // VORSICHT: Ein Tippfehler in dieser Liste (fehlendes Komma oder
+  // Anfuehrungszeichen) legt das Formular bei ALLEN Betrieben lahm, weil
+  // dann das ganze Skript nicht mehr laeuft. Deshalb vor dem Hochladen
+  // immer die beiden Tests laufen lassen (Notiz-Repo, apps-script-backup).
+  // Das Backend des Kunden braucht ausserdem dieselbe Doppel-Sperre wie
+  // der Musterbetrieb (gleiche E-Mail, einige Minuten), siehe Notweg unten.
+  //
+  // Die Liste ist oeffentlich lesbar. Das ist in Ordnung: Jede dieser
+  // Adressen steht ohnehin im Quelltext der jeweiligen Kundenseite.
+  var ERLAUBTE_ZIELE = [
+    ZIEL_MUSTERBETRIEB
+  ];
+
+  function istErlaubtesZiel(adresse) {
+    if (typeof adresse !== 'string' || adresse === '') { return false; }
+    for (var i = 0; i < ERLAUBTE_ZIELE.length; i++) {
+      if (ERLAUBTE_ZIELE[i] === adresse) { return true; }
+    }
+    return false;
+  }
+  // [TESTBLOCK-END]
+
+  var ZIEL = ZIEL_MUSTERBETRIEB;
 
   // Lokaler Testbetrieb: Laeuft die Seite ueber den PowerShell-Server
   // (serve.ps1 mit -Datenbank), nimmt der die Anfrage selbst entgegen
@@ -260,10 +319,18 @@
   if (lokal) { ZIEL = '/anfrage'; }
 
   var p = new URLSearchParams(location.search);
-  // Nur Google-Apps-Script-Adressen zulassen. Sonst koennte jemand per
-  // praepariertem Link die Anfragen auf einen fremden Server umleiten.
-  if (p.get('ziel') && /^https:\/\/script\.google\.com\//.test(p.get('ziel'))) {
-    ZIEL = p.get('ziel');
+  // ?ziel= waehlt nur unter den erlaubten Adressen (ERLAUBTE_ZIELE oben).
+  // Eine unbekannte Adresse faellt bewusst NICHT still auf den
+  // Musterbetrieb zurueck: Sonst bekaeme der Kunde eines echten Betriebs
+  // eine Mail von "Mustermann Haustechnik" und die Anfrage waere fuer den
+  // Betrieb verloren. Stattdessen sperrt sich das Formular und sendet
+  // nichts (siehe sperre() weiter unten). Das gilt auch fuer ein leeres
+  // ?ziel= (Adresse beim Einbau vergessen), deshalb der Vergleich mit null.
+  var zielGesperrt = false;
+  var zielWunsch = p.get('ziel');
+  if (zielWunsch !== null) {
+    if (istErlaubtesZiel(zielWunsch)) { ZIEL = zielWunsch; }
+    else { ZIEL = PLATZHALTER; zielGesperrt = true; }
   }
 
   var betrieb = (p.get('betrieb') || '').slice(0, 60).replace(/[<>&"]/g, '');
@@ -390,6 +457,9 @@
   // Nur feste Texte, keine Eingabe aus der Adresse, deshalb innerHTML unbedenklich.
   if (p.get('vorschau') === '1') {
     ZIEL = PLATZHALTER;
+    // Die Vorschau sendet ohnehin nichts und sagt das selbst. Eine
+    // zusaetzliche Sperrmeldung wegen ?ziel= waere hier nur verwirrend.
+    zielGesperrt = false;
     var bestaetigung = document.querySelector('#erfolg h3 + p');
     if (bestaetigung) {
       bestaetigung.textContent = 'So sieht Ihr Kunde die Bestätigung. In der echten Version hätte er jetzt '
@@ -414,6 +484,16 @@
     einwilligung: 'Bitte bestätigen Sie, dass Sie die Datenschutzhinweise zur Kenntnis genommen haben.',
     schon_gesendet: 'Diese Anfrage haben wir bereits erhalten. Wir melden uns in Kürze.',
     limit: 'Aktuell gehen sehr viele Anfragen ein. Bitte versuchen Sie es in ein paar Minuten erneut.',
+    // Das Backend prueft die Nummer strenger als das Formular. Ohne eigene
+    // Meldung erfuhr der Besucher bei "0171 1234567 abends" nie, was falsch ist.
+    telefon: 'Bitte prüfen Sie die Telefonnummer. Erlaubt sind nur Ziffern, Leerzeichen und die Zeichen + - / ( ) .',
+    // Der Code weiss hier nur: Zweimal kam keine Antwort. Das kann auch ein
+    // Firmennetz oder ein Werbeblocker sein, nicht nur fehlendes Netz.
+    verbindung: 'Die Anfrage konnte gerade nicht gesendet werden (keine Verbindung, oder Ihr Netzwerk '
+      + 'bzw. ein Werbeblocker sperrt sie). Ihre Eingaben sind noch da: Bitte versuchen Sie es gleich '
+      + 'noch einmal oder rufen Sie uns an.',
+    gesperrt: 'Dieses Formular ist noch nicht freigeschaltet. Es wird nichts gespeichert und nichts '
+      + 'verschickt. Bitte wenden Sie sich direkt an den Betrieb.',
     standard: 'Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder rufen Sie uns an.'
   };
 
@@ -425,8 +505,19 @@
     meldeHoehe();
   }
 
+  // Unbekanntes ?ziel=: Das Formular sagt es sofort beim Laden und nicht
+  // erst, nachdem der Besucher alles ausgefuellt hat. Der Knopf bleibt aus.
+  function sperre() {
+    zeigeFehler('gesperrt');
+    knopf.disabled = true;
+  }
+  if (zielGesperrt) { sperre(); }
+
   form.addEventListener('submit', function (ereignis) {
     ereignis.preventDefault();
+    // Doppelt gesichert: Auch wenn das Absenden trotz ausgeschaltetem Knopf
+    // ausgeloest wird, geht bei gesperrtem Ziel nichts raus.
+    if (zielGesperrt) { return sperre(); }
     fehlerBox.style.display = 'none';
 
     var f = form.elements;
@@ -465,22 +556,70 @@
 
     // text/plain ist Absicht: damit schickt der Browser keinen CORS-
     // Vorabflug los, den Apps Script nicht beantworten kann.
-    fetch(ZIEL, {
+    var paket = {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(daten)
-    })
+    };
+
+    sende(paket)
     .then(function (antwort) { return antwort.json(); })
-    .then(function (ergebnis) {
-      if (ergebnis && ergebnis.ok) { fertig(); }
-      else { zeigeFehler((ergebnis && ergebnis.fehler) || 'standard'); }
-    })
-    .catch(function () {
-      // Notweg, falls fetch scheitert: klassisch per GET. Das Backend
-      // zeigt dann eine einfache Dankeseite an.
-      location.href = ZIEL + '?' + new URLSearchParams(daten).toString();
+    .then(
+      function (ergebnis) { return { lesbar: true, ergebnis: ergebnis }; },
+      // Keine lesbare Antwort: keine Verbindung, Antwort vom Browser
+      // gesperrt oder kein JSON (z. B. eine Fehlerseite von Google).
+      function () { return { lesbar: false }; }
+    )
+    .then(function (erster) {
+      if (!erster.lesbar) { return notweg(paket); }
+      if (erster.ergebnis && erster.ergebnis.ok) { fertig(); }
+      else { zeigeFehler((erster.ergebnis && erster.ergebnis.fehler) || 'standard'); }
     });
   });
+
+  // Wirft fetch schon beim Aufruf, wird daraus ein normaler Fehlschlag,
+  // damit der Knopf nie auf "Wird gesendet" haengen bleibt.
+  function sende(optionen) {
+    try { return fetch(ZIEL, optionen); }
+    catch (e) { return Promise.reject(e); }
+  }
+
+  // ---- Notweg ----------------------------------------------------------
+  // Kommt auf den ersten Versuch keine lesbare Antwort, geht dieselbe
+  // Anfrage ein zweites Mal raus, wieder als POST. mode 'no-cors' heisst:
+  // Der Browser schickt sie ab, laesst die Seite die Antwort aber nicht
+  // lesen. Das ist ein Wiederholversuch: Er rettet kurze Aussetzer (Netz
+  // oder Google), bei denen der erste Versuch gar nicht ankam.
+  // Hat der erste Versuch schon gespeichert und nur die Antwort kam nicht
+  // durch, ist dieser zweite ein DOPPEL. Das Backend MUSS dieselbe Anfrage
+  // deshalb einige Minuten lang als Doppel erkennen (der Musterbetrieb tut
+  // das: gleiche E-Mail, 10 Minuten). Ohne diese Sperre legt der Notweg
+  // doppelte Zeilen an und verschickt doppelte Mails.
+  //
+  // Bis Oktober 2026 lief der Notweg per GET ueber location.href. Damit
+  // standen Name, Telefon, E-Mail, Adresse und Beschreibung in der
+  // Adresse (Adresszeile, Verlauf, Protokolle). Ausserdem darf die
+  // Dankeseite des Backends nicht in einem iframe erscheinen
+  // (X-Frame-Options: SAMEORIGIN, am 11.10.2026 nachgemessen): Im
+  // eingebauten Formular sah der Besucher also nur einen leeren Rahmen.
+  // KUNDENDATEN GEHOEREN NIE IN EINE ADRESSE. Hier nichts mit
+  // location.href, GET oder Adress-Parametern nachruesten.
+  //
+  // Weil die Antwort unlesbar ist, weiss das Formular danach nicht, ob
+  // das Backend angenommen hat. Deshalb kein gruener Haken, sondern der
+  // ehrliche Hinweis aus fertigUnbestaetigt().
+  function notweg(paket) {
+    return sende({ method: 'POST', mode: 'no-cors', headers: paket.headers, body: paket.body })
+      .then(function (antwort) {
+        // Fremde Adresse (Google): Die Antwort ist undurchsichtig, Status 0.
+        // Nur beim lokalen Testbetrieb ist sie lesbar. Meldet der Server
+        // dort klar einen Fehler (404, 500), waere "abgeschickt" gelogen.
+        if (antwort && antwort.type !== 'opaque' && antwort.status >= 400) {
+          return zeigeFehler('standard');
+        }
+        fertigUnbestaetigt();
+      }, function () { zeigeFehler('verbindung'); });
+  }
 
   function fertig() {
     form.hidden = true;
@@ -488,6 +627,26 @@
     meldeHoehe();
     try { parent.postMessage({ anfrageprofi: 'erfolg' }, '*'); } catch (e) {}
   }
+
+  // Die Anfrage ist raus, aber unbestaetigt. Bewusst KEINE Meldung
+  // 'erfolg' an die Elternseite: Wer dort darauf zaehlt (z. B. eine
+  // Auswertung beim Kunden), soll nur sichere Eingaenge zaehlen.
+  function fertigUnbestaetigt() {
+    form.hidden = true;
+    document.getElementById('unbestaetigt').hidden = false;
+    meldeHoehe();
+  }
+
+  // Die Eingaben bleiben im ausgeblendeten Formular stehen. Bleibt die
+  // Bestaetigungsmail aus, kann der Besucher ohne neues Tippen noch
+  // einmal senden.
+  document.getElementById('nochmal').addEventListener('click', function () {
+    document.getElementById('unbestaetigt').hidden = true;
+    form.hidden = false;
+    knopf.disabled = false;
+    knopf.textContent = 'Anfrage absenden';
+    meldeHoehe();
+  });
 
   // ---- Hoehe an die Elternseite melden ---------------------------------
   // Damit der iframe beim Kunden mitwachsen kann, statt innen zu scrollen.
