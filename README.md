@@ -13,7 +13,8 @@ geordnet abgelegt. Termin oder Absage gehen mit einem Klick raus.
   (die alten Adressen `anfrage-system-elektriker.html`, `-maler.html`, `-heizung-sanitaer.html` leiten auf die Handwerk-Seite)
 - `rechner.html`: Verlustrechner
 - `musterbetrieb.html`: Musterseite eines erfundenen Handwerksbetriebs mit eingebautem Formular
-- `formular.html`: das einbettbare Anfrageformular (Branchen-Vorlagen ueber `?gewerk=`, siehe Kommentar in der Datei)
+- `formular.html`: das einbettbare Anfrageformular (Branchen-Vorlagen ueber `?gewerk=`, siehe Kommentar in der Datei).
+  `?ziel=` nimmt nur Backend-Adressen an, die in der Datei in `ERLAUBTE_ZIELE` stehen. Neuer Kunde: dort eine Zeile ergaenzen.
 - `vorschlag.html`, `akquise.html`: persoenlicher Vorschlag und Brief-Werkzeug fuer die Akquise (nicht verlinkt, noindex)
 - `impressum.html`, `datenschutz.html`: Pflichtseiten
 - `branche.css`: gemeinsames Aussehen der Branchen-Seiten
