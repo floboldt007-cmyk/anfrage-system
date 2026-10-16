@@ -11,8 +11,9 @@
     Links, zum Einfuegen in Gmail. Warum nicht als Gmail-Entwurf: Der Gmail-Zugang von Claude
     entfernt Bilder und macht aus jedem Link einen Google-Umleitungslink, der nach einem Tag
     ablaeuft. Beim Kopieren von hier bleibt alles, wie es ist.
-    Nichts wird gespeichert oder verschickt. Der Mailtext steht nur hier (#mail); die Vorlage im
-    Repo drittes-gehirn (vorlagen/werbe-mail/) bei Aenderungen mitziehen.
+    Nichts wird gespeichert oder verschickt. Der Mailtext steht nur hier (#mail, zwischen MAIL-ANFANG
+    und MAIL-ENDE). Das Apps Script "Werbe-Mail-Entwurf" holt ihn von hier, Aenderungen gelten also
+    fuer beide. Die Vorlage im Repo drittes-gehirn (vorlagen/werbe-mail/) bei Aenderungen mitziehen.
   -->
   <meta name="robots" content="noindex, nofollow" />
   <meta name="color-scheme" content="light" />
@@ -137,6 +138,7 @@
       <div class="vorschau">
         <p class="vorschau-betreff" id="vorschau-betreff"></p>
         <div id="mail">
+<!-- MAIL-ANFANG: Von hier bis MAIL-ENDE liest auch das Apps Script "Werbe-Mail-Entwurf" den Mailtext (Repo drittes-gehirn, vorlagen/werbe-mail/entwurf-werkzeug.gs). Markierungen und data-feld-Platzhalter nicht entfernen. -->
 <div style="max-width:600px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;color:#1e293b;">
 <p style="margin:0 0 14px;">Guten Tag<span data-feld="name"></span>,</p>
 <p style="margin:0 0 14px;">Sie hatten mich <span data-feld="anlass">per Mail</span> gebeten, Ihnen die Infos zu schicken. Gern, hier sind sie.</p>
@@ -164,6 +166,7 @@
 <p style="margin:0 0 18px;">PS: Probieren Sie es selbst aus. Auf meiner Musterseite ist das Formular echt: Tragen Sie Ihre eigene Mail-Adresse ein, und Sie haben in Sekunden die Bestätigung im Postfach, so wie Ihre Kunden sie bekämen. <a href="https://anfrageprofi.de/musterbetrieb.html" style="color:#1d4ed8;">Zur Musterseite</a></p>
 <p style="margin:0;padding-top:12px;border-top:1px solid #e2e8f0;font-size:12px;line-height:1.5;color:#64748b;">Sie möchten keine Werbung mehr von mir? Eine kurze Antwort genügt, jederzeit. Dann lösche ich Ihre Daten und behalte nur einen Sperrvermerk, damit Sie nichts mehr von mir bekommen. <a href="https://anfrageprofi.de/datenschutz.html" style="color:#64748b;">Datenschutzhinweise</a></p>
 </div>
+<!-- MAIL-ENDE -->
         </div>
       </div>
     </div>
