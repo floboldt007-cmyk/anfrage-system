@@ -478,6 +478,28 @@
   var fehlerBox = document.getElementById('fehler');
   var knopf = document.getElementById('senden');
 
+  // Vorbelegung aus der Adresse, gesetzt vom Bad-Planer (badplaner.html):
+  //   ?leistung=  ?dringlichkeit=  ?beschreibung=
+  // Nur .value, nie innerHTML: Der Text kommt aus der Adresse und kann von
+  // jedem stammen. Auswahlfelder nur, wenn es genau diese Option gibt, sonst
+  // bliebe ein Wert stehen, den das Backend nicht kennt. Der Kunde sieht
+  // alles und kann es vor dem Absenden noch aendern.
+  function waehle(feld, wert) {
+    if (!wert) { return; }
+    var liste = form.elements[feld].options;
+    for (var i = 0; i < liste.length; i++) {
+      if (liste[i].value === wert) { form.elements[feld].value = wert; return; }
+    }
+  }
+  waehle('leistung', p.get('leistung'));
+  waehle('dringlichkeit', p.get('dringlichkeit'));
+  // 1200 Zeichen: so viel nimmt das Backend (mbKuerze_) ohnehin an.
+  var vorText = (p.get('beschreibung') || '').slice(0, 1200);
+  if (vorText) {
+    form.elements['beschreibung'].value = vorText;
+    form.elements['beschreibung'].rows = Math.min(12, vorText.split('\n').length + 1);
+  }
+
   var meldungen = {
     pflicht: 'Bitte füllen Sie die mit * markierten Felder aus.',
     email: 'Diese E-Mail-Adresse sieht nicht gültig aus. Bitte prüfen Sie die Schreibweise.',
