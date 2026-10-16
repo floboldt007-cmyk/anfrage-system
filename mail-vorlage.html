@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Werbe-Mail kopieren | Werkzeug</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231d4ed8'/><path d='M9 8h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 4v-4H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z' fill='%23ffffff'/><path d='M11.5 14.5l3 3 6-6' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <!--
+    Internes Werkzeug fuer Florian (nicht verlinkt, fuer Suchmaschinen gesperrt).
+    Zeigt die Werbe-Mail fertig ausgefuellt und kopiert sie mit einem Tipp, samt Filmbild und
+    Links, zum Einfuegen in Gmail. Warum nicht als Gmail-Entwurf: Der Gmail-Zugang von Claude
+    entfernt Bilder und macht aus jedem Link einen Google-Umleitungslink, der nach einem Tag
+    ablaeuft. Beim Kopieren von hier bleibt alles, wie es ist.
+    Nichts wird gespeichert oder verschickt. Der Mailtext steht nur hier (#mail); die Vorlage im
+    Repo drittes-gehirn (vorlagen/werbe-mail/) bei Aenderungen mitziehen.
+  -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="color-scheme" content="light" />
+  <style>
+    :root {
+      --blau: #1d4ed8;
+      --blau-dunkel: #1e40af;
+      --navy: #0f1f3d;
+      --text: #0f172a;
+      --grau: #475569;
+      --grau-hell: #64748b;
+      --rand: #e2e8f0;
+      --tint: #f8fafc;
+      --gruen: #15803d;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); line-height: 1.6; background: #eef1f6; -webkit-font-smoothing: antialiased; }
+    .werkzeug-kopf { background: var(--navy); color: #fff; padding: 18px 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+    .werkzeug-kopf .container { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .werkzeug-kopf strong { font-size: 1.1rem; }
+    .werkzeug-kopf span { color: #b8c4d6; font-size: 0.92rem; }
+    .werkzeug { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 24px; padding: 24px 0 48px; align-items: start; }
+    .karte { background: #fff; border: 1px solid var(--rand); border-radius: 12px; padding: 20px 22px; }
+    .karte + .karte { margin-top: 16px; }
+    .karte h1, .karte h2 { font-size: 1.1rem; margin-bottom: 12px; }
+    .karte label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; }
+    .karte input[type=text], .karte select { display: block; width: 100%; margin-top: 5px; padding: 10px 12px; border: 1px solid var(--rand); border-radius: 8px; font: inherit; font-weight: 400; background: #fff; color: var(--text); }
+    .karte input:focus, .karte select:focus { outline: none; border-color: var(--blau); box-shadow: 0 0 0 3px rgba(29,78,216,0.15); }
+    .zeile { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px; }
+    .haken { display: flex !important; gap: 10px; align-items: flex-start; font-weight: 400 !important; color: var(--grau); }
+    .haken input { margin-top: 5px; width: 18px; height: 18px; flex-shrink: 0; }
+    button { font: inherit; font-weight: 600; font-size: 1rem; border: none; border-radius: 9px; padding: 12px 16px; cursor: pointer; background: var(--blau); color: #fff; width: 100%; }
+    button:hover { background: var(--blau-dunkel); }
+    button.hell { background: #fff; color: var(--blau); border: 1px solid #bfdbfe; }
+    button.hell:hover { background: #eff4ff; }
+    button.fertig { background: var(--gruen); color: #fff; border-color: var(--gruen); }
+    .betreff-zeile { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; margin-bottom: 12px; }
+    .betreff-zeile input { margin-top: 0 !important; background: var(--tint) !important; color: var(--grau) !important; font-size: 0.92rem !important; }
+    .betreff-zeile button { width: auto; padding: 10px 14px; font-size: 0.92rem; }
+    .meldung { min-height: 1.4em; font-size: 0.88rem; color: var(--gruen); margin-top: 8px; }
+    .meldung.fehler { color: #b91c1c; }
+    .schritte { padding-left: 20px; color: var(--grau); font-size: 0.93rem; }
+    .schritte li + li { margin-top: 6px; }
+    .schritte strong { color: var(--text); }
+    .recht { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px; padding: 14px 16px; font-size: 0.9rem; color: #7c2d12; }
+    .recht strong { display: block; margin-bottom: 6px; }
+    .recht ul { padding-left: 18px; }
+    .recht li + li { margin-top: 4px; }
+    .vorschau-titel { color: var(--grau); font-size: 0.9rem; margin-bottom: 10px; }
+    .vorschau { background: #fff; border: 1px solid var(--rand); border-radius: 12px; padding: 22px 20px; box-shadow: 0 10px 30px rgba(15,31,61,0.08); }
+    .vorschau-betreff { font-weight: 700; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--rand); }
+    @media (max-width: 860px) { .werkzeug { grid-template-columns: minmax(0, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="werkzeug-kopf">
+    <div class="container">
+      <strong>Werbe-Mail kopieren</strong>
+      <span>Nur für dich: nicht verlinkt, für Suchmaschinen gesperrt. Nichts wird gespeichert oder verschickt.</span>
+    </div>
+  </div>
+
+  <div class="container werkzeug">
+    <div>
+      <section class="karte">
+        <h1>1. Empfänger</h1>
+        <div class="zeile">
+          <label>Anrede
+            <select id="f-anrede">
+              <option value="Herr">Herr</option>
+              <option value="Frau">Frau</option>
+              <option value="">(ohne)</option>
+            </select>
+          </label>
+          <label>Nachname
+            <input type="text" id="f-name" maxlength="40" placeholder="z. B. Meier" autocomplete="off" />
+          </label>
+        </div>
+        <label>Wie hat der Betrieb um die Infos gebeten?
+          <select id="f-anlass">
+            <option value="per Mail">per Mail („Infos bitte“)</option>
+            <option value="am Telefon">am Telefon</option>
+            <option value="bei meinem Besuch">bei meinem Besuch</option>
+          </select>
+        </label>
+        <label class="haken"><input type="checkbox" id="f-pilot" checked /> <span>Kostenlose Einrichtung für die ersten ein, zwei Betriebe erwähnen (nur, solange noch Plätze frei sind)</span></label>
+      </section>
+
+      <section class="karte">
+        <h2>2. Kopieren und einfügen</h2>
+        <div class="betreff-zeile">
+          <input type="text" id="betreff" readonly aria-label="Betreff" />
+          <button type="button" class="hell" id="betreff-kopieren">Betreff kopieren</button>
+        </div>
+        <button type="button" id="mail-kopieren">Mail kopieren (mit Bild und Links)</button>
+        <p class="meldung" id="meldung" role="status"></p>
+        <ol class="schritte">
+          <li>In <strong>Gmail</strong> eine neue Mail öffnen und den Empfänger eintragen.</li>
+          <li><strong>Betreff kopieren</strong> tippen und in die Betreffzeile einfügen.</li>
+          <li><strong>Mail kopieren</strong> tippen, ins Textfeld tippen, <strong>Einfügen</strong>.</li>
+          <li>Die erste Mail an dich selbst schicken und am Handy prüfen: Bild da, Links gehen?</li>
+        </ol>
+        <p class="klein" style="font-size:0.84rem;color:var(--grau-hell);margin-top:10px;">Fehlt in der Gmail-App das Bild, Gmail in Safari öffnen (mail.google.com) und dort einfügen. Das klappt immer.</p>
+      </section>
+
+      <section class="karte">
+        <div class="recht">
+          <strong>Nur an Betriebe, die selbst gefragt haben</strong>
+          <ul>
+            <li>Werbe-Mail nur mit Einwilligung (§ 7 UWG, auch zwischen Firmen). Ein Betrieb hat z. B. „Infos bitte“ geschrieben oder dich am Telefon um die Mail gebeten.</li>
+            <li>Seine Mail aufheben bzw. notieren, wann und wie er gefragt hat. Das ist dein Beweis.</li>
+            <li>Jede Mail einzeln schicken, nie mehrere Betriebe in einer Mail.</li>
+            <li>Schreibt jemand „keine Werbung mehr“: Daten löschen, nur Sperrvermerk behalten.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <div>
+      <p class="vorschau-titel">Vorschau (so kommt die Mail an)</p>
+      <div class="vorschau">
+        <p class="vorschau-betreff" id="vorschau-betreff"></p>
+        <div id="mail">
+<div style="max-width:600px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;color:#1e293b;">
+<p style="margin:0 0 14px;">Guten Tag<span data-feld="name"></span>,</p>
+<p style="margin:0 0 14px;">Sie hatten mich <span data-feld="anlass">per Mail</span> gebeten, Ihnen die Infos zu schicken. Gern, hier sind sie.</p>
+<p style="margin:0 0 8px;">Kurz, was ich mache: Ich helfe Betrieben, damit Kunden sie finden und keine Anfrage verloren geht. Alles aus einer Hand, ohne Agentur dazwischen:</p>
+<ul style="margin:0 0 10px;padding-left:22px;">
+<li style="margin:0 0 6px;"><b>Anfrage-System:</b> Jede Formular-Anfrage wird sofort bestätigt und landet geordnet in Ihrer Liste. Ab 39 € im Monat.</li>
+<li style="margin:0 0 6px;"><b>Google-Profil:</b> vollständig einrichten und pflegen, die Grundlage, um bei Google und Google Maps gefunden zu werden, auch in Googles KI-Antworten. 249 € einmalig, Pflege 69 € im Monat.</li>
+<li style="margin:0 0 6px;"><b>Websites:</b> klar, schnell und gut lesbar am Handy. Ab 690 €.</li>
+<li style="margin:0 0 6px;"><b>Kurzvideos:</b> wie der Film unten, für Website, Google-Profil oder Social Media. Ab 390 €.</li>
+<li style="margin:0;"><b>Abläufe automatisieren:</b> Erinnerungen, Mails, Listen. Festpreis nach einem kurzen Gespräch.</li>
+</ul>
+<p style="margin:0 0 18px;">Alles in Ruhe ansehen: <a href="https://anfrageprofi.de" style="color:#1d4ed8;">anfrageprofi.de</a></p>
+<p style="margin:0 0 10px;">Wie das Anfrage-System funktioniert, zeigt dieser Film:</p>
+<p style="margin:0 0 6px;"><a href="https://anfrageprofi.de/#film" style="text-decoration:none;"><img src="https://anfrageprofi.de/mail-film.jpg" width="560" height="315" alt="&#9654; Film ansehen (80 Sek., mit Untertiteln)" style="display:block;width:100%;max-width:560px;height:auto;border:0;border-radius:12px;"></a></p>
+<p style="margin:0 0 2px;"><a href="https://anfrageprofi.de/#film" style="color:#1d4ed8;font-weight:bold;">&#9654; Film ansehen (80 Sekunden)</a></p>
+<p style="margin:0 0 18px;font-size:13px;color:#64748b;">Am Beispiel eines Handwerksbetriebs · mit Untertiteln · KI-Sprecherstimme</p>
+<p style="margin:0 0 14px;"><b>Problem 1: Anfragen gehen verloren.</b> Viele Betriebe verlieren Aufträge nicht, weil sie schlecht arbeiten, sondern weil sie gerade arbeiten. Das Telefon klingelt, Sie stehen auf der Leiter, und der Kunde ruft den Nächsten an.</p>
+<p style="margin:0 0 14px;">Ihr Telefon bleibt, wie es ist. Das Anfrage-System gibt allen, die Sie gerade nicht erreichen, einen zweiten Weg: ein kurzes Formular auf Ihrer Website oder als eigener Link. Der Kunde bekommt in Sekunden eine Bestätigung in Ihrem Namen, auch nachts und am Wochenende. Termin oder Absage schicken Sie mit einem Klick, auch vom Handy.</p>
+<p style="margin:0 0 14px;"><b>Problem 2: Nicht gefunden werden.</b> Wer bei Google einen Handwerker in der Nähe sucht, sieht weit oben meist eine Karte mit nur drei Betrieben. Bei manchen Suchen steht inzwischen eine KI-Antwort ganz oben, und einige fragen gleich ChatGPT. Auch die nennen nur eine kleine Auswahl. Sie stützen sich auf das, was über einen Betrieb im Netz steht: Google vor allem auf das Google-Profil mit seinen Bewertungen, ChatGPT eher auf Websites und Bewertungsportale. Wer dort fehlt oder ein halb leeres Profil hat, wird leicht übersehen, egal wie gut er arbeitet. Platz 1 kann Ihnen niemand seriös versprechen. Aber ein vollständiges, gepflegtes Profil verbessert Ihre Chancen, bei Google gefunden zu werden. Das sagt Google selbst.</p>
+<p style="margin:0 0 14px;">Das Anfrage-System kostet ab 39 € im Monat, dazu einmalig ab 249 € für die Einrichtung, monatlich kündbar. Das rechnet sich schon, wenn im Monat ein einziger zusätzlicher Auftrag hereinkommt.<span data-feld="pilot"> Für ein, zwei Betriebe, die als Erste mitmachen, ist die Einrichtung gerade kostenlos. Im Tausch bitte ich um ehrliches Feedback und darum, Sie als Referenz nennen zu dürfen.</span></p>
+<p style="margin:0 0 14px;">Hinter anfrageprofi stehe ich, Florian Boldt aus Leverkusen. Ich richte alles selbst ein, Sie müssen nichts installieren, und bei Fragen erreichen Sie direkt mich statt einer Hotline. Jede Leistung gibt es auch einzeln, vorab bekommen Sie ein schriftliches Angebot mit festem Preis. Alle Preise sind Endpreise, als Kleinunternehmer berechne ich keine Umsatzsteuer.</p>
+<p style="margin:0 0 14px;">Möchten Sie es sehen? Antworten Sie einfach mit einer Uhrzeit, die Ihnen passt, dann zeige ich es Ihnen in 15 Minuten am Telefon oder bei Ihnen vor Ort. Oder rufen Sie an: <a href="tel:+491629152715" style="color:#1d4ed8;">0162 9152715</a>. Passt es nicht, ist das auch völlig in Ordnung.</p>
+<p style="margin:0 0 14px;">Freundliche Grüße<br>Florian Boldt</p>
+<p style="margin:0 0 18px;font-size:14px;line-height:1.5;color:#475569;">anfrageprofi · Gartenstraße 49, 51379 Leverkusen<br>Telefon und WhatsApp: 0162 9152715<br><a href="mailto:kontakt@anfrageprofi.de" style="color:#1d4ed8;">kontakt@anfrageprofi.de</a> · <a href="https://anfrageprofi.de" style="color:#1d4ed8;">anfrageprofi.de</a></p>
+<p style="margin:0 0 18px;">PS: Probieren Sie es selbst aus. Auf meiner Musterseite ist das Formular echt: Tragen Sie Ihre eigene Mail-Adresse ein, und Sie haben in Sekunden die Bestätigung im Postfach, so wie Ihre Kunden sie bekämen. <a href="https://anfrageprofi.de/musterbetrieb.html" style="color:#1d4ed8;">Zur Musterseite</a></p>
+<p style="margin:0;padding-top:12px;border-top:1px solid #e2e8f0;font-size:12px;line-height:1.5;color:#64748b;">Sie möchten keine Werbung mehr von mir? Eine kurze Antwort genügt, jederzeit. Dann lösche ich Ihre Daten und behalte nur einen Sperrvermerk, damit Sie nichts mehr von mir bekommen. <a href="https://anfrageprofi.de/datenschutz.html" style="color:#64748b;">Datenschutzhinweise</a></p>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    var BETREFF = 'Die Infos von anfrageprofi, mit Film (80 Sek.)';
+    var mail = document.getElementById('mail');
+    var meldung = document.getElementById('meldung');
+
+    function sauber(wert) { return String(wert || '').replace(/[<>&"]/g, '').trim(); }
+    function feld(name) { return mail.querySelector('[data-feld="' + name + '"]'); }
+
+    function aktualisiere() {
+      var anrede = document.getElementById('f-anrede').value;
+      var name = sauber(document.getElementById('f-name').value);
+      // "Guten Tag Herr Meier," oder ohne Namen "Guten Tag,"
+      feld('name').textContent = name ? ' ' + (anrede ? anrede + ' ' : '') + name : '';
+      feld('anlass').textContent = document.getElementById('f-anlass').value;
+      feld('pilot').hidden = !document.getElementById('f-pilot').checked;
+      document.getElementById('betreff').value = BETREFF;
+      document.getElementById('vorschau-betreff').textContent = 'Betreff: ' + BETREFF;
+    }
+
+    // Kopie ohne Hilfsmarkierungen und ohne ausgeblendete Teile, damit nur die reine Mail ankommt
+    function mailKopie() {
+      var kopie = mail.firstElementChild.cloneNode(true);
+      Array.prototype.forEach.call(kopie.querySelectorAll('[data-feld]'), function (el) {
+        if (el.hidden) { el.parentNode.removeChild(el); return; }
+        el.parentNode.replaceChild(document.createTextNode(el.textContent), el);
+      });
+      return kopie;
+    }
+
+    // Reiner Text fuer Mailprogramme ohne HTML: Links als "Text: Adresse"
+    function alsText(knoten) {
+      var t = '';
+      Array.prototype.forEach.call(knoten.childNodes, function (k) {
+        if (k.nodeType === 3) { t += k.nodeValue.replace(/\s+/g, ' '); return; }
+        if (k.nodeType !== 1) { return; }
+        var tag = k.tagName;
+        if (tag === 'BR') { t += '\n'; return; }
+        if (tag === 'IMG') { return; }
+        if (tag === 'A') {
+          var href = k.getAttribute('href');
+          var text = alsText(k).trim();
+          if (!text) { return; }
+          t += /^https?:/.test(href) && text.indexOf('anfrageprofi.de') !== 0 ? text + ': ' + href : (/^https?:/.test(href) ? href : text);
+          return;
+        }
+        if (tag === 'LI') { t += '- ' + alsText(k).trim() + '\n'; return; }
+        var innen = alsText(k);
+        if (tag === 'P' || tag === 'UL' || tag === 'DIV') { t += innen.replace(/^ +| +$/gm, '') + '\n\n'; return; }
+        t += innen;
+      });
+      return t;
+    }
+
+    function zeige(text, fehler) {
+      meldung.textContent = text;
+      meldung.className = 'meldung' + (fehler ? ' fehler' : '');
+    }
+    function bestaetige(knopf, text) {
+      var alt = knopf.textContent;
+      knopf.textContent = text; knopf.classList.add('fertig');
+      setTimeout(function () { knopf.textContent = alt; knopf.classList.remove('fertig'); }, 2200);
+    }
+
+    // Notweg ohne Clipboard-API: den Bereich markieren und kopieren (behaelt Bild und Links)
+    function kopiereMarkiert(element) {
+      var bereich = document.createRange();
+      bereich.selectNodeContents(element);
+      var auswahl = window.getSelection();
+      auswahl.removeAllRanges(); auswahl.addRange(bereich);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      auswahl.removeAllRanges();
+      return ok;
+    }
+
+    document.getElementById('mail-kopieren').addEventListener('click', function () {
+      var knopf = this;
+      var kopie = mailKopie();
+      var html = kopie.outerHTML;
+      var text = alsText(kopie).replace(/^[ \t]+/gm, '').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+      function erfolg() { bestaetige(knopf, 'Kopiert ✓'); zeige('Kopiert. Jetzt in Gmail ins Textfeld tippen und „Einfügen“ wählen.'); }
+      function notweg() {
+        // Fuer den Notweg die bereinigte Kopie kurz unsichtbar einhaengen und markieren
+        var halter = document.createElement('div');
+        halter.style.cssText = 'position:fixed;left:-9999px;top:0;';
+        halter.appendChild(kopie);
+        document.body.appendChild(halter);
+        var ok = kopiereMarkiert(halter);
+        document.body.removeChild(halter);
+        if (ok) { erfolg(); } else { zeige('Kopieren ging nicht. Bitte die Vorschau lange drücken, „Alles auswählen“ und „Kopieren“.', true); }
+      }
+      if (navigator.clipboard && window.ClipboardItem) {
+        navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([text], { type: 'text/plain' })
+        })]).then(erfolg, notweg);
+      } else {
+        notweg();
+      }
+    });
+
+    document.getElementById('betreff-kopieren').addEventListener('click', function () {
+      var knopf = this;
+      function erfolg() { bestaetige(knopf, 'Kopiert ✓'); zeige('Betreff kopiert.'); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(BETREFF).then(erfolg, function () {
+          var f = document.getElementById('betreff'); f.select();
+          try { if (document.execCommand('copy')) { erfolg(); } } catch (e) {}
+        });
+      } else {
+        var f = document.getElementById('betreff'); f.select();
+        try { if (document.execCommand('copy')) { erfolg(); } } catch (e) {}
+      }
+    });
+
+    ['f-anrede', 'f-name', 'f-anlass', 'f-pilot'].forEach(function (id) {
+      document.getElementById(id).addEventListener('input', aktualisiere);
+      document.getElementById(id).addEventListener('change', aktualisiere);
+    });
+    aktualisiere();
+  })();
+  </script>
+</body>
+</html>
