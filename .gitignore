@@ -8,3 +8,20 @@ Desktop.ini
 # Editor
 .vscode/
 .idea/
+
+# Code Guardian: Arbeitsstand der Laeufe, nie hochladen
+# (Empfehlung aus UPDATE-ANLEITUNG.md v17.16; .code-guardian-deploy.yml,
+# -ritual.md und -narben.tsv sind Projekteinstellungen und bleiben drin)
+.code-guardian-deploy-report.md
+.code-guardian-migration-report.md
+.code-guardian-dependency-report.md
+.code-guardian-autopilot.md
+.code-guardian-todo*
+.code-guardian-teardown*
+.code-guardian-propagation*
+.code-guardian-evidence/
+.code-guardian-scope
+.task-journal.md
+.slop-index.json
+.slop-audit-state.json
+.slop-audit.md
