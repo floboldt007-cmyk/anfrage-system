@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bad-Planer</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="color-scheme" content="light" />
+<!--
+  ============================================================
+  3D-BAD-PLANER (anfrageprofi.de, Ausbaustufe des Anfrage-Systems)
+  ============================================================
+  Der Endkunde stellt sein Wunschbad in 3D zusammen. Am Ende landet
+  alles als fertig ausgefuellte Anfrage im ECHTEN Formular
+  (formular.html), also in derselben Tabelle wie jede andere Anfrage.
+  Der Planer selbst speichert und verschickt nichts.
+
+  ANPASSEN ueber die Adresse, genau wie beim Formular:
+    ?betrieb=Name%20des%20Betriebs   Name im Kopf und im Formular
+    ?farbe=%23c2410c                 Akzentfarbe (# als %23)
+    ?ziel=https://script.google...   wird ans Formular durchgereicht
+    ?demo=1                          Vorfuehrung (Musterseite)
+
+  BEWUSST KEINE PREISE: Der Planer zeigt Mengen (m², Ausstattung),
+  keine Euro. Das verbindliche Angebot macht der Betrieb nach dem
+  Vor-Ort-Termin. Gleiche Regel wie auf anfrageprofi.de selbst.
+
+  VOR DEM LIVE-GANG: Three.js kommt hier noch vom CDN (jsdelivr).
+  Fuer deutsche Kundenseiten die Dateien selbst auf anfrageprofi.de
+  ablegen, sonst geht beim Laden die IP des Besuchers an einen
+  Fremdanbieter (gleiches Thema wie bei Google Fonts).
+
+  AUFBAU: Das klassische Skript unten haelt den Zustand, rechnet die
+  Aufteilung (planerPlane) und baut die Anfrage. Das Modul ganz unten
+  zeichnet nur. Faellt das 3D aus (alter Browser, kein Netz), bleiben
+  Auswahl, Zusammenfassung und Anfrage voll benutzbar.
+  ============================================================
+-->
+<style>
+  :root {
+    --akzent: #c2410c;
+    --akzent-dunkel: #9a3412;
+    --text: #0f172a;
+    --grau: #475569;
+    --grau-hell: #64748b;
+    --rand: #e2e8f0;
+    --tint: #f8fafc;
+    --weiss: #ffffff;
+    --blau: #1d4ed8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text); line-height: 1.55; background: var(--tint);
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column;
+  }
+
+  .demoband { background: var(--blau); color: #fff; font-size: 0.85rem; padding: 8px 16px; text-align: center; }
+  .demoband a { color: #fff; font-weight: 600; text-underline-offset: 3px; }
+
+  .leiste {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding: 12px 20px; background: var(--weiss); border-bottom: 1px solid var(--rand);
+  }
+  .leiste .titel { font-weight: 700; font-size: 1.02rem; }
+  .leiste .titel span { display: block; font-size: 0.75rem; font-weight: 500; color: var(--grau-hell); }
+  .leiste a { font-size: 0.88rem; color: var(--grau); text-decoration: none; font-weight: 500; white-space: nowrap; }
+  .leiste a:hover { color: var(--text); }
+
+  .planer { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 390px; min-height: 0; }
+
+  /* ---------- 3D-Buehne ---------- */
+  #buehne { position: relative; background: #cdd4dc; min-height: 0; overflow: hidden; }
+  #buehne canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+  .masse {
+    position: absolute; left: 14px; top: 14px; background: rgba(255,255,255,0.92);
+    border: 1px solid var(--rand); border-radius: 10px; padding: 7px 12px;
+    font-size: 0.85rem; font-weight: 600; pointer-events: none;
+  }
+  .masse span { font-weight: 500; color: var(--grau-hell); }
+  .ansicht { position: absolute; right: 14px; top: 14px; display: flex; gap: 6px; }
+  .ansicht button {
+    font: inherit; font-size: 0.82rem; font-weight: 600; background: rgba(255,255,255,0.92);
+    border: 1px solid var(--rand); border-radius: 9px; padding: 7px 11px; cursor: pointer; color: var(--text);
+  }
+  .ansicht button:hover { border-color: var(--akzent); }
+  .tipp {
+    position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
+    background: rgba(15,23,42,0.78); color: #fff; font-size: 0.8rem; padding: 6px 13px;
+    border-radius: 999px; pointer-events: none; transition: opacity 0.6s; white-space: nowrap;
+  }
+  .tipp.weg { opacity: 0; }
+  .buehne-fehler {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 24px; color: var(--grau); font-size: 0.92rem;
+  }
+
+  /* ---------- Bedienfeld ---------- */
+  .panel {
+    background: var(--weiss); border-left: 1px solid var(--rand);
+    overflow-y: auto; display: flex; flex-direction: column;
+  }
+  .panel-inhalt { padding: 20px 20px 6px; }
+  .panel h1 { font-size: 1.22rem; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .panel .unter { color: var(--grau); font-size: 0.9rem; margin-bottom: 18px; }
+  .gruppe { margin-bottom: 18px; }
+  .gruppe h2 {
+    font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--grau-hell); font-weight: 700; margin-bottom: 8px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    font: inherit; font-size: 0.88rem; border: 1.5px solid #cbd5e1; background: var(--weiss);
+    border-radius: 999px; padding: 6px 13px; cursor: pointer; color: var(--text);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .chip:hover:not(:disabled) { border-color: var(--akzent); }
+  .chip[aria-pressed="true"] {
+    border-color: var(--akzent); color: var(--akzent-dunkel); font-weight: 650;
+    background: #fff7ed; background: color-mix(in srgb, var(--akzent) 9%, white);
+  }
+  .chip:disabled { opacity: 0.42; cursor: not-allowed; }
+  .regler { margin-bottom: 10px; }
+  .regler label { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; }
+  .regler output { font-variant-numeric: tabular-nums; color: var(--akzent-dunkel); }
+  input[type=range] { width: 100%; accent-color: var(--akzent); margin-top: 4px; }
+  .farben { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; }
+  .farben button {
+    width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; cursor: pointer;
+    box-shadow: 0 0 0 1.5px #cbd5e1;
+  }
+  .farben button[aria-pressed="true"] { box-shadow: 0 0 0 2.5px var(--akzent); }
+  .farbname { font-size: 0.82rem; color: var(--grau); margin-left: 4px; }
+  .klein { font-size: 0.8rem; color: var(--grau-hell); margin-top: 6px; }
+
+  .ergebnis { background: var(--tint); border: 1px solid var(--rand); border-radius: 12px; padding: 14px 15px; margin-bottom: 14px; }
+  .ergebnis h2 { margin-bottom: 10px; }
+  .zahlen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+  .zahlen div { background: var(--weiss); border: 1px solid var(--rand); border-radius: 9px; padding: 8px 9px; }
+  .zahlen strong { display: block; font-size: 1.08rem; font-variant-numeric: tabular-nums; }
+  .zahlen span { font-size: 0.74rem; color: var(--grau-hell); }
+  .warnung {
+    background: #fffbeb; border: 1px solid #fde68a; color: #92400e;
+    border-radius: 9px; padding: 9px 12px; font-size: 0.83rem; margin-top: 8px;
+  }
+  .preis { font-size: 0.8rem; color: var(--grau); margin-top: 8px; }
+
+  .cta {
+    position: sticky; bottom: 0; background: var(--weiss); border-top: 1px solid var(--rand);
+    padding: 13px 20px 16px; margin-top: auto;
+  }
+  .cta button {
+    width: 100%; font: inherit; font-weight: 650; font-size: 1rem; color: #fff; background: var(--akzent);
+    border: 0; border-radius: 10px; padding: 14px 18px; cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .cta button:hover { background: var(--akzent-dunkel); transform: translateY(-1px); }
+  .cta p { font-size: 0.76rem; color: var(--grau-hell); text-align: center; margin-top: 7px; }
+
+  /* ---------- Fenster mit dem echten Formular ---------- */
+  .vorhang {
+    position: fixed; inset: 0; z-index: 100; background: rgba(15,23,42,0.55);
+    display: flex; align-items: center; justify-content: center; padding: 18px;
+  }
+  .fenster {
+    background: var(--weiss); border-radius: 16px; width: 100%; max-width: 680px;
+    max-height: 94vh; overflow-y: auto; box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  }
+  .fenster-kopf {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 14px 18px; border-bottom: 1px solid var(--rand); position: sticky; top: 0; background: var(--weiss); z-index: 1;
+  }
+  .fenster-kopf strong { font-size: 1.02rem; }
+  .fenster-kopf span { display: block; font-size: 0.8rem; color: var(--grau-hell); }
+  .zu { font: inherit; font-size: 1.6rem; line-height: 1; background: none; border: 0; cursor: pointer; color: var(--grau); padding: 2px 8px; }
+  .fenster iframe { display: block; width: 100%; border: 0; height: 1060px; }
+
+  @media (max-width: 860px) {
+    body { display: block; height: auto; }
+    .planer { display: block; }
+    #buehne { height: 50vh; min-height: 290px; position: sticky; top: 0; z-index: 5; border-bottom: 1px solid var(--rand); }
+    .panel { border-left: 0; overflow: visible; }
+    .tipp { font-size: 0.74rem; }
+  }
+  @media (max-width: 420px) {
+    .leiste { padding: 10px 16px; }
+    .panel-inhalt { padding: 16px 16px 4px; }
+    .cta { padding: 12px 16px 14px; }
+    .masse { font-size: 0.78rem; }
+    .ansicht button { padding: 6px 9px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demoband" id="demoband" hidden>
+  <strong>Musterseite.</strong> Der Betrieb ist erfunden, der Planer und das Formular sind echt.
+</div>
+
+<div class="leiste">
+  <div class="titel"><span id="leiste-betrieb">Ihr Fachbetrieb</span>Bad-Planer</div>
+  <a href="#" id="zurueck" hidden>&larr; Zurück zur Website</a>
+</div>
+
+<main class="planer">
+  <div id="buehne" aria-label="3D-Ansicht Ihres Bades">
+    <div class="masse" id="masse">2,40 × 3,00 m <span>· 7,2 m²</span></div>
+    <div class="ansicht">
+      <button type="button" id="ansicht-3d">3D</button>
+      <button type="button" id="ansicht-oben">Von oben</button>
+    </div>
+    <div class="tipp" id="tipp">Ziehen zum Drehen · Zoomen mit Mausrad oder zwei Fingern</div>
+    <div class="buehne-fehler" id="buehne-fehler" hidden>
+      Die 3D-Ansicht konnte auf diesem Gerät nicht geladen werden.<br />
+      Sie können trotzdem alles auswählen und Ihre Anfrage absenden.
+    </div>
+  </div>
+
+  <aside class="panel">
+    <div class="panel-inhalt">
+      <h1>Planen Sie Ihr neues Bad</h1>
+      <p class="unter">In zwei Minuten zum Wunschbad. Wir bekommen Ihre Planung mit der Anfrage und kommen gut vorbereitet zum Termin.</p>
+
+      <div class="gruppe">
+        <h2>Raumgröße</h2>
+        <div class="regler">
+          <label for="regler-breite">Breite <output id="aus-breite">2,40 m</output></label>
+          <input type="range" id="regler-breite" min="1.6" max="4" step="0.1" value="2.4" />
+        </div>
+        <div class="regler">
+          <label for="regler-laenge">Länge <output id="aus-laenge">3,00 m</output></label>
+          <input type="range" id="regler-laenge" min="1.6" max="4.5" step="0.1" value="3" />
+        </div>
+        <p class="klein">Ungefähre Maße reichen, wir messen vor Ort genau nach.</p>
+      </div>
+
+      <div class="gruppe">
+        <h2>Dusche oder Wanne?</h2>
+        <div class="chips">
+          <button type="button" class="chip" data-feld="art" data-wert="dusche">Dusche</button>
+          <button type="button" class="chip" data-feld="art" data-wert="wanne">Wanne</button>
+          <button type="button" class="chip" data-feld="art" data-wert="beides">Beides</button>
+        </div>
+      </div>
+
+      <div class="gruppe" id="gruppe-dusche">
+        <h2>Art der Dusche</h2>
+        <div class="chips">
+          <button type="button" class="chip" data-feld="dusche" data-wert="bodengleich">Bodengleich</button>
+          <button type="button" class="chip" data-feld="dusche" data-wert="tasse" id="chip-tasse">Flache Duschtasse</button>
+        </div>
+      </div>
+
+      <div class="gruppe">
+        <h2>Barrierefrei planen?</h2>
+        <div class="chips">
+          <button type="button" class="chip" data-feld="barrierefrei" data-wert="nein">Nein</button>
+          <button type="button" class="chip" data-feld="barrierefrei" data-wert="ja">Ja, altersgerecht</button>
+        </div>
+        <p class="klein" id="hinweis-barrierefrei" hidden>Mit größerer Dusche, Haltegriffen, unterfahrbarem Waschtisch und der freien Bewegungsfläche (grün markiert).</p>
+      </div>
+
+      <div class="gruppe">
+        <h2>WC</h2>
+        <div class="chips">
+          <button type="button" class="chip" data-feld="wc" data-wert="wand">Wandhängend</button>
+          <button type="button" class="chip" data-feld="wc" data-wert="stehend">Stehend</button>
+        </div>
+      </div>
+
+      <div class="gruppe">
+        <h2>Waschtisch</h2>
+        <div class="chips">
+          <button type="button" class="chip" data-feld="waschtisch" data-wert="einzel">Einzeln</button>
+          <button type="button" class="chip" data-feld="waschtisch" data-wert="doppel">Doppel</button>
+        </div>
+      </div>
+
+      <div class="gruppe">
+        <h2>Wandfliesen</h2>
+        <div class="farben" id="farben-wand"></div>
+      </div>
+
+      <div class="gruppe">
+        <h2>Boden</h2>
+        <div class="farben" id="farben-boden"></div>
+      </div>
+
+      <div class="gruppe">
+        <h2>Extras</h2>
+        <div class="chips">
+          <button type="button" class="chip" data-schalter="heizkoerper">Handtuchheizkörper</button>
+          <button type="button" class="chip" data-schalter="spiegellicht">Spiegel mit Licht</button>
+        </div>
+      </div>
+
+      <div class="gruppe">
+        <h2>Wann soll es losgehen?</h2>
+        <div class="chips">
+          <button type="button" class="chip" data-feld="start" data-wert="bald">So bald wie möglich</button>
+          <button type="button" class="chip" data-feld="start" data-wert="monate">In 3 bis 6 Monaten</button>
+          <button type="button" class="chip" data-feld="start" data-wert="info">Erst mal informieren</button>
+        </div>
+      </div>
+
+      <div class="ergebnis">
+        <h2>Ihre Planung</h2>
+        <div class="zahlen">
+          <div><strong id="zahl-boden">7,2 m²</strong><span>Bodenfläche</span></div>
+          <div><strong id="zahl-wand">25 m²</strong><span>Wand raumhoch</span></div>
+          <div><strong id="zahl-objekte">5</strong><span>Objekte</span></div>
+        </div>
+        <div id="warnungen"></div>
+        <p class="preis">Ein verbindliches Angebot erstellen wir nach einem kurzen Termin vor Ort. Ihre Planung dient uns als Grundlage.</p>
+      </div>
+    </div>
+
+    <div class="cta">
+      <button type="button" id="anfragen">Diese Planung anfragen</button>
+      <p>Kostenlos und unverbindlich. Ihre Planung wird automatisch mitgeschickt.</p>
+    </div>
+  </aside>
+</main>
+
+<div class="vorhang" id="vorhang" role="dialog" aria-modal="true" aria-labelledby="fenster-titel" hidden>
+  <div class="fenster">
+    <div class="fenster-kopf">
+      <div>
+        <strong id="fenster-titel">Ihre Bad-Anfrage</strong>
+        <span>Ihre Planung steht schon in der Beschreibung.</span>
+      </div>
+      <button type="button" class="zu" id="fenster-zu" aria-label="Fenster schließen">&times;</button>
+    </div>
+    <iframe id="fenster-formular" title="Anfrageformular"></iframe>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- Adresse lesen (gleiche Regeln wie formular.html) -----------------
+  var p = new URLSearchParams(location.search);
+  var betrieb = (p.get('betrieb') || '').slice(0, 60).replace(/[<>&"]/g, '');
+  var farbe = p.get('farbe') || '';
+  var demo = p.get('demo') === '1';
+  var ziel = p.get('ziel') || '';
+  if (/^#[0-9a-fA-F]{6}$/.test(farbe)) {
+    document.documentElement.style.setProperty('--akzent', farbe);
+    document.documentElement.style.setProperty('--akzent-dunkel', farbe);
+  } else {
+    farbe = '';
+  }
+  if (betrieb) {
+    document.getElementById('leiste-betrieb').textContent = betrieb;
+    document.getElementById('fenster-titel').textContent = 'Anfrage an ' + betrieb;
+    document.title = 'Bad-Planer · ' + betrieb;
+  }
+  if (demo) {
+    document.getElementById('demoband').hidden = false;
+    var zurueck = document.getElementById('zurueck');
+    zurueck.href = 'musterbetrieb.html';
+    zurueck.hidden = false;
+  }
+
+  // Farben: [Farbwert, Name]. Das 3D-Modul liest dieselbe Tabelle.
+  var FARBEN = window.PLANER_FARBEN = {
+    wand: {
+      weiss: ['#f3f1ed', 'Weiß'], sand: ['#e4d9c6', 'Sand'], salbei: ['#b7c3ad', 'Salbeigrün'],
+      grau: ['#c6c8c9', 'Hellgrau'], anthrazit: ['#4b4e53', 'Anthrazit']
+    },
+    boden: {
+      stein: ['#a9a59e', 'Steinoptik grau'], anthrazit: ['#3f4146', 'Anthrazit'],
+      eiche: ['#b38b5d', 'Holzoptik Eiche'], beige: ['#d6c8b0', 'Beige']
+    }
+  };
+  var START = { bald: 'So bald wie möglich', monate: 'In 3 bis 6 Monaten', info: 'Erst mal informieren' };
+  // Uebersetzung in die Auswahl "Wie dringend ist es?" im Formular.
+  var DRINGLICH = { bald: 'In den nächsten Wochen', monate: 'Kein Zeitdruck', info: 'Kein Zeitdruck' };
+
+  var Z = {
+    breite: 2.4, laenge: 3.0, art: 'beides', dusche: 'bodengleich', barrierefrei: false,
+    wc: 'wand', waschtisch: 'einzel', wand: 'weiss', boden: 'stein',
+    heizkoerper: true, spiegellicht: true, start: 'monate'
+  };
+
+  // ---- Aufteilung rechnen ------------------------------------------------
+  // Koordinaten in Metern. Ursprung = hintere linke Ecke am Boden,
+  // x nach rechts (Breite), z nach vorn zur Tuer (Laenge).
+  // Die Dusche sitzt immer in der hinteren linken Ecke. Alles andere wird
+  // der Reihe nach an die Waende gestellt, von hinten nach vorn. Was nicht
+  // passt, wird nicht stillschweigend weggelassen, sondern als Hinweis
+  // gemeldet: Der Betrieb soll sehen, dass es eng wird.
+  function plane(z) {
+    var W = z.breite, L = z.laenge, bf = z.barrierefrei;
+    var hatDusche = z.art !== 'wanne', hatWanne = z.art !== 'dusche';
+    var sh = bf ? 1.2 : 0.9;
+    var r = {
+      W: W, L: L, dusche: null, wanne: null, wc: null, waschtisch: null,
+      heizkoerper: null, bewegung: null, warnungen: [],
+      tuer: bf ? 0.9 : 0.8
+    };
+    // Wie weit die Objekte je Wand in den Raum ragen (fuer die Bewegungsflaeche)
+    var tiefe = { links: 0, rechts: 0, hinten: 0 };
+    // Naechste freie Stelle je Wand, gemessen ab der hinteren Ecke
+    var frei = { links: hatDusche ? sh + 0.1 : 0.15, rechts: 0.15, hinten: hatDusche ? sh + 0.05 : 0.15 };
+
+    if (hatDusche) { r.dusche = { s: sh, bodengleich: bf || z.dusche === 'bodengleich' }; }
+
+    if (hatWanne) {
+      var linksBelegt = hatDusche ? sh : 0;
+      if (W - linksBelegt >= 1.7) {
+        r.wanne = { wand: 'hinten', mitte: W - 0.85 };
+        tiefe.hinten = 0.75; frei.rechts = 0.85;
+        // Reicht die Wanne bis fast an die linke Wand, darf links erst dahinter etwas stehen.
+        if (W - 1.7 < 0.75) { frei.links = Math.max(frei.links, 0.85); }
+      } else if (L >= 2.3 && W - linksBelegt >= 0.8) {
+        r.wanne = { wand: 'rechts', mitte: 0.85 };
+        tiefe.rechts = 0.75; frei.rechts = 1.8;
+      } else {
+        r.warnungen.push('Die Badewanne (170 cm) passt bei dieser Raumgröße nicht neben die übrige Ausstattung.');
+      }
+    }
+
+    function platziere(slot, tiefeObj, liste) {
+      for (var i = 0; i < liste.length; i++) {
+        var w = liste[i];
+        if (w === 'hinten') {
+          var start = Math.max(frei.hinten, tiefe.links + 0.05);
+          var stop = W - Math.max(0.15, tiefe.rechts + 0.05) - (r.wanne && r.wanne.wand === 'hinten' ? 1.7 : 0);
+          if (start + slot <= stop) {
+            frei.hinten = start + slot;
+            tiefe.hinten = Math.max(tiefe.hinten, tiefeObj);
+            frei.links = Math.max(frei.links, tiefe.hinten + 0.05);
+            frei.rechts = Math.max(frei.rechts, tiefe.hinten + 0.05);
+            return { wand: 'hinten', mitte: start + slot / 2 };
+          }
+        } else if (w === 'rechts' && hatDusche && frei.rechts < sh && W - tiefeObj < sh + 0.05) {
+          continue;   // ragt sonst hinten rechts in die Dusche (kleine Raeume)
+        } else if (frei[w] + slot <= L - 0.15) {
+          var pos = { wand: w, mitte: frei[w] + slot / 2 };
+          frei[w] += slot;
+          tiefe[w] = Math.max(tiefe[w], tiefeObj);
+          return pos;
+        }
+      }
+      return null;
+    }
+
+    r.wc = platziere(bf ? 1.0 : 0.8, z.wc === 'wand' ? 0.72 : 0.7, ['links', 'rechts', 'hinten']);
+    if (!r.wc) { r.warnungen.push('Für das WC bleibt bei dieser Aufteilung zu wenig Wand frei.'); }
+    else { r.wc.breite = bf ? 1.0 : 0.8; }
+
+    var wtB = z.waschtisch === 'doppel' ? 1.2 : 0.6;
+    r.waschtisch = platziere(wtB + 0.2, bf ? 0.55 : 0.48, ['rechts', 'links', 'hinten']);
+    if (r.waschtisch) { r.waschtisch.breite = wtB; }
+    else {
+      r.warnungen.push(z.waschtisch === 'doppel'
+        ? 'Der Doppel-Waschtisch (120 cm) findet keinen Platz mehr. Ein einzelner Waschtisch passt eher.'
+        : 'Für den Waschtisch bleibt bei dieser Aufteilung zu wenig Wand frei.');
+    }
+
+    if (z.heizkoerper) {
+      r.heizkoerper = platziere(0.65, 0.1, ['links', 'rechts', 'hinten']);
+      if (!r.heizkoerper) {
+        r.warnungen.push('Für den Handtuchheizkörper bleibt kaum Wand frei. Ein Platz findet sich meist vor Ort, zum Beispiel neben der Tür.');
+      }
+    }
+
+    if (bf) {
+      var x0 = tiefe.links, x1 = W - tiefe.rechts, z0 = tiefe.hinten;
+      var fw = x1 - x0, fl = L - z0, s = 1.2;
+      r.bewegung = { s: s, ok: fw >= s - 0.001 && fl >= s - 0.001, x: x0 + fw / 2, z: z0 + fl / 2 };
+      if (!r.bewegung.ok) {
+        r.warnungen.push('Barrierefrei braucht vor WC, Waschtisch und Dusche eine freie Fläche von 1,20 × 1,20 m (Richtwert nach DIN 18040-2). Die wird hier knapp.');
+      }
+      if (z.art === 'wanne') {
+        r.warnungen.push('Eine Badewanne ist selten barrierefrei. Viele entscheiden sich hier für eine bodengleiche Dusche.');
+      }
+    }
+
+    r.boden = W * L;
+    r.wandflaeche = 2 * (W + L) * 2.5 - r.tuer * 2.05;
+    r.objekte = [r.dusche, r.wanne, r.wc, r.waschtisch, r.heizkoerper].filter(Boolean).length;
+    return r;
+  }
+  window.planerPlane = plane;
+
+  // ---- Zahlen auf Deutsch -------------------------------------------------
+  function zahl(x, stellen) { return x.toFixed(stellen).replace('.', ','); }
+  function cm(x) { return String(Math.round(x * 100)); }
+
+  // ---- Die Beschreibung, die ins Formular wandert -----------------------
+  function beschreibung(z, r) {
+    var aus = [];
+    if (r.dusche) {
+      aus.push((r.dusche.bodengleich ? 'bodengleiche Dusche ' : 'Dusche mit flacher Tasse ')
+        + cm(r.dusche.s) + ' × ' + cm(r.dusche.s) + ' cm');
+    }
+    if (z.art !== 'dusche') { aus.push(r.wanne ? 'Badewanne 170 × 75 cm' : 'Badewanne (laut Planer zu eng)'); }
+    aus.push(z.wc === 'wand' ? 'WC wandhängend' : 'WC stehend');
+    aus.push(z.waschtisch === 'doppel' ? 'Doppel-Waschtisch' : 'Waschtisch');
+    var extras = [];
+    if (z.heizkoerper) { extras.push(r.heizkoerper ? 'Handtuchheizkörper' : 'Handtuchheizkörper (Platz vor Ort klären)'); }
+    if (z.spiegellicht) { extras.push('Spiegel mit Licht'); }
+    var zeilen = [
+      'Bad-Wunsch aus dem 3D-Planer:',
+      'Raum: ca. ' + zahl(r.W, 2) + ' × ' + zahl(r.L, 2) + ' m (' + zahl(r.boden, 1) + ' m² Boden, ca. '
+        + zahl(r.wandflaeche, 0) + ' m² Wand raumhoch)',
+      'Ausstattung: ' + aus.join(', '),
+      'Barrierefrei: ' + (z.barrierefrei
+        ? (r.bewegung && r.bewegung.ok ? 'ja, Bewegungsfläche 1,20 × 1,20 m passt' : 'ja, Bewegungsfläche wird knapp')
+        : 'nein'),
+      'Fliesen: Wand ' + FARBEN.wand[z.wand][1] + ', Boden ' + FARBEN.boden[z.boden][1]
+    ];
+    if (extras.length) { zeilen.push('Extras: ' + extras.join(', ')); }
+    zeilen.push('Start: ' + START[z.start]);
+    if (r.warnungen.length) { zeilen.push('Hinweis: Laut Planer wird es eng, bitte die Aufteilung vor Ort prüfen.'); }
+    return zeilen.join('\n');
+  }
+
+  // ---- Bedienung ------------------------------------------------------------
+  function baueFarben(gruppe, behaelter) {
+    var box = document.getElementById(behaelter);
+    Object.keys(FARBEN[gruppe]).forEach(function (schluessel) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.style.background = FARBEN[gruppe][schluessel][0];
+      b.title = FARBEN[gruppe][schluessel][1];
+      b.setAttribute('aria-label', FARBEN[gruppe][schluessel][1]);
+      b.setAttribute('data-feld', gruppe);
+      b.setAttribute('data-wert', schluessel);
+      box.appendChild(b);
+    });
+    var name = document.createElement('span');
+    name.className = 'farbname';
+    name.id = 'name-' + gruppe;
+    box.appendChild(name);
+  }
+  baueFarben('wand', 'farben-wand');
+  baueFarben('boden', 'farben-boden');
+
+  function alsText(wert) { return wert === true ? 'ja' : wert === false ? 'nein' : String(wert); }
+
+  document.querySelectorAll('[data-feld]').forEach(function (knopf) {
+    knopf.addEventListener('click', function () {
+      var feld = knopf.getAttribute('data-feld'), wert = knopf.getAttribute('data-wert');
+      Z[feld] = wert === 'ja' ? true : wert === 'nein' ? false : wert;
+      aktualisieren();
+    });
+  });
+  document.querySelectorAll('[data-schalter]').forEach(function (knopf) {
+    knopf.addEventListener('click', function () {
+      var feld = knopf.getAttribute('data-schalter');
+      Z[feld] = !Z[feld];
+      aktualisieren();
+    });
+  });
+
+  var reglerB = document.getElementById('regler-breite');
+  var reglerL = document.getElementById('regler-laenge');
+  reglerB.addEventListener('input', function () { Z.breite = Math.round(parseFloat(reglerB.value) * 10) / 10; aktualisieren(); });
+  reglerL.addEventListener('input', function () { Z.laenge = Math.round(parseFloat(reglerL.value) * 10) / 10; aktualisieren(); });
+
+  var plan = null;
+
+  function aktualisieren() {
+    if (Z.barrierefrei) { Z.dusche = 'bodengleich'; }
+    plan = plane(Z);
+
+    document.querySelectorAll('[data-feld]').forEach(function (k) {
+      k.setAttribute('aria-pressed', alsText(Z[k.getAttribute('data-feld')]) === k.getAttribute('data-wert') ? 'true' : 'false');
+    });
+    document.querySelectorAll('[data-schalter]').forEach(function (k) {
+      k.setAttribute('aria-pressed', Z[k.getAttribute('data-schalter')] ? 'true' : 'false');
+    });
+    document.getElementById('chip-tasse').disabled = Z.barrierefrei;
+    document.getElementById('gruppe-dusche').hidden = Z.art === 'wanne';
+    document.getElementById('hinweis-barrierefrei').hidden = !Z.barrierefrei;
+    document.getElementById('name-wand').textContent = FARBEN.wand[Z.wand][1];
+    document.getElementById('name-boden').textContent = FARBEN.boden[Z.boden][1];
+
+    document.getElementById('aus-breite').textContent = zahl(Z.breite, 2) + ' m';
+    document.getElementById('aus-laenge').textContent = zahl(Z.laenge, 2) + ' m';
+    document.getElementById('masse').innerHTML = '';
+    document.getElementById('masse').appendChild(document.createTextNode(zahl(plan.W, 2) + ' × ' + zahl(plan.L, 2) + ' m '));
+    var fl = document.createElement('span');
+    fl.textContent = '· ' + zahl(plan.boden, 1) + ' m²';
+    document.getElementById('masse').appendChild(fl);
+
+    document.getElementById('zahl-boden').textContent = zahl(plan.boden, 1) + ' m²';
+    document.getElementById('zahl-wand').textContent = 'ca. ' + zahl(plan.wandflaeche, 0) + ' m²';
+    document.getElementById('zahl-objekte').textContent = String(plan.objekte);
+    var box = document.getElementById('warnungen');
+    box.innerHTML = '';
+    plan.warnungen.forEach(function (text) {
+      var d = document.createElement('div');
+      d.className = 'warnung';
+      d.textContent = text;
+      box.appendChild(d);
+    });
+
+    var daten = { zustand: JSON.parse(JSON.stringify(Z)), plan: plan };
+    window.planerAktuell = daten;
+    document.dispatchEvent(new CustomEvent('planer-aenderung', { detail: daten }));
+  }
+
+  // ---- Anfrage: das echte Formular, schon ausgefuellt ---------------------
+  var vorhang = document.getElementById('vorhang');
+  var rahmen = document.getElementById('fenster-formular');
+
+  document.getElementById('anfragen').addEventListener('click', function () {
+    var q = new URLSearchParams();
+    if (betrieb) { q.set('betrieb', betrieb); }
+    if (farbe) { q.set('farbe', farbe); }
+    if (demo) { q.set('demo', '1'); }
+    if (ziel) { q.set('ziel', ziel); }
+    q.set('kopf', 'aus');
+    q.set('leistung', 'Bad: Umbau oder Sanierung');
+    q.set('dringlichkeit', DRINGLICH[Z.start]);
+    q.set('beschreibung', beschreibung(Z, plan));
+    rahmen.src = 'formular.html?' + q.toString();
+    vorhang.hidden = false;
+    document.body.style.overflow = 'hidden';
+  });
+
+  function schliessen() {
+    vorhang.hidden = true;
+    document.body.style.overflow = '';
+    rahmen.src = 'about:blank';
+  }
+  document.getElementById('fenster-zu').addEventListener('click', schliessen);
+  vorhang.addEventListener('click', function (e) { if (e.target === vorhang) { schliessen(); } });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !vorhang.hidden) { schliessen(); } });
+
+  // Das Formular meldet seine Hoehe, damit innen kein zweiter Rollbalken entsteht.
+  window.addEventListener('message', function (e) {
+    if (e.source !== rahmen.contentWindow || !e.data || typeof e.data !== 'object') { return; }
+    if (e.data.anfrageprofi === 'hoehe' && e.data.hoehe > 200 && e.data.hoehe < 4000) {
+      rahmen.style.height = e.data.hoehe + 'px';
+    }
+  });
+
+  // Faellt das 3D-Modul aus (kein Netz, kein WebGL), sagen wir es ehrlich.
+  setTimeout(function () {
+    if (!window.planer3dBereit) { document.getElementById('buehne-fehler').hidden = false; }
+  }, 9000);
+
+  aktualisieren();
+})();
+</script>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const buehne = document.getElementById('buehne');
+const H = 2.5;    // Raumhoehe
+const D = 0.1;    // Wandstaerke
+
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+} catch (e) {
+  document.getElementById('buehne-fehler').hidden = false;
+  throw e;
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.92;
+buehne.prepend(renderer.domElement);
+
+const szene = new THREE.Scene();
+szene.background = new THREE.Color(0xcdd4dc);
+const pmrem = new THREE.PMREMGenerator(renderer);
+szene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+szene.environmentIntensity = 0.55;
+
+const kamera = new THREE.PerspectiveCamera(38, 1, 0.05, 80);
+const steuerung = new OrbitControls(kamera, renderer.domElement);
+steuerung.enableDamping = true;
+steuerung.dampingFactor = 0.08;
+steuerung.enablePan = false;
+steuerung.minDistance = 2;
+steuerung.maxDistance = 14;
+steuerung.maxPolarAngle = Math.PI * 0.46;
+
+const sonne = new THREE.DirectionalLight(0xfffaf2, 2.1);
+sonne.castShadow = true;
+sonne.shadow.mapSize.set(2048, 2048);
+sonne.shadow.bias = -0.0004;
+sonne.shadow.normalBias = 0.02;
+szene.add(sonne, sonne.target);
+szene.add(new THREE.HemisphereLight(0xffffff, 0xcfc7bb, 0.25));
+
+const umgebung = new THREE.Mesh(
+  new THREE.CircleGeometry(30, 48),
+  new THREE.MeshStandardMaterial({ color: 0xc3cbd4, roughness: 1 })
+);
+umgebung.rotation.x = -Math.PI / 2;
+umgebung.position.y = -0.003;
+umgebung.receiveShadow = true;
+szene.add(umgebung);
+
+// ---- Materialien ------------------------------------------------------------
+const M = {
+  keramik: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.16 }),
+  chrom: new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1, roughness: 0.14 }),
+  glas: new THREE.MeshPhysicalMaterial({
+    color: 0xc9e2ee, transparent: true, opacity: 0.32, roughness: 0.03,
+    side: THREE.DoubleSide, depthWrite: false
+  }),
+  holz: new THREE.MeshStandardMaterial({ color: 0x9c7552, roughness: 0.55 }),
+  spiegel: new THREE.MeshStandardMaterial({ color: 0xe2e9ef, metalness: 1, roughness: 0.03 }),
+  licht: new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff1d0, emissiveIntensity: 2.2 }),
+  becken: new THREE.MeshStandardMaterial({ color: 0xe9edf0, roughness: 0.2 }),
+  kante: new THREE.MeshStandardMaterial({ color: 0x7c8794, roughness: 0.9 }),
+  gruen: new THREE.MeshBasicMaterial({ color: 0x16a34a, transparent: true, opacity: 0.22, depthWrite: false }),
+  rot: new THREE.MeshBasicMaterial({ color: 0xdc2626, transparent: true, opacity: 0.22, depthWrite: false }),
+  linieGruen: new THREE.LineBasicMaterial({ color: 0x16a34a }),
+  linieRot: new THREE.LineBasicMaterial({ color: 0xdc2626 })
+};
+
+// Fliesen als gezeichnete Textur. Eine Kachel der Textur = eine Fliese
+// (Wand 60 × 30 cm, Boden 60 × 60 cm, Mosaik 30 × 30 cm als 6 × 6 kleine
+// Steine, Holz 120 × 60 cm als drei versetzte Dielen). Die Groesse in
+// Metern steckt in den UV-Koordinaten der Flaechen (skaliereUV), deshalb
+// reicht je Farbe und Art EIN Material, egal wie gross der Raum ist.
+function fliesenTextur(hex, art) {
+  const c = document.createElement('canvas');
+  const g = c.getContext('2d');
+  const r = parseInt(hex.slice(1, 3), 16), gr = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  const hell = (0.299 * r + 0.587 * gr + 0.114 * b) / 255 > 0.5;
+  const fuge = hell ? 'rgba(0,0,0,0.17)' : 'rgba(255,255,255,0.15)';
+  if (art === 'holz') {
+    c.width = 512; c.height = 256;
+    const h = c.height / 3;
+    const versatz = [0, 0.38, 0.71];
+    for (let i = 0; i < 3; i++) {
+      for (let k = -1; k < 2; k++) {
+        const x0 = versatz[i] * c.width + k * c.width;
+        const f = 0.9 + ((i * 7 + k * 3 + 10) % 5) * 0.045;
+        g.fillStyle = 'rgb(' + Math.min(255, r * f | 0) + ',' + Math.min(255, gr * f | 0) + ',' + Math.min(255, b * f | 0) + ')';
+        g.fillRect(x0, i * h, c.width, h);
+        g.strokeStyle = 'rgba(70,40,15,0.11)';
+        g.lineWidth = 1.2;
+        for (let s = 0; s < 6; s++) {
+          const y = i * h + 7 + s * (h - 14) / 5;
+          g.beginPath();
+          g.moveTo(x0, y);
+          g.bezierCurveTo(x0 + c.width * 0.3, y + 4, x0 + c.width * 0.6, y - 4, x0 + c.width, y + 1);
+          g.stroke();
+        }
+        g.fillStyle = 'rgba(40,25,10,0.35)';
+        g.fillRect(x0, i * h, 2, h);
+      }
+      g.fillStyle = 'rgba(40,25,10,0.3)';
+      g.fillRect(0, i * h, c.width, 2);
+    }
+  } else {
+    c.width = 256; c.height = art === 'wand' ? 128 : 256;
+    g.fillStyle = hex;
+    g.fillRect(0, 0, c.width, c.height);
+    for (let n = 0; n < 900; n++) {
+      g.fillStyle = Math.random() < 0.5 ? 'rgba(0,0,0,0.025)' : 'rgba(255,255,255,0.035)';
+      g.fillRect(Math.random() * c.width, Math.random() * c.height, 2, 2);
+    }
+    g.strokeStyle = fuge;
+    if (art === 'mosaik') {
+      g.lineWidth = 3;
+      const n = 6, schritt = c.width / n;
+      for (let i = 0; i <= n; i++) {
+        g.beginPath(); g.moveTo(i * schritt, 0); g.lineTo(i * schritt, c.height); g.stroke();
+        g.beginPath(); g.moveTo(0, i * schritt); g.lineTo(c.width, i * schritt); g.stroke();
+      }
+    } else {
+      g.lineWidth = 4;
+      g.strokeRect(0, 0, c.width, c.height);
+    }
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  return t;
+}
+
+const materialSpeicher = new Map();
+function fliesenMat(hex, art) {
+  const schluessel = art + hex;
+  if (!materialSpeicher.has(schluessel)) {
+    materialSpeicher.set(schluessel, new THREE.MeshStandardMaterial({
+      map: fliesenTextur(hex, art), roughness: art === 'holz' ? 0.75 : 0.32
+    }));
+  }
+  return materialSpeicher.get(schluessel);
+}
+
+function skaliereUV(geo, su, sv) {
+  const uv = geo.attributes.uv;
+  for (let i = 0; i < uv.count; i++) { uv.setXY(i, uv.getX(i) * su, uv.getY(i) * sv); }
+  uv.needsUpdate = true;
+}
+
+// ---- Bausteine ------------------------------------------------------------------
+function kasten(w, h, d, mat, rundung) {
+  const geo = rundung ? new RoundedBoxGeometry(w, h, d, 3, rundung) : new THREE.BoxGeometry(w, h, d);
+  const m = new THREE.Mesh(geo, mat);
+  m.castShadow = true;
+  m.receiveShadow = true;
+  return m;
+}
+function rohr(r, laenge, mat, achse) {
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, laenge, 20), mat);
+  if (achse === 'x') { m.rotation.z = Math.PI / 2; }
+  if (achse === 'z') { m.rotation.x = Math.PI / 2; }
+  m.castShadow = true;
+  return m;
+}
+function an(obj, x, y, z) { obj.position.set(x, y, z); return obj; }
+
+// Alle Objekte werden "von der Wand aus" gebaut: Breite entlang x,
+// mittig um 0, die Wand liegt bei z = 0, das Objekt ragt nach +z in den Raum.
+function baueWC(stehend, bf, slot, matWand) {
+  const g = new THREE.Group();
+  const sitz = bf ? 0.48 : 0.42;
+  if (!stehend) {
+    g.add(an(kasten(slot, 1.15, 0.18, matWand), 0, 0.575, 0.09));            // Vorwand
+    g.add(an(kasten(0.24, 0.16, 0.012, M.chrom, 0.005), 0, 0.98, 0.186));    // Drueckerplatte
+    g.add(an(kasten(0.36, 0.3, 0.52, M.keramik, 0.12), 0, sitz - 0.17, 0.44));
+    g.add(an(kasten(0.37, 0.03, 0.46, M.keramik, 0.012), 0, sitz + 0.005, 0.43));
+  } else {
+    g.add(an(kasten(0.36, sitz - 0.02, 0.62, M.keramik, 0.1), 0, (sitz - 0.02) / 2, 0.33));
+    g.add(an(kasten(0.38, 0.38, 0.18, M.keramik, 0.04), 0, sitz + 0.19, 0.1));
+    g.add(an(kasten(0.37, 0.03, 0.46, M.keramik, 0.012), 0, sitz + 0.005, 0.4));
+    g.add(an(rohr(0.025, 0.01, M.chrom), 0, sitz + 0.385, 0.1));
+  }
+  if (bf) {
+    // Stuetzklappgriffe links und rechts, 28 cm ueber der Sitzhoehe
+    for (const seite of [-0.36, 0.36]) {
+      g.add(an(kasten(0.1, 0.18, 0.02, M.chrom, 0.008), seite, sitz + 0.28, stehend ? 0.01 : 0.19));
+      g.add(an(rohr(0.017, 0.7, M.chrom, 'z'), seite, sitz + 0.28, (stehend ? 0 : 0.18) + 0.35));
+    }
+  }
+  return g;
+}
+
+function baueWanne() {
+  const g = new THREE.Group();
+  const l = 1.7, t = 0.75, h = 0.58, w = 0.08;
+  g.add(an(kasten(l, 0.1, t, M.keramik, 0.03), 0, 0.05, t / 2));
+  g.add(an(kasten(l, h, w, M.keramik, 0.035), 0, h / 2, w / 2));
+  g.add(an(kasten(l, h, w, M.keramik, 0.035), 0, h / 2, t - w / 2));
+  g.add(an(kasten(w, h, t, M.keramik, 0.035), -l / 2 + w / 2, h / 2, t / 2));
+  g.add(an(kasten(w, h, t, M.keramik, 0.035), l / 2 - w / 2, h / 2, t / 2));
+  g.add(an(kasten(0.18, 0.06, 0.05, M.chrom, 0.02), 0, h + 0.17, 0.025));
+  g.add(an(rohr(0.014, 0.14, M.chrom, 'z'), 0, h + 0.16, 0.1));
+  return g;
+}
+
+function baueWaschtisch(breite, bf, mitLicht) {
+  const g = new THREE.Group();
+  const t = bf ? 0.55 : 0.48;
+  const oben = bf ? 0.82 : 0.86;
+  if (!bf) { g.add(an(kasten(breite, 0.5, t - 0.03, M.holz, 0.02), 0, oben - 0.31, (t - 0.03) / 2)); }
+  g.add(an(kasten(breite + 0.02, 0.06, t, M.keramik, 0.025), 0, oben - 0.03, t / 2));
+  const becken = breite > 1 ? [-0.3, 0.3] : [0];
+  for (const bx of becken) {
+    const b = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.16, 0.012, 32), M.becken);
+    b.scale.z = 0.72;
+    g.add(an(b, bx, oben + 0.001, t / 2 + 0.04));
+    g.add(an(rohr(0.02, 0.16, M.chrom), bx, oben + 0.08, 0.08));
+    g.add(an(rohr(0.012, 0.12, M.chrom, 'z'), bx, oben + 0.15, 0.13));
+  }
+  const sb = Math.max(0.5, breite - 0.1);
+  const spiegelUnten = bf ? 0.95 : 1.12;
+  g.add(an(kasten(sb, 0.72, 0.02, M.spiegel), 0, spiegelUnten + 0.36, 0.012));
+  if (mitLicht) {
+    g.add(an(kasten(sb, 0.025, 0.03, M.licht), 0, spiegelUnten + 0.76, 0.03));
+    const lampe = new THREE.PointLight(0xfff0d0, 3, 3.5, 2);
+    g.add(an(lampe, 0, spiegelUnten + 0.7, 0.45));
+  }
+  if (bf) {
+    for (const seite of [-1, 1]) {
+      g.add(an(rohr(0.015, 0.35, M.chrom, 'z'), seite * (breite / 2 + 0.06), oben + 0.05, 0.2));
+    }
+  }
+  return g;
+}
+
+function baueHeizkoerper() {
+  const g = new THREE.Group();
+  const b = 0.5, h = 1.2, y0 = 0.35;
+  for (const x of [-b / 2, b / 2]) { g.add(an(rohr(0.016, h, M.chrom), x, y0 + h / 2, 0.07)); }
+  for (let y = y0 + 0.06; y < y0 + h - 0.02; y += 0.075) { g.add(an(rohr(0.01, b, M.chrom, 'x'), 0, y, 0.07)); }
+  return g;
+}
+
+// Die Dusche wird direkt in Raumkoordinaten gebaut (hintere linke Ecke).
+function baueDusche(d, bf, bodenHex, bodenArt) {
+  const g = new THREE.Group();
+  const s = d.s;
+  if (d.bodengleich) {
+    const geo = new THREE.PlaneGeometry(s, s);
+    skaliereUV(geo, s / 0.3, s / 0.3);
+    const mosaikHex = bodenArt === 'holz' ? '#9d9a94' : bodenHex;
+    const f = new THREE.Mesh(geo, fliesenMat(mosaikHex, 'mosaik'));
+    f.rotation.x = -Math.PI / 2;
+    f.receiveShadow = true;
+    g.add(an(f, s / 2, 0.003, s / 2));
+    g.add(an(kasten(s * 0.8, 0.006, 0.06, M.chrom), s / 2, 0.005, 0.09));   // Duschrinne
+  } else {
+    g.add(an(kasten(s, 0.05, s, M.keramik, 0.02), s / 2, 0.025, s / 2));
+    g.add(an(rohr(0.04, 0.004, M.chrom), s / 2, 0.052, s / 2));
+  }
+  // Walk-in: eine feste Glaswand vorn, der Einstieg bleibt rechts frei
+  const glasL = s * 0.82;
+  const glas = new THREE.Mesh(new THREE.BoxGeometry(glasL, 2.0, 0.008), M.glas);
+  g.add(an(glas, glasL / 2, 1.02, s));
+  g.add(an(kasten(glasL, 0.02, 0.02, M.chrom), glasL / 2, 2.03, s));
+  g.add(an(rohr(0.008, s, M.chrom, 'z'), glasL, 2.03, s / 2));                 // Stabilisator zur Wand
+  // Regendusche und Thermostat an der Rueckwand
+  g.add(an(rohr(0.012, 0.35, M.chrom, 'z'), s / 2, 2.15, 0.175));
+  g.add(an(rohr(0.13, 0.012, M.chrom), s / 2, 2.14, 0.35));
+  g.add(an(kasten(0.2, 0.07, 0.06, M.chrom, 0.02), s / 2, 1.1, 0.03));
+  if (bf) {
+    g.add(an(kasten(0.42, 0.04, 0.45, M.keramik, 0.015), 0.21, 0.48, s / 2));      // Klappsitz
+    g.add(an(rohr(0.017, 0.6, M.chrom, 'x'), s / 2, 0.85, 0.05));                  // Haltegriff
+  }
+  return g;
+}
+
+// ---- Raum zusammensetzen ------------------------------------------------------
+let raum = null;
+let plan = null;
+const waende = [];
+
+function anWand(obj, wand, mitte) {
+  if (wand === 'hinten') { obj.position.set(mitte, 0, 0); obj.rotation.y = 0; }
+  if (wand === 'links') { obj.position.set(0, 0, mitte); obj.rotation.y = Math.PI / 2; }
+  if (wand === 'rechts') { obj.position.set(plan.W, 0, mitte); obj.rotation.y = -Math.PI / 2; }
+  raum.add(obj);
+}
+
+// Eine Wand aus Stuecken (fuer die Tueroeffnung). Ist die Kamera hinter
+// der Wand, wird sie zum niedrigen Sockel: So sieht man immer hinein,
+// egal von welcher Seite, und der Grundriss bleibt erkennbar.
+function wand(stuecke, matF, aussen) {
+  const voll = new THREE.Group(), sockel = new THREE.Group();
+  for (const s of stuecke) {
+    const len = s[1] - s[0], h = s[3] - s[2];
+    const geo = new THREE.BoxGeometry(len, h, D);
+    skaliereUV(geo, len / 0.6, h / 0.3);
+    const m = new THREE.Mesh(geo, [M.kante, M.kante, M.kante, M.kante, matF, matF]);
+    m.receiveShadow = true;
+    voll.add(an(m, (s[0] + s[1]) / 2, (s[2] + s[3]) / 2, 0));
+    if (s[2] === 0) {
+      const sg = new THREE.BoxGeometry(len, 0.12, D);
+      skaliereUV(sg, len / 0.6, 0.12 / 0.3);
+      sockel.add(an(new THREE.Mesh(sg, [M.kante, M.kante, M.kante, M.kante, matF, matF]), (s[0] + s[1]) / 2, 0.06, 0));
+    }
+  }
+  const gruppe = new THREE.Group();
+  gruppe.add(voll, sockel);
+  raum.add(gruppe);
+  waende.push({ voll, sockel, aussen });
+  return gruppe;
+}
+
+function leeren() {
+  if (!raum) { return; }
+  raum.traverse(function (o) { if (o.geometry) { o.geometry.dispose(); } });
+  szene.remove(raum);
+  raum = null;
+  waende.length = 0;
+}
+
+function baue(daten) {
+  if (!daten) { return; }
+  const z = daten.zustand;
+  plan = daten.plan;
+  leeren();
+  raum = new THREE.Group();
+  szene.add(raum);
+
+  const W = plan.W, L = plan.L, F = window.PLANER_FARBEN;
+  const wandHex = F.wand[z.wand][0], bodenHex = F.boden[z.boden][0];
+  const matWand = fliesenMat(wandHex, 'wand');
+  const bodenArt = z.boden === 'eiche' ? 'holz' : 'boden';
+
+  const bgeo = new THREE.PlaneGeometry(W, L);
+  skaliereUV(bgeo, W / (bodenArt === 'holz' ? 1.2 : 0.6), L / 0.6);
+  const boden = new THREE.Mesh(bgeo, fliesenMat(bodenHex, bodenArt));
+  boden.rotation.x = -Math.PI / 2;
+  boden.receiveShadow = true;
+  raum.add(an(boden, W / 2, 0, L / 2));
+
+  const dt = plan.tuer, tx = W / 2;
+  wand([[-D, W + D, 0, H]], matWand, function (k) { return k.z < 0; }).position.set(0, 0, -D / 2);
+  wand([[-D, tx - dt / 2, 0, H], [tx + dt / 2, W + D, 0, H], [tx - dt / 2, tx + dt / 2, 2.05, H]], matWand,
+    function (k) { return k.z > L; }).position.set(0, 0, L + D / 2);
+  const links = wand([[0, L, 0, H]], matWand, function (k) { return k.x < 0; });
+  links.rotation.y = -Math.PI / 2;
+  links.position.set(-D / 2, 0, 0);
+  const rechts = wand([[0, L, 0, H]], matWand, function (k) { return k.x > W; });
+  rechts.rotation.y = -Math.PI / 2;
+  rechts.position.set(W + D / 2, 0, 0);
+
+  if (plan.dusche) { raum.add(baueDusche(plan.dusche, z.barrierefrei, bodenHex, bodenArt)); }
+  if (plan.wanne) { anWand(baueWanne(), plan.wanne.wand, plan.wanne.mitte); }
+  if (plan.wc) { anWand(baueWC(z.wc === 'stehend', z.barrierefrei, plan.wc.breite, matWand), plan.wc.wand, plan.wc.mitte); }
+  if (plan.waschtisch) {
+    anWand(baueWaschtisch(plan.waschtisch.breite, z.barrierefrei, z.spiegellicht), plan.waschtisch.wand, plan.waschtisch.mitte);
+  }
+  if (plan.heizkoerper) { anWand(baueHeizkoerper(), plan.heizkoerper.wand, plan.heizkoerper.mitte); }
+
+  if (plan.bewegung) {
+    const b = plan.bewegung;
+    const geo = new THREE.PlaneGeometry(b.s, b.s);
+    const flaeche = new THREE.Mesh(geo, b.ok ? M.gruen : M.rot);
+    flaeche.rotation.x = -Math.PI / 2;
+    raum.add(an(flaeche, b.x, 0.009, b.z));
+    const rand = new THREE.LineSegments(new THREE.EdgesGeometry(geo), b.ok ? M.linieGruen : M.linieRot);
+    rand.rotation.x = -Math.PI / 2;
+    raum.add(an(rand, b.x, 0.01, b.z));
+  }
+
+  // Licht und Schatten auf die Raumgroesse einstellen
+  sonne.position.set(W * 0.3 - 2, 6.5, L + 3);
+  sonne.target.position.set(W / 2, 0, L / 2);
+  const sk = sonne.shadow.camera, spann = Math.max(W, L) * 0.9 + 1.2;
+  sk.left = -spann; sk.right = spann; sk.top = spann; sk.bottom = -spann;
+  sk.near = 0.5; sk.far = 22;
+  sk.updateProjectionMatrix();
+
+  rahmen();
+}
+
+// ---- Kamera -----------------------------------------------------------------------
+const ziel = new THREE.Vector3();
+let ersterBau = true;
+let flug = null;
+
+function standardBlick() {
+  const r = Math.max(plan.W, plan.L) * 1.4 + 2.7;
+  const polar = 0.95, azimut = -0.62;   // schraeg von vorn links
+  return new THREE.Vector3(
+    plan.W / 2 + r * Math.sin(polar) * Math.sin(azimut),
+    0.8 + r * Math.cos(polar),
+    plan.L / 2 + r * Math.sin(polar) * Math.cos(azimut)
+  );
+}
+function blickVonOben() {
+  const r = Math.max(plan.W, plan.L) * 1.25 + 2.4;
+  return new THREE.Vector3(plan.W / 2, 0.8 + r, plan.L / 2 + 0.01);
+}
+
+function rahmen() {
+  const neuesZiel = new THREE.Vector3(plan.W / 2, 0.8, plan.L / 2);
+  if (ersterBau) {
+    ziel.copy(neuesZiel);
+    steuerung.target.copy(ziel);
+    kamera.position.copy(standardBlick());
+    ersterBau = false;
+  } else {
+    // Blickwinkel behalten, nur mit der Raummitte mitwandern
+    const schub = neuesZiel.clone().sub(steuerung.target);
+    kamera.position.add(schub);
+    steuerung.target.copy(neuesZiel);
+  }
+}
+
+function fliege(nach) {
+  flug = {
+    start: performance.now(), dauer: 750,
+    vonPos: kamera.position.clone(), nachPos: nach,
+    vonZiel: steuerung.target.clone(), nachZiel: new THREE.Vector3(plan.W / 2, 0.8, plan.L / 2)
+  };
+}
+document.getElementById('ansicht-3d').addEventListener('click', function () { fliege(standardBlick()); });
+document.getElementById('ansicht-oben').addEventListener('click', function () { fliege(blickVonOben()); });
+
+const tipp = document.getElementById('tipp');
+steuerung.addEventListener('start', function () { flug = null; tipp.classList.add('weg'); });
+
+function groesse() {
+  const w = buehne.clientWidth, h = buehne.clientHeight;
+  if (!w || !h) { return; }
+  renderer.setSize(w, h, false);
+  kamera.aspect = w / h;
+  kamera.updateProjectionMatrix();
+}
+new ResizeObserver(groesse).observe(buehne);
+groesse();
+
+function schleife(jetzt) {
+  requestAnimationFrame(schleife);
+  if (flug) {
+    const t = Math.min(1, (jetzt - flug.start) / flug.dauer);
+    const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    kamera.position.lerpVectors(flug.vonPos, flug.nachPos, e);
+    steuerung.target.lerpVectors(flug.vonZiel, flug.nachZiel, e);
+    if (t >= 1) { flug = null; }
+  }
+  steuerung.update();
+  for (const w of waende) {
+    const draussen = w.aussen(kamera.position);
+    w.voll.visible = !draussen;
+    w.sockel.visible = draussen;
+  }
+  renderer.render(szene, kamera);
+  window.planer3dBereit = true;
+}
+
+document.addEventListener('planer-aenderung', function (e) { baue(e.detail); });
+baue(window.planerAktuell);
+requestAnimationFrame(schleife);
+</script>
+
+</body>
+</html>
